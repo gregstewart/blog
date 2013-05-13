@@ -1,0 +1,12 @@
+---
+layout: post
+title: Query-columnList udpate
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+A while back I blogged about query.columnList and how in CFMX the list is returned ordered alphabetically, which was a slight nuisance at the time. Just recently someone posted an SQL statement that fixed this problem (beware it is vendor dependant):
+
+[code]SELECT t.column_name FROM all_tab_columns t WHERE t.table_name='TABLE_NAME'[/code]

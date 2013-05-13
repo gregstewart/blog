@@ -1,0 +1,172 @@
+---
+layout: post
+title: Validating your credit card number
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+One of the items that recently caught my attention was a series of articles on <a href="http://www.webreference.com/">WebReference.com</a> about <a href="http://www.webreference.com/programming/carts/chap7/">Usable shopping carts</a>. This serie essentially was an excerpt from a set of chapters taken from a <a href="http://www.amazon.com/exec/obidos/ASIN/1904151140/teacupinastor-20/">book by the same name</a>. One item in particular caught my eye and that centered around validating Credit Card numbers using the <a href="http://www.webopedia.com/TERM/L/Luhn_formula.html">Luhn formula</a>. The article focused on developing the validation server side making use of PHP, so I decided to build a module in Cold Fusion to handle the same thing. I will not go too much into the nitty gritty as you can <a href="http://www.webreference.com/programming/carts/chap7/3/">read up on it</a> at the WebReference site. So without further ado the form and code.
+
+So let's start of with the template, which includes the form for passing your credit card details and on submission will call the module to perform the validation.
+
+<em>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;</em>
+
+<em>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Credit card number validation&lt;/title&gt;
+&lt;/head&gt;</em>
+
+<em>&lt;body&gt;
+&lt;cfif NOT isdefined("form.fieldnames")&gt;
+&lt;form action="" method="post" name="frm_cc" id="frm_cc" enctype="application/x-www-form-urlencoded"&gt;
+Type: &lt;select name="r_type" id="r_type"&gt;
+&lt;option value=""&gt;Specify a cc type&lt;/option&gt;
+&lt;option value=""&gt;--------------------&lt;/option&gt;
+&lt;option value="visa"&gt;Visa&lt;/option&gt;
+&lt;option value="mastercard"&gt;Master Card&lt;/option&gt;
+&lt;option value="amex"&gt;American Express&lt;/option&gt;
+&lt;option value="discovery"&gt;Discovery&lt;/option&gt;
+&lt;option value="diners"&gt;Diners Club&lt;/option&gt;
+&lt;/select&gt;&lt;br /&gt;
+CC Number: &lt;input type="Text" name="r_cc_number" id="r_cc_number" value="" size="20" /&gt;&lt;br /&gt;
+&lt;input type="Submit" name="btn_submit" id="btn_submit" value="Validate" /&gt;
+&lt;/form&gt;
+&lt;cfelse&gt;
+&lt;cfmodule template="cc_validation.cfm" attribute_1="#form.r_type#" attribute_2="#form.r_cc_number#" /&gt;
+&lt;cfif cc_valid eq 0&gt;
+Your credit card number is incorrect.&lt;br /&gt;
+&lt;cfelse&gt;
+Card verified successfully.&lt;br /&gt;
+&lt;/cfif&gt;
+&lt;/cfif&gt;</em>
+
+<em>&lt;/body&gt;
+&lt;/html&gt;
+</em>
+
+The first thing the template does is check if the form has not been submitted. If this is the case then it displays the form. However if on the other hand it has, then it will call the module. The module itself takes two attributes, which correspond to the card type and the credit card number. No rocket science here, so onto the module.
+
+<em>&lt;cfset local.cc_number = attributes.attribute_2 /&gt;
+&lt;cfset local.cc_type = attributes.attribute_1 /&gt;
+&lt;!--- -strip out any dashes or spaces- ---&gt;
+&lt;cfset local.cc_number = rereplace(local.cc_number, "-|[[:space:]]", "", "all") /&gt;</em>
+
+<em>&lt;cfif isNumeric(local.cc_number)&gt;
+&lt;!--- -OK test for length first
+if true length_valid = 1 else it's equal 0
+Second test for the prefix if true prefix_valid = 1 and 0 if not
+- ---&gt;
+&lt;cfset local.submitted_len = len(local.cc_number) /&gt;</em>
+
+<em> &lt;cfset local.length_valid = 0 /&gt;
+&lt;cfset local.prefix_valid = 0 /&gt;
+&lt;cfswitch expression="#local.cc_type#"&gt;
+&lt;cfcase value="mastercard"&gt;
+&lt;cfif local.submitted_len eq 16&gt;
+&lt;cfset local.length_valid = 1 /&gt;
+&lt;/cfif&gt;
+&lt;cfset local.submitted_prefix = mid(local.cc_number, 1, 2) /&gt;
+&lt;cfif (local.submitted_prefix gte 51) AND (local.submitted_prefix lte 55)&gt;
+&lt;cfset local.prefix_valid = 1 /&gt;
+&lt;/cfif&gt;
+&lt;/cfcase&gt;
+&lt;cfcase value="visa"&gt;
+&lt;cfif (local.submitted_len eq 13) OR (local.submitted_len eq 16)&gt;
+&lt;cfset local.length_valid = 1 /&gt;
+&lt;/cfif&gt;
+&lt;cfset local.submitted_prefix = mid(local.cc_number, 1, 1) /&gt;
+&lt;cfif local.submitted_prefix eq 4&gt;
+&lt;cfset local.prefix_valid = 1 /&gt;
+&lt;/cfif&gt;
+&lt;/cfcase&gt;
+&lt;cfcase value="amex"&gt;
+&lt;cfif local.submitted_len eq 15&gt;
+&lt;cfset local.length_valid = 1 /&gt;
+&lt;/cfif&gt;
+&lt;cfset local.submitted_prefix = mid(local.cc_number, 1, 2) /&gt;
+&lt;cfif (local.submitted_prefix eq 34) OR (local.submitted_prefix eq 37)&gt;
+&lt;cfset local.prefix_valid = 1 /&gt;
+&lt;/cfif&gt;
+&lt;/cfcase&gt;
+&lt;cfcase value="discover"&gt;
+&lt;cfif local.submitted_len eq 16&gt;
+&lt;cfset local.length_valid = 1 /&gt;
+&lt;/cfif&gt;
+&lt;cfset local.submitted_prefix = mid(local.cc_number, 1, 4) /&gt;
+&lt;cfif local.submitted_prefix eq 6011&gt;
+&lt;cfset local.prefix_valid = 1 /&gt;
+&lt;/cfif&gt;
+&lt;/cfcase&gt;
+&lt;cfcase value="diners"&gt;
+&lt;cfif local.submitted_len eq 14&gt;
+&lt;cfset local.length_valid = 1 /&gt;
+&lt;/cfif&gt;
+&lt;cfset local.submitted_prefix = mid(local.cc_number, 1, 3) /&gt;
+&lt;cfif ((local.submitted_prefix gte 300) AND (local.submitted_prefix lte 305)) OR find("36", mid(local.submitted_prefix, 1, 2), 1) OR find("38", mid(local.submitted_prefix, 1, 2), 1)&gt;
+&lt;cfset local.prefix_valid = 1 /&gt;
+&lt;/cfif&gt;
+&lt;/cfcase&gt;
+&lt;/cfswitch&gt;
+&lt;cfif (local.length_valid AND local.prefix_valid) eq 1&gt;
+&lt;!--- -now we check the Luhn formula- ---&gt;
+&lt;cfscript&gt;
+y = 0;
+for (i=1; i lte local.submitted_len; setvariable("i",i+1)) {
+x = mid(local.cc_number,i,1);
+if (i mod 2) {
+x = x*2;
+if (x gt 9) {
+z = (x \ 10) + (x - 10);
+y = y + z;
+} else {
+y = y + x;
+}
+} else {
+y = y + x;
+}
+}
+y = y mod 10;
+//WriteOutput(y&amp;"&lt;br /&gt;");
+&lt;/cfscript&gt;
+&lt;cfif y neq 0&gt;
+&lt;cfset local.cc_valid = 0 /&gt;
+&lt;!--- -Your credit card number is incorrect.&lt;br /&gt;- ---&gt;
+&lt;cfelse&gt;
+&lt;cfset local.cc_valid = 1 /&gt;
+&lt;!--- -Card verified successfully.&lt;br /&gt;- ---&gt;
+&lt;/cfif&gt;
+&lt;cfelse&gt;
+&lt;cfset local.cc_valid = 0 /&gt;
+&lt;!--- -Your credit card number is incorrect.&lt;br /&gt;- ---&gt;
+&lt;/cfif&gt;
+&lt;cfelse&gt;
+&lt;cfset local.cc_valid = 0 /&gt;
+&lt;!--- -Your credit card number is incorrect.&lt;br /&gt;- ---&gt;
+&lt;/cfif&gt;</em>
+
+<em>&lt;cfset caller.cc_valid = local.cc_valid /&gt;
+&lt;!--- -debug
+CC type: &lt;cfoutput&gt;#local.cc_type#&lt;/cfoutput&gt;&lt;br /&gt;
+CC number: &lt;cfoutput&gt;#local.cc_number#&lt;/cfoutput&gt;&lt;br /&gt;
+Length valid: &lt;cfoutput&gt;#local.length_valid#&lt;/cfoutput&gt;
+(&lt;cfoutput&gt;#local.submitted_len#&lt;/cfoutput&gt;)&lt;br /&gt;
+Prefix valid: &lt;cfoutput&gt;#local.prefix_valid#&lt;/cfoutput&gt;
+(&lt;cfoutput&gt;#local.submitted_prefix#&lt;/cfoutput&gt;)&lt;br /&gt;
+- ---&gt;</em>
+
+In the first instance we are setting the attributes passed by the call ot the module to local variables. Then I remove all spaces and dashes that user may have submitted and check that the number passed by the form is actually a number, if it passes this then the real work begins. Another step you might want to build in is to check whether or not values have actually been submitted. Anyway back to the actual processing.
+
+Each credit card type follows a set of rules, i.e. each type has a varying length prefix and a set number of digits. The summary of these can be found on the aforementioned webreference site. The script then proceeds to determine the type and check that the number submitted fulfills the prefix and digit length requirements. If it passes it moves on to the Luhn formula and if not the script exits and returns <strong>0</strong> for <strong>local.cc_valid</strong> which is the variable that is returned by the module to verify the success of the evaluation.
+
+The luhn formula helps to determine whether or not the number submitted is actually a valid credit card number. Listed below are the rules (lifted straight from the webreference site):
+<ol>
+	<li>Double the value of every other digit starting with the next-to-rightmost digit.</li>
+	<li>If any of the resulting values has more than two digits, then its digits must be added together to produce a single digit.</li>
+	<li>Add the sum of all the digits not doubled in step 1 to the sum of all the digits resulting in step 2.</li>
+	<li>If the result is exactly divisible by 10 (that is, if the result ends in a zero), then the number is valid--providing of course that it's of the correct length and bears a correct prefix for that type of card--and can now be submitted for authorisation of a sale.</li>
+</ol>
+So if the formula returns <strong>0</strong> (zero), the credit card submitted is correct. And the module sets <strong>local.cc_valid</strong> to <strong>1</strong>, in turn <strong>caller.cc_valid</strong> is set to the value of <strong>local.cc_valid</strong>, as this is how you return values to the calling page in Cold Fusion. Now the next step would be to submit the information to your payment gateway to authorise the purchase and debit the credit from the card. So there's still a way to go, but at least you can save yourself some processing and user frustration by validating the submitted information at your end first, before continuing down to the gateway.
+
+And that's it! If you like you can download the <a href="http://www.teacupinastorm.com/gregs/downloads/cc_validation.zip">full source here</a>. While we are on the topic of credit cards I came across <a href="http://euro.ecom.cmu.edu/resources/elibrary/everycc.htm">this resource</a> that pretty much covered everything I have ever wanted to know about my plastic friend (and then some).

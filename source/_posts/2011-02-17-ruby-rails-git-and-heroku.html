@@ -1,0 +1,48 @@
+---
+layout: post
+title: Ruby, Rails, Git and Heroku
+tags:
+- autotest
+- rails
+- rspec
+- ruby
+- tdd
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+  _wp_old_slug: ''
+---
+Over Christmas and last month, I decided to resurrect <a href="http://www.tcias.co.uk/">www.tcias.co.uk</a>. Initially it was just a static html site, but I decided to re-build it using Ruby and Rails. While it's very much like using a sledgehammer to tap in a small protruding nail, I figured it was a simple enough project to explore building a Rails app. I had a few goals in mind:
+<ul>
+	<li>Use <a href="http://git-scm.com/">Git</a></li>
+	<li>Build it using tests (<a href="http://rspec.info/">Rspec</a>)</li>
+	<li>and conversely take a look at BBD</li>
+	<li>Refactor common elements using partials</li>
+	<li>Have fun</li>
+</ul>
+<a href="http://heroku.com/">Heroku</a> came along after the initial build because my server seemed to struggle serving the app using a combination of Apache and Passenger Phusion (looks like I need more RAM...). Overall the experience has simply put been great. Building an app using the Ruby and Rails toolset is just a pleasure. <a href="http://rvm.beginrescueend.com/">RVM</a> for ruby version management, Bundler for Gem management, <a href="https://github.com/grosser/autotest">autotest</a> for <a href="http://ph7spot.com/musings/getting-started-with-autotest">continuous background tests</a>, easy deployment with <a href="http://git-scm.com/">Git</a> integration. Compared to the CF world I am in [big caveat this might not be true for you], the rails ecosystm is incredibly rich, well documented, functional and fun.
+
+I started off by following the Rails guide over at <a href="http://ruby.railstutorial.org/chapters/">Rails Tutorial</a> and borrowed the set up to get started. After creating my project, the first thing I got to grips with was getting <a href="http://git-scm.com/">Git</a> set up. I use both a local repository and a remote one over at <a href="https://github.com/gregstewart/Teacup-In-A-Storm">Github</a>, Knowing that your code is versioned in two places is quite a comfort and I have since started using it for absolutely everything locally and have pushed a few other projects (terribly old projects that I am a little embarrassed about, but being the sentimental individual didn't want to loose) on to <a href="https://github.com/">Github</a>. 
+
+Then came setting up <a href="https://github.com/grosser/autotest">autotest</a>, having this run in the background with Growl integration gives you instant notification that your tests are passing or failing whenever you save a file. This is so incredibly useful and responsive. I really love the continuous testing nature of this setup.
+
+Given the nature of the site, the coding part was easy-ish and I am sure there are a plenty of things I have done like a noob.
+
+Where all this really comes to shine is during deployment time. I opted for <a href="http://heroku.com/">Heroku</a>, it wasn't so much a choice as a case of I'd be stupid not to. The documentation for signing up and getting started is first class (as it is with <a href="https://github.com/">Github</a> by the way). Once you have your account, created your app and linked it to your git repository, deploying your code is a simple case of typing:
+
+[code]git push heroku master[/code]
+
+From then on in, you just watch the code being checked out, gem dependency being resolved and your app launching. Knowing that your site is Ok thanks to your tests, the one line deployment command is pure joy.
+
+To give you an indication of how great this setup is, consider that I decided to switch from <a href="http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/">erb</a> files to <a href="http://haml-lang.com/">Haml</a>. I spent a few hours reading up and converting my erb files over, while having autotest running showing me where things were breaking (due to my lack of knowledge of the new syntax) or working. Then pushing changes into Git. I confess I had also cast my eye over the resulting output (old habits die hard ;)) and finally running a one line deployment to Heroku. Job done and once again a pleasure and full of confidence about the result.
+
+Where there any downsides? Well not downsides, but hiccups, wrapping my head around RVM and gem management was a bit bewildering especially when some gems were being used unexpectedly, the problem lay with what's between the chair and the keyboard. Some of the RSpec view testing tripped me up. When you decide to test the content of views, eg:
+
+[code]response.should have_selector("title", :content => "Something")[/code]
+
+Don't forget to include render_views after your describe statement for the controller, or else your tests will fail and you will be be scratching your head as to why that is the case. :S
+
+There's a lot to take in and it is a little overwhelming when things do not work as intended, but the information to resolve these is out there and with a careful reading of the error messages it does not take very long to figure out.

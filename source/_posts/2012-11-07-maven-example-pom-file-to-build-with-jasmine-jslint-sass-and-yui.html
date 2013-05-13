@@ -1,0 +1,128 @@
+---
+layout: post
+title: Maven example POM file to build with Jasmine, JSlint, SASS and YUI
+tags:
+- jasmine
+- java
+- maven
+- sass
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+Since we seem to be repeating these steps time and again here's an example of a POM file to run JSLint, Jasmine, SASS and YUI as part of the build Maven build process:
+
+
+
+<pre><code>&lt;build&gt;
+   &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;com.github.searls&lt;/groupId&gt;
+            &lt;artifactId&gt;jasmine-maven-plugin&lt;/artifactId&gt;
+            &lt;version&gt;1.2.0.0&lt;/version&gt;
+            &lt;extensions&gt;true&lt;/extensions&gt;
+            &lt;executions&gt;
+                &lt;execution&gt;
+                    &lt;goals&gt;
+                        &lt;goal&gt;test&lt;/goal&gt;
+                    &lt;/goals&gt;
+                &lt;/execution&gt;
+            &lt;/executions&gt;
+            &lt;configuration&gt;
+                &lt;jsSrcDir&gt;${project.basedir}/src/main/js&lt;/jsSrcDir&gt;
+                &lt;jsTestSrcDir&gt;${project.basedir}/src/test/js&lt;/jsTestSrcDir&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.jasig.maven&lt;/groupId&gt;
+            &lt;artifactId&gt;sass-maven-plugin&lt;/artifactId&gt;
+            &lt;version&gt;1.0.0&lt;/version&gt;
+            &lt;executions&gt;
+                &lt;execution&gt;
+                    &lt;phase&gt;generate-resources&lt;/phase&gt;
+                    &lt;goals&gt;
+                        &lt;goal&gt;update-stylesheets&lt;/goal&gt;
+                    &lt;/goals&gt;
+                &lt;/execution&gt;
+            &lt;/executions&gt;
+            &lt;configuration&gt;
+                &lt;sassSourceDirectory&gt;${project.basedir}/src/main&lt;/sassSourceDirectory&gt;
+                &lt;baseOutputDirectory&gt;${project.build.directory}/classes/assets/stylesheets&lt;/baseOutputDirectory&gt;
+                &lt;sassOptions&gt;
+                    &lt;cache_location&gt;'${project.build.directory}/sass_cache'&lt;/cache_location&gt;
+                    &lt;always_update&gt;true&lt;/always_update&gt;
+                    &lt;style&gt;:compressed&lt;/style&gt;
+                &lt;/sassOptions&gt;
+            &lt;/configuration&gt;
+            &lt;dependencies&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;com.google.guava&lt;/groupId&gt;
+                    &lt;artifactId&gt;guava&lt;/artifactId&gt;
+                    &lt;version&gt;13.0.1&lt;/version&gt;
+                &lt;/dependency&gt;
+            &lt;/dependencies&gt;
+        &lt;/plugin&gt;
+
+        &lt;plugin&gt;
+            &lt;groupId&gt;com.googlecode.jslint4java&lt;/groupId&gt;
+            &lt;artifactId&gt;jslint4java-maven-plugin&lt;/artifactId&gt;
+            &lt;version&gt;2.0.2&lt;/version&gt;
+            &lt;executions&gt;
+                &lt;execution&gt;
+                    &lt;id&gt;lint&lt;/id&gt;
+                    &lt;phase&gt;process-resources&lt;/phase&gt;
+                    &lt;goals&gt;
+                        &lt;goal&gt;lint&lt;/goal&gt;
+                    &lt;/goals&gt;
+                    &lt;configuration&gt;
+                        &lt;failOnError&gt;true&lt;/failOnError&gt;
+                        &lt;sourceFolders&gt;
+                            &lt;sourceFolder&gt;${project.basedir}/src/main/js&lt;/sourceFolder&gt;
+                        &lt;/sourceFolders&gt;
+                        &lt;options&gt;
+                            &lt;predef&gt;jQuery, $&lt;/predef&gt;
+                            &lt;browser&gt;true&lt;/browser&gt;
+                        &lt;/options&gt;
+                    &lt;/configuration&gt;
+                &lt;/execution&gt;
+            &lt;/executions&gt;
+        &lt;/plugin&gt;
+
+        &lt;plugin&gt;
+            &lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;
+            &lt;version&gt;1.3.0&lt;/version&gt;
+            &lt;artifactId&gt;yuicompressor-maven-plugin&lt;/artifactId&gt;
+            &lt;executions&gt;
+                &lt;execution&gt;
+                    &lt;phase&gt;generate-resources&lt;/phase&gt;
+                    &lt;goals&gt;
+                        &lt;goal&gt;compress&lt;/goal&gt;
+                    &lt;/goals&gt;
+                &lt;/execution&gt;
+            &lt;/executions&gt;
+            &lt;configuration&gt;
+                &lt;nosuffix&gt;true&lt;/nosuffix&gt;
+                &lt;preserveAllSemiColons&gt;true&lt;/preserveAllSemiColons&gt;
+                &lt;sourceDirectory&gt;${project.basedir}/src/main/js/&lt;/sourceDirectory&gt;
+                &lt;outputDirectory&gt;${project.build.directory}/js-min/&lt;/outputDirectory&gt;
+                &lt;excludes&gt;
+                    &lt;exclude&gt;**/vendor/*.js&lt;/exclude&gt;
+                &lt;/excludes&gt;
+                &lt;aggregations&gt;
+                    &lt;aggregation&gt;
+                        &lt;insertNewLine&gt;true&lt;/insertNewLine&gt;
+                        &lt;output&gt;${project.build.directory}/classes/assets/js/all.js&lt;/output&gt;
+                        &lt;includes&gt;
+                            &lt;include&gt;${project.build.directory}/js-min/HelloWorld.js&lt;/include&gt;
+                        &lt;/includes&gt;
+                    &lt;/aggregation&gt;
+                &lt;/aggregations&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;
+</code></pre>

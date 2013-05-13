@@ -1,0 +1,22 @@
+---
+layout: post
+title: First Foray into Mach-ii
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I have been tinkering with Mach-ii for a few weeks now. Principally to do UI prototyping. I figured this would be a nice way to get used to the event model and calling views. Now, however, the time has come to do a little more than just switch between UI views. I decided to figure out a very basic login/logout approach and to familiarise myself with how you deal with creating sessions in this framework. I based this stuff on Ben Edward's "Mach-ii How to... develop listeners" and Phil Cruz's excellent Mach-ii.info sample application. Please do note: this doesn't deal in the slightest with facades or transfer objects or any of the design patterns that have been hot topics in recent months. Also if anything is blantantly wrong or incorrect, please feel free to point out my mistakes (e-mail address is in the footer)</p>
+
+<p>So what follows will be a discussion of how it works and how it all ties together. There aren't any code samples, but later on today I'll upload the code I used and also set up a small demo of the code, so you can see it in action.</p>
+
+<p>As an application is fired up (and for every subsequent event) the <strong>applicationPlugin</strong> [plugins/ApplicationPlugin.cfc] is called and at the preEvent level a check is carried out to see whether my session object exists (in this case session.sUser). If not, then it is at this point that it is created. However it is left empty, i.e. it leaves the <strong>userID</strong> blank and sets the <strong>isLoggedIn</strong> key to "no".</p>
+
+<p>Then the flow of the application continues by loading the default event, which in this case is <strong>showHome</strong>. This view [views/showHome.cfm] displays a greeting message and then checks whether you are logged in or not. A simple if/else <em>session.sUser.isLoggedIn</em> block is used to handle this.</p>
+
+<p>At the first request this is false so the user is informed that he is not logged in. By clicking the link a new event is announced: <strong>attemptLogin</strong> and both the username and password are passed to the event as well. This in turn prompts the <strong>LoginListener</strong> [model/LoginListener.cfc] to be called. The method <strong>attemptLogin</strong> takes the entire event as an argument and from that the username and password are plucked (e.g. <em>arguments.event.getArg("username")</em>). Next a <strong>isLoginValid</strong> method is called, which will match the values passed in by the URL/event against two parameters set in the mach-ii.xml file for the <strong>LoginListener</strong>. For obvious reasons this will be replaced with something more secure in production, this is after all just something to test the theory.</p>
+
+<p>If the the arguments passed in, match the parameters set then a method <strong>doLogin</strong> is called, which set the userID to a unique UUID and the <strong>isLoggedIn</strong> flag is set to yes. Control is handed back to the calling method and true is returned to the <strong>attemptLogin</strong> method. If on the other hand the values passed in didn't match the parameters, false is returned.</p>
+
+<p>Depending on the outcome dicsussed previously (i.e. whether isLoginValid returned true or false) one of two events are announced: <strong>loginSucceeded</strong> and "<strong>oginFailed</strong>. Currently these events simply display the view <strong>showHome</strong>, but at a later date I may decide to do other things post successful login, so I kept my options open and decided to leave them in there.</p>

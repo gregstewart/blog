@@ -1,0 +1,21 @@
+---
+layout: post
+title: BD no longer running as root
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+A while back I blogged about instructions for changing the default user for BD, which is root, and finally got round to giving it a go. The links previously posted held all the information I needed, but since they were pretty elaborate, here in condensed form is what I did:
+
+[code]
+ugg:/home/gvs# useradd -d "/usr/local/NewAtlanta/BlueDragon_Server_62/" -c "BlueDragon CFML Server" -s /bin/sh -m bdragon
+ugg:/home/gvs# passwd -l bdragon
+ugg:/home/gvs# addgroup bdragon
+ugg:/home/gvs# chown -R bdragon:bdragon /usr/local/NewAtlanta/
+ugg:/home/gvs# su bdragon
+ugg:/home/gvs$ /usr/local/NewAtlanta/BlueDragon_Server_62/bin/StartBlueDragon.sh
+[/code]
+
+And that should do the trick.

@@ -1,0 +1,23 @@
+---
+layout: post
+title: How to limit mail attachment size for Sendmail
+tags:
+- ! '*nix'
+- email
+- sendmail
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+<h3>How to limit mail attachment size for Sendmail</h3>
+<p class="1">This little document is going to briefly show how to limit the size of incoming mail attachments. In order to this you are going to have to be familiar with Vi editing (see <a href="http://www.armagossa.com/content.cfm?content_ID=20">Basic Vi editing</a> for an introduction).</p>
+<p class="1">First off telnet on to your mail server and log on as root or su. Next change to /etc directory. In that directory you should find a file called sendmail.cf (if you can't find it, try typing <i>whereis sendmail.cf</i>, this should return a list of files with the word sendmail in it and hence you should be able to locate it that way). Prior to editing it, make a backup copy of it. Now you can type vi sendmail.cf.</p>
+<p class="1">Now scroll down this file until you find an entry that looks something like this:<br />
+# maximum message size<br />
+# 0 MaxMessageSize=1000000<br />
+In order to limit the size of messages simply uncomment the last line so that it reads:<br />
+0 MaxMessageSize=1000000<br />
+Furthermore you can specify the maximum message size by editing the value bit. Once done, save the changes and exit.</p>
+<p class="1">The final step involves stopping and restarting the server so that the changes can take effect (check your /etc/rc.d/init.d/ directory).</p>

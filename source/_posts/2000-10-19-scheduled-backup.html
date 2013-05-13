@@ -1,0 +1,21 @@
+---
+layout: post
+title: Scheduled backup
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>Scheduled backup</h3>
+<p class="1">Recently I had to set up one of our servers to do scheduled differential backups in France. Normally the hardware comes with some software that allows you to carry out these tasks. However despite the tape being recognised by NT server it would not load the software. But you could still use the NT server backup software. Combining this with the Command scheduler gives you all the tools you need to set up a scheduled backup.</p>
+<p class="1">First off I recommend you use the Resource kit Command scheduler. However if you have not got access to it you will need to type the following in:</p>
+<p class="1">AT ServerName 01:30 /every:Monday,Tuesday,Wednesday,Thursday,Friday BackupCommand.cmd</p>
+<p class="1"> This command tells the scheduler service to run the <i>BackupCommand.cmd</i> file every working day of the week at 1:30 am. If you are using the the Command Scheduler then you can also enter the syntax directly into the command option. By the way when choosing a name for your batch file, make sure that it isn't already in use as a system file such as <i>Backup.cmd</i> for example. The <i>BackupCommand.cmd</i> will contain the following syntax for the backup operation:</p>
+<p class="1"><i>ntbackup operation path [/a][/v][/r][/d&nbsp;"text"][/b
+][/hc:{on | off}] [/t&nbsp;{option}][/l&nbsp;"filename"][/e][/tape
+:{n}]</i></p>
+<p class="1">For more details on the synatx and the meaning of the switches from the command prompt type: <i>NTBACKUP /?</i>. Since I wanted to do a differential Backup of my C drive, I created a file with the following syntax and switches:</p>
+<p class="1">NTBACKUP backup c: /a /b /v /t differential.</p>
+<p class="1">The operation is a backup of the C drive in Append mode (/a). I also told it to backup the local registry (/b), forced the verification process (/v) and specified the type as differential (/t differential).</p>
+<p class="1">If you are using the Command Scheduler from the Resource Kit, as mentioned above you can either reference the <i>BackupCommand.cmd</i> or enter the above syntax in the command box. Then all you need to do is specify the occurence of the scheduled event and the time and that's pretty much it. I got this information from Karanjit S. Siyan's <a href="http://www.amazon.com/exec/obidos/ASIN/1562058053/teacupinastor-20">Windows NT Server 4, Professional Reference, Second Edition</a> book, which I find quite useful. It has received mix reviews, but I can usually find the info I need from it and if not it is a good starting point.</p>

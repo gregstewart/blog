@@ -1,0 +1,14 @@
+---
+layout: post
+title: IE comments
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I have been seeing this type of browser detection over the last month or so and now been <a href="http://www.andyjarrett.co.uk/andy/blog/index.cfm?mode=entry&entry=4D826949-3048-28EB-0E989A822BBACB52" title="AndyJarrett.co.uk">reminded of it in a few blogs</a>, so I thought I'd also link to this MSDN article on <a href="http://msdn.microsoft.com/workshop/author/dhtml/overview/ccomment_ovw.asp" title="About Conditional Comments">Internet Explorer Conditional Comments</a>. These comments only work for IE 5.x and above. Maybe these could be combined into something as useful as this:</p>
+<p><em>&lt;!--[if IE lte 6.0]&gt;<br />
+&lt;link rel="stylesheet" href="ie7-html.css" type="text/css"/&gt;<br />
+&lt;![endif]--&gt;</em></p>
+<p>Which would include the "IE7" stylesheet created by <a href="http://dean.edwards.name/IE7/" title="dean.edwards.name/IE7/">Dean Edwards</a> if the browser was IE 6 or less?? This would effectively patch the versions 6.0 and 5.5 of INternet Explorer to so support CSS better.</p>

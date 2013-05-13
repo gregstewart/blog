@@ -1,0 +1,35 @@
+---
+layout: post
+title: FireBug
+tags:
+- JavaScript
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+Now I can't remember where I stumbled across this little gem of a plug in for FireFox: <a href="https://addons.mozilla.org/extensions/moreinfo.php?id=1843&amp;application=firefox">FireBug</a>, but yesterday it completely surprised me.
+
+I originally had installed it because it was meant to be far better at debugging <acronym title="JavaScript">JS</acronym>, than the new version of the JavaScript Console that was shipped with FireFox 1.5 and that it was. So I have been using it for a while now, but yesterday I stumbled across a feature that makes it utterly invaluable now. I do a lot of <acronym title="Asynchronous JavaScript + XML">Ajax</acronym> based development these days and sometimes trying to figure out what is going on under the hood is a little problematic. However if you open it up and look at the options, you'll see an option to show XmlHttpRequests disabled. Enable it and make a remoting call.
+
+Along with the usual <acronym title="JavaScript">JS</acronym>/<acronym title="Cascading Style Sheets">CSS</acronym> debug you should now see something like this:
+
+<a href="http://gregs.tcias.co.uk/wp-content/uploads/2007/02/firebug1.png" title="Firebug screenshot 1"><img src="http://gregs.tcias.co.uk/wp-content/uploads/2007/02/firebug1.png" alt="Firebug screenshot 1" /></a>
+
+If you click on the Response Tab you can see what has been returned to the browser.
+
+<a href="http://gregs.tcias.co.uk/wp-content/uploads/2007/02/firebug2.png" title="Firebug screenshot 2"><img src="http://gregs.tcias.co.uk/wp-content/uploads/2007/02/firebug2.png" alt="Firebug screenshot 2" /></a>
+
+And if you click on the <acronym title="JavaScript">JS</acronym> tab you can inspect the whole response object.
+
+<a href="http://gregs.tcias.co.uk/wp-content/uploads/2007/02/firebug3.png" title="Firebug screenshot 3"><img src="http://gregs.tcias.co.uk/wp-content/uploads/2007/02/firebug3.png" alt="Firebug screenshot 3" /></a>
+
+Awesome!
+
+And since it's been so long between posts here a couple of other useful <acronym title="Asynchronous JavaScript + XML">Ajax</acronym>/prototype links:
+<ul>
+	<li>It's all over the Internet but getting started can be tricky: <a href="http://www.sitepoint.com/article/painless-javascript-prototype" title="Painless JavaScript Using Prototype">Painless JavaScript Using Prototype</a></li>
+	<li><a href="http://www.prototypedoc.com/" title="Prototype Documentation&lt;br&gt;&lt;/a&gt;">More prototype</a> documentation</li>
+	<li><a href="http://bennolan.com/behaviour/" title="Behaviour : Using CSS selectors to apply Javascript behaviours">Behaviour</a> the perfect way to write unobtrusive JavaScript</li>
+</ul>

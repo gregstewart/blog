@@ -1,0 +1,133 @@
+---
+layout: post
+title: So you want to write some user journey tests
+tags:
+- functional
+- JavaScript
+- javascript
+- mocha
+- node.js
+- selenium
+- tdd
+- testing
+- user journeys
+- web-driver
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+  _social_broadcast_content: ! 'a:1:{s:7:"twitter";a:1:{i:14489409;s:139:"So you want
+    to write some user journey tests: On past projects I have relied on WebDriver
+    to automate a... http://gregs.tcias.co.uk/?p=1202";}}'
+  _social_notify: '1'
+  _social_broadcast_meta: a:1:{s:7:"twitter";a:1:{i:14489409;a:0:{}}}
+  _social_aggregated_ids: a:2:{s:7:"twitter";a:0:{}s:8:"facebook";a:0:{}}
+  _social_aggregation_log: a:10:{i:1366992002;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1366993817;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1366996582;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1367000272;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1367008656;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1367023436;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1367052329;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1367095612;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1367183058;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1367356493;O:8:"stdClass":1:{s:6:"manual";b:0;}}
+  _social_broadcasted_ids: ! 'a:1:{s:7:"twitter";a:1:{i:14489409;a:1:{i:327809767538036737;a:3:{s:7:"message";s:3000:"eyJjb29yZGluYXRlcyI6bnVsbCwiaW5fcmVwbHlfdG9fc3RhdHVzX2lkIjpudWxsLCJ1c2VyIjp7Im5hbWUiOiJHcmVnIFN0ZXdhcnQiLCJnZW9fZW5hYmxlZCI6dHJ1ZSwiaWRfc3RyIjoiMTQ0ODk0MDkiLCJwcm9maWxlX3NpZGViYXJfYm9yZGVyX2NvbG9yIjoiZmZmOGFkIiwibGlzdGVkX2NvdW50IjoyLCJlbnRpdGllcyI6eyJ1cmwiOnsidXJscyI6W3sidXJsIjoiaHR0cDpcL1wvZ3JlZ3MudGNpYXMuY28udWtcLyIsImluZGljZXMiOlswLDI1XSwiZGlzcGxheV91cmwiOm51bGwsImV4cGFuZGVkX3VybCI6bnVsbH1dfSwiZGVzY3JpcHRpb24iOnsidXJscyI6W119fSwic3RhdHVzZXNfY291bnQiOjMwMSwidmVyaWZpZWQiOmZhbHNlLCJpZCI6IjE0NDg5NDA5IiwicHJvZmlsZV9iYWNrZ3JvdW5kX3RpbGUiOmZhbHNlLCJwcm9maWxlX2ltYWdlX3VybCI6Imh0dHA6XC9cL2EwLnR3aW1nLmNvbVwvcHJvZmlsZV9pbWFnZXNcLzY2Njk0NTUyXC93aWxkY2FyZF9ub3JtYWwucG5nIiwicHJvZmlsZV9zaWRlYmFyX2ZpbGxfY29sb3IiOiJmNmZmZDEiLCJmb2xsb3dfcmVxdWVzdF9zZW50IjpmYWxzZSwicHJvZmlsZV9pbWFnZV91cmxfaHR0cHMiOiJodHRwczpcL1wvdHdpbWcwLWEuYWthbWFpaGQubmV0XC9wcm9maWxlX2ltYWdlc1wvNjY2OTQ1NTJcL3dpbGRjYXJkX25vcm1hbC5wbmciLCJjcmVhdGVkX2F0IjoiV2VkIEFwciAyMyAwODoyMzo1MCArMDAwMCAyMDA4IiwibGFuZyI6ImVuIiwiZGVmYXVsdF9wcm9maWxlX2ltYWdlIjpmYWxzZSwidXRjX29mZnNldCI6MCwiZmF2b3VyaXRlc19jb3VudCI6MCwicHJvZmlsZV9iYWNrZ3JvdW5kX2NvbG9yIjoiRkZGMDREIiwibm90aWZpY2F0aW9ucyI6ZmFsc2UsImlzX3RyYW5zbGF0b3IiOmZhbHNlLCJwcm90ZWN0ZWQiOmZhbHNlLCJkZXNjcmlwdGlvbiI6bnVsbCwiY29udHJpYnV0b3JzX2VuYWJsZWQiOmZhbHNlLCJzY3JlZW5fbmFtZSI6Il9ncmVnX3N0ZXdhcnRfIiwicHJvZmlsZV9iYWNrZ3JvdW5kX2ltYWdlX3VybCI6Imh0dHA6XC9cL2EwLnR3aW1nLmNvbVwvaW1hZ2VzXC90aGVtZXNcL3RoZW1lMTlcL2JnLmdpZiIsInRpbWVfem9uZSI6IkxvbmRvbiIsImZvbGxvd2luZyI6ZmFsc2UsInVybCI6Imh0dHA6XC9cL2dyZWdzLnRjaWFzLmNvLnVrXC8iLCJmb2xsb3dlcnNfY291bnQiOjU4LCJwcm9maWxlX2xpbmtfY29sb3IiOiIwMDk5Q0MiLCJmcmllbmRzX2NvdW50Ijo5MCwibG9jYXRpb24iOiJXaW1ibGVkb24iLCJkZWZhdWx0X3Byb2ZpbGUiOmZhbHNlLCJwcm9maWxlX3VzZV9iYWNrZ3JvdW5kX2ltYWdlIjp0cnVlLCJwcm9maWxlX2JhY2tncm91bmRfaW1hZ2VfdXJsX2h0dHBzIjoiaHR0cHM6XC9cL3R3aW1nMC1hLmFrYW1haWhkLm5ldFwvaW1hZ2VzXC90aGVtZXNcL3RoZW1lMTlcL2JnLmdpZiIsInByb2ZpbGVfdGV4dF9jb2xvciI6IjMzMzMzMyJ9LCJpbl9yZXBseV90b19zY3JlZW5fbmFtZSI6bnVsbCwiaW5fcmVwbHlfdG9fc3RhdHVzX2lkX3N0ciI6bnVsbCwiZW50aXRpZXMiOnsiaGFzaHRhZ3MiOltdLCJ1c2VyX21lbnRpb25zIjpbXSwidXJscyI6W3sidXJsIjoiaHR0cDpcL1wvdC5jb1wvc2pnUHpvNmhFWSIsImluZGljZXMiOlsxMDcsMTI5XSwiZGlzcGxheV91cmwiOiJncmVncy50Y2lhcy5jby51a1wvP3A9MTIwMiIsImV4cGFuZGVkX3VybCI6Imh0dHA6XC9cL2dyZWdzLnRjaWFzLmNvLnVrXC8/cD0xMjAyIn1dfSwiZmF2b3JpdGVkIjpmYWxzZSwic291cmNlIjoiPGEgaHJlZj1cImh0dHBzOlwvXC9zb3ByZXN0by5tYWlsY2hpbXAuY29tXCIgcmVsPVwibm9mb2xsb3dcIj5Tb2NpYWwgUHJveHkgYnkgTWFpbGNoaW1wPFwvYT4iLCJjcmVhdGVkX2F0IjoiRnJpIEFwciAyNiAxNTo0MTo1MyArMDAwMCAyMDEzIiwiaW5fcmVwbHlfdG9fdXNlcl9pZF9zdHIiOm51bGwsInBsYWNlIjpudWxsLCJpZCI6IjMyNzgwOTc2NzUzODAzNjczNyIsImluX3JlcGx5X3RvX3VzZXJfaWQiOm51bGwsInJldHdlZXRfY291bnQiOjAsInRleHQiOiJTbyB5b3Ugd2FudCB0byB3cml0ZSBzb21lIHVzZXIgam91cm5leSB0ZXN0czogT24gcGFzdCBwcm9qZWN0cyBJIGhhdmUgcmVsaWVkIG9uIFdlYkRyaXZlciB0byBhdXRvbWF0ZSBhLi4uIGh0dHA6XC9cL3QuY29cL3NqZ1B6bzZoRVkiLCJnZW8iOm51bGwsInJldHdlZXRlZCI6ZmFsc2UsInBvc3NpYmx5X3NlbnNpdGl2ZSI6ZmFsc2UsImlkX3N0ciI6IjMyNzgwOTc2NzUzODAzNjczNyIsImNvbnRyaWJ1dG9ycyI6bnVsbCwidHJ1bmNhdGVkIjpmYWxzZX0=";s:4:"urls";a:2:{i:0;s:81:"http://gregs.tcias.co.uk/2013/04/26/so-you-want-to-write-some-user-journey-tests/";i:1;s:32:"http://gregs.tcias.co.uk/?p=1202";}s:7:"account";O:8:"stdClass":1:{s:4:"user";O:8:"stdClass":38:{s:2:"id";s:8:"14489409";s:6:"id_str";s:8:"14489409";s:4:"name";s:12:"Greg
+    Stewart";s:11:"screen_name";s:14:"_greg_stewart_";s:8:"location";s:9:"Wimbledon";s:3:"url";s:25:"http://gregs.tcias.co.uk/";s:11:"description";s:0:"";s:9:"protected";s:1:"0";s:15:"followers_count";s:2:"55";s:13:"friends_count";s:2:"74";s:12:"listed_count";s:1:"1";s:10:"created_at";s:30:"Wed
+    Apr 23 08:23:50 +0000 2008";s:16:"favourites_count";s:1:"0";s:10:"utc_offset";s:1:"0";s:9:"time_zone";s:6:"London";s:11:"geo_enabled";s:1:"1";s:8:"verified";s:1:"0";s:14:"statuses_count";s:3:"288";s:4:"lang";s:2:"en";s:6:"status";a:10:{s:10:"created_at";s:30:"Sat
+    Sep 22 13:31:16 +0000 2012";s:2:"id";s:18:"249501115178164225";s:6:"id_str";s:18:"249501115178164225";s:4:"text";s:74:"Therapeutic
+    Refactoring by Katrina Owen: http://t.co/iUp2trUS via @youtube";s:6:"source";s:12:"Tweet
+    Button";s:9:"truncated";s:1:"0";s:13:"retweet_count";s:1:"0";s:9:"favorited";s:1:"0";s:9:"retweeted";s:1:"0";s:18:"possibly_sensitive";s:1:"0";}s:20:"contributors_enabled";s:1:"0";s:13:"is_translator";s:1:"0";s:24:"profile_background_color";s:6:"FFF04D";s:28:"profile_background_image_url";s:48:"http://a0.twimg.com/images/themes/theme19/bg.gif";s:34:"profile_background_image_url_https";s:50:"https://si0.twimg.com/images/themes/theme19/bg.gif";s:23:"profile_background_tile";s:1:"0";s:17:"profile_image_url";s:63:"http://a0.twimg.com/profile_images/66694552/wildcard_normal.png";s:23:"profile_image_url_https";s:65:"https://si0.twimg.com/profile_images/66694552/wildcard_normal.png";s:18:"profile_link_color";s:6:"0099CC";s:28:"profile_sidebar_border_color";s:6:"FFF8AD";s:26:"profile_sidebar_fill_color";s:6:"F6FFD1";s:18:"profile_text_color";s:6:"333333";s:28:"profile_use_background_image";s:1:"1";s:15:"default_profile";s:1:"0";s:21:"default_profile_image";s:1:"0";s:9:"following";s:1:"0";s:19:"follow_request_sent";s:1:"0";s:13:"notifications";s:1:"0";}}}}}}'
+---
+<p>On past projects I have relied on WebDriver to automate and write User Journey tests. This involved using either .Net or Java, which is fine, however much to my delight I was informed that <a href="https://code.google.com/p/selenium/wiki/WebDriverJs">there is a JavaScript</a> version! Here's a brief outline on how to get started with WebDriverJS and let the good times roll!</p>
+
+<p>If you have node installed then you are good to go. If not, off you go ahead and <a href="http://nodejs.org/">install it now</a> (you can build it from source too if you are that way inclined).</p>
+
+<ol>
+<li>open up your favourite terminal window and install selenium webdriver using npm: <code>npm install selenium-webdriver</code></li>
+<li>WebDriverJS uses <a href="http://visionmedia.github.io/mocha/">Mocha</a> as it's test runner, so go ahead and install that next: <code>npm install -g mocha</code></li>
+<li>You will also <a href="https://code.google.com/p/selenium/downloads/list">need the selenium standalone server</a> (I suggest you put the selenium stand alone server jar in a vendor folder in your project).</li>
+</ol>
+
+<p>That's all the software you will need, but before we get stuck in, I like to to follow a folder structure that looks a little like this:</p>
+
+<pre><code>vendor
+test
+    functional
+        helpers
+    unit
+</code></pre>
+
+<p>Right let's write some code! I'll start off with a few helper node modules (these live in test/functional/helpers) that'll make things a little bit more re-usable. Let's start with a helper to start the selenium server:</p>
+
+<pre><code>var assert = require('assert'),
+    fs = require('fs'),
+    remote = require('selenium-webdriver/remote'),
+    SELENIUM = '../vendor/selenium/selenium-server-standalone-2.32.0.jar',
+    server;
+
+exports.setUpServer = function () {
+    var jar = process.env.SELENIUM;
+    if(!jar) {
+        jar = SELENIUM;
+    }
+    assert.ok(!!jar, 'SELENIUM variable not set');
+    assert.ok(fs.existsSync(jar), 'The specified jar does not exist: ' + jar);
+    server = new remote.SeleniumServer({ jar: jar, port: 4444 });
+
+    server.start();
+
+    return server;
+}
+</code></pre>
+
+<p>And now for the WebDriver helper:</p>
+
+<pre><code>var webdriver = require('selenium-webdriver');
+
+exports.setUpWebDriver = function(server) {
+    return new webdriver.Builder().
+        usingServer(server.address()).
+        withCapabilities({ 'browserName': 'firefox' }).
+        build();
+};
+
+exports.By = webdriver.By;
+</code></pre>
+
+<p>This setup assumes you have FireFox installed, as it's the simplest browser to get started with, but you can use a bunch of different ones. Now for our test, which will go to a page and assert the value of a title is correct.</p>
+
+<pre><code>var assert = require('assert'),
+    test = require('selenium-webdriver/testing'),
+    serverHelper = require('./helpers/server.helper'),
+    webDriverHelper = require('./helpers/webdriver.helper'),
+    driver,
+    server;
+
+test.before(function () {
+    server = serverHelper.setUpServer();
+    driver = webDriverHelper.setUpWebDriver(server);
+
+    driver.get('http://www.google.co.uk/');
+});
+
+
+test.describe('Homepage view', function () {
+
+    test.it('should have the correct title', function () {
+        driver.getTitle().then(function (title) {
+            assert.equal(title, 'Google');
+        });
+    });
+});
+
+test.after(function () {
+    driver.quit();
+    server.stop();
+});
+</code></pre>
+
+<p>This file lives in your functional test folder and let's call it test-journey.js. It basically sets up the server and driver (i.e. starts our browser and navigates to Google), before running the simple title assertion and when done, closes the browser and server. To run this test, in your terminal window inside test/functional, type:</p>
+
+<pre><code>mocha -R list test-journey.js
+</code></pre>
+
+<p>Keep your fingers crossed and after a few moments FireFox should fire up and run the test. If the test passed, then your console should display something like this:</p>
+
+<p>. Homepage view should have the correct title: 407ms</p>
+
+<p>1 test complete (13 seconds)</p>
+
+<p>Pretty straightforward, no?</p>

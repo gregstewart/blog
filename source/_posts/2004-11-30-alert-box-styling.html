@@ -1,0 +1,17 @@
+---
+layout: post
+title: Alert box styling
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Since the component inherits properties and methods from both UIObject and UIComponent. A quick scan of the available options shows that you can control a wide variety of options. My goal was to change the default height and width of the actual alert box and the size of the buttons to accommodate some of the display text. To set the size of the alert box you use a method from UIObject like such:
+
+[code]yourAlertInstance.setSize(width, height);[/code]
+
+Now for the buttons. Here you don't need to access any inherited methods instead you can use the buttonHeight and buttonWidth properties, like such:
+
+[code]yourAlertInstance.buttonWidth = 150;
+yourAlertInstance.buttonWidth = 30;[/code]

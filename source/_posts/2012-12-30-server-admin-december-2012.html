@@ -1,0 +1,19 @@
+---
+layout: post
+title: Server admin - december 2012
+tags:
+- ! '*nix'
+- debian
+status: private
+type: post
+published: false
+meta:
+  _edit_last: '2'
+---
+<p>Did a update and upgrade</p>
+
+<p>Tweaked rvm, by editing my bash_profile to get rvm to work for my user account. Still have problems installing gems they also seem to sudo and thus I need to run rails using 'rvmsudo rails -s'</p>
+
+<p>Also installed a new version of nginx using <a href="https://www.digitalocean.com/community/articles/how-to-install-rails-and-nginx-with-passenger-on-ubuntu">this site</a>. Particularly using the passenger gem and then re-building nginx using that gem.</p>
+
+<p>Had to run off 005-nginx as the stub module is not installed and default also has an issue. The location of nginx is now /opt/nginx. However all the conf file for virtual hosts, etc are in /etc/nginx/</p>

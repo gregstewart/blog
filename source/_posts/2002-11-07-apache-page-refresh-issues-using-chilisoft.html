@@ -1,0 +1,16 @@
+---
+layout: post
+title: ! 'Apache: Page refresh issues using ChiliSoft'
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Recently I downloaded the ASP plug-in from ChiliSoft for Apache. It's a fine module that allows you to develop Active Server Pages on Apache, however soon after I started using it I noticed that a lot of my pages that were using includes were not refreshing properly, i.e. changes made to those includes were not being displayed.</p>
+<p>After a lot of soul searching I came across an article that really helped resolve the problem. This is what was actually happening. The application server was still parsing the the document that contained includes, but because that document in itself had not changed it was reading the includes from cache. The solution to this problem came from a Unix person and the trick was to simply <strong>touch</strong> the calling template. By touching the file you simply change the date and time stamp of a file. Unfortunately Windows does not have such a useful command, well that is unless you have access to the NT4.0 Resource Kit. For those of you who do not have access to touch, well you can always just re-save the calling template, that also resets the date and time stamp. This however can be a real pain if you have a number of files to change, so using <strong>touch</strong> is definitely the better solution.</p>
+<p>Using <strong>touch</strong> is very straight forward. Open a <em>command prompt</em> window and change to the location of the files you wish to change and type in the following command and press enter:</p>
+<p><em>touch filename.asp</em><br />
+or if you have multiple HTML files you want to change<br />
+<em>touch *.asp</em></p>
+<p>And there you go you are done. Now all you need to do is refresh the page in your browser and all the changes you made to your include files should appear.</p>

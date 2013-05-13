@@ -1,0 +1,43 @@
+---
+layout: post
+title: Mozilla/IE6 CSS hack
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I was having an annoying problem with a unordered list I was using for navigation. The list was encased by a div (which had an ID of <em>globalNav</em>), for which I had specified a width of 110px. Now in order to have the roll over background stretch to the width of the container I specified the same width in the style for the element a. This worked fine in IE6, but overlapped the containing div, rather infuriatingly when using Mozilla. Since pictures speak volumes have a look at the screen grabs and you?ll see what I mean.</p>
+
+<img src="/html/i/css_hack_ie.gif" alt="IE screengrab" /><img src="/html/i/css_hack_mozilla.gif" alt="IE screengrab" />
+
+<p>Now the problem is not a new one and it has been quite well documented in the past I just somehow have never had to really deal with it or indeed have to understand it. What appears to happen is that Mozilla takes the padding of the a element (10px left and right) into account whereas <abbrev title=?Internet Explorer?>IE</abbrev> doesn't, meaning IE believes the width to be 110px, but Mozilla on the other hand thinks it's 130px. This is no fault of Mozilla?s as this is the correct interpretation of the box model and it?s my fault for building this with IE only in the first place.</p>
+
+<p>Now my first instinct was to do away with 110px from within the <strong>a</strong> element, but that of  course had implications for IE, now the back ground colour rollover didn?t look quite right anymore. There was no option to increase the width of the container to 130px due to the design and our application development framework, which makes extensive use of <acronym title=?Cascading Style Sheet?>CSS</acronym> to render templates using a page builder component.</p>
+
+<p>The work around I came across I found <a href="http://chris.dzygn.com/tutorials/css/hacks/" title="css hacks">here</a> and was coined by <a href=?http://www.tantek.com/CSS/Examples/boxmodelhack.html? title=?Box Model Hack?>Tantek Çelik</a> as the ?be nice to Opera 5? hack. Ironically it also helps IE 6 and thus in turn Mozilla. As far as I can gather the <em>html>body #ID Element</em> selector rule is ignored by IE, but understood by Mozilla and hence the width is accordingly reset to 90px.Below is for completeness sake a snippet of the new and improved style sheet.</p>
+
+<p><em><br />
+/* start global nav */<br />
+#globalNav {<br />
+   	margin: 0; <br />
+	border: 1px solid #6cc; <br />
+	width: 110px; <br />
+}<br />
+
+/*<br />
+	ul/li styles go here<br />
+*/<br />
+
+#globalNav a {<br />
+	display: block; <br />
+	padding: 2px 10px; <br />
+	color: #f00; <br />
+	background-color: #fff; <br />
+	text-decoration: none; <br />
+	border-bottom: 1px dotted #6cc; <br />
+	width: 110px; <br />
+}<br />
+html>body #globalNav a { width: 90px; }<br />
+/* end global nav */<br />
+</em></p>

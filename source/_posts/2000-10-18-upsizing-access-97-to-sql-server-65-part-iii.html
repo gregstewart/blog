@@ -1,0 +1,28 @@
+---
+layout: post
+title: Upsizing Access 97 to SQL server 6.5 Part III
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>Upsizing Access 97 to SQL server 6.5 Part III</h3>
+<p class="1">After I recently upsized an Access database to SQL server which powers our quote and order log users were experiencing certain difficulties when inserting and updating quotes and orders. This was down to the syntax I was using in my insert and update statements and the fact that SQl server is a lot stricter at enforcing field formats. I use to use the format below to insert data into my tables.</p>
+<p class="1">Code:<br />
+<pre>
+&lt;cfquery datasource="MySource" Name="MyQuery"&gt;
+Insert into Table
+MyField = '#Form.MyField#'
+&lt;/cfquery&gt;
+</pre>
+</p>
+<p class="1">As it turns out using the '#MyField#' format for inserting or updating data means that you are inserting a string of a VarChar field type and when you try to update Integer fields SQL server rejects the update. So you need to remove the single quotation marks to update Integer fields, like shown below:</p>
+<p class="1">Code:<br />
+<pre>
+&lt;cfquery datasource="MySource" Name="MyQuery"&gt;
+Insert into Table
+MyField = #Form.MyField#
+&lt;/cfquery&gt;
+</pre>
+</p>

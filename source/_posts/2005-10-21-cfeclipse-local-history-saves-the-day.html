@@ -1,0 +1,19 @@
+---
+layout: post
+title: cfeclipse - local history saves the day
+tags:
+- eclipse
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+I remember reading about this somewhere, but for the life of me I could not find the link for it again (I did find a <a href="http://coldfusion.sys-con.com/read/48235.htm" title="CFEclipse: The Developer's IDE, Eclipse For ColdFusion">reference to it here</a>). So once again for my own sanity (and saving me a few minutes of fumbling around): here is how you can recover from changes made to your templates, when your undo history doesn't quite stretch far enough back.
+<ul>
+	<li>In your navigator view, right click on the file in question.</li>
+	<li>From the context menu select <strong>Compare with</strong> &gt; <strong>Local history</strong></li>
+	<li>The pop up that you are now presented with now displays you current state in the bottom left pane and in the right hand bottom pane you can see a historical view of the file in question.</li>
+	<li>The top pane displays the known history of the file, so simply step through the history until you find that line of elusive code you had accidentally "lost"</li>
+</ul>
+You can also increase the number of days (defaults to 7 [or 50 entries per file]) to keep in history from Window &gt; Preferences &gt; General &gt; Workspace &gt; Local History.

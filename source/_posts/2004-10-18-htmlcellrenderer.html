@@ -1,0 +1,21 @@
+---
+layout: post
+title: HtmlCellRenderer
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+I keep finding myself returning to PhilFlash's web site for some truly useful classes he has written that extend the dataGrids functionality. A few weeks back I stumbled across his site when I was trying to figure out how to modify the header style. This week I was trying to change the way the data in the columns was being displayed, i.e. I wanted the text to wrap if it was too long for the column. A simple notion you would have thought, but alas no!
+
+sing Phil's HtmlCellRenderer class you can achieve this effect. It's use is pretty straightforward and his code is self explanatory. Including the AS file is done by way of inserting a new symbol on your time line. With the following properties:
+<ul>
+	<li>Name : HtmlCellRenderer</li>
+	<li>Behavior : MovieClip : Checked</li>
+	<li>Identifier: HtmlCellRenderer</li>
+	<li>AS 2.0 Class : HtmlCellRenderer</li>
+	<li>Export for Actionscript : Checked</li>
+	<li>Export for in first frame : Checked</li>
+</ul>
+You can actually nicely include the script and formatting instructions in the special header AS file I discussed a few weeks back <a href="http://gregs.teacupinastorm.com/flash/datagrid_headers.php" title="DataGrid Headers">here</a> and <a href="http://gregs.teacupinastorm.com/flash/more_datagrid_header_styling.php" title="More DataGrid Header Styling">here</a>

@@ -1,0 +1,22 @@
+---
+layout: post
+title: ! 'Javascript: Setting the form focus'
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>One of my pet grievances is hitting a page with a search or username and password field, where I need to click on the field so that I can start entering text. I will briefly explain in the following how you can set the focus on a form field, so that a cursor appears there, once the page has loaded.</p>
+<p>Suppose you have form named <strong>frm_search</strong>, i.e. your form statement would look something like this:</p>
+<p><em>&lt;form action="search_results.html" method="post" enctype="multipart/form-data" name="frm_search"&gt;</em></p> <p>And the field name you wanted to set the focus to was called <strong>txt_search</strong>, you would need to specify in the <strong>&lt;body&gt;</strong> of your page the following onLoad function:</p> <p><em>onLoad="document.frm_search.txt_search.focus();"</em></p>
+<p>Et voila, when the page loads, you should find the cursor blinking in that form field. Not very complicated and so much more user friendly. So to recap here is the entire code:</p> <p><em>&lt;html&gt;<br />
+&lt;head&gt;<br />
+&lt;title&gt;Focus&lt;/title&gt;<br />
+&lt;/head&gt;<br />
+&lt;body onLoad="document.frm_search.txt_search.focus();"&gt;<br />
+&lt;form action="search_results.html" method="post" enctype="multipart/form-data" name="frm_search"&gt;<br />
+&lt;input type="Text" width="100" name="txt_search">&nbsp;&nbsp; &lt;input type="Submit" name="btn_search" value="Submit"&gt;<br />
+&lt;/form&gt;<br />
+&lt;/body&gt;<br />
+&lt;/html&gt;</em></p>

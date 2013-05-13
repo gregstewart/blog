@@ -1,0 +1,29 @@
+---
+layout: post
+title: More GetPageContext
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Barney Boisvert kindly shared this little snippet on CFCDev a while back. It shows how to use getPageContext to access the HTTP headers and display them.
+
+[code]<cfset req = getPageContext().getRequest() />
+<cfset headerlist = req.getHeaderNames() />
+<cfoutput>
+<table>
+<cfloop condition="headerlist.hasMoreElements()">
+<cfset header = headerlist.nextElement() />
+<cfset vallist = req.getHeaders(header) />
+<tr>
+<td>#header#:</td>
+<td>
+<cfloop condition="vallist.hasMoreElements()">
+#vallist.nextElement()#<br />
+</cfloop>
+</td>
+</tr>
+</cfloop>
+</table>
+</cfoutput>[/code]

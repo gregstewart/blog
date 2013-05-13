@@ -1,0 +1,24 @@
+---
+layout: post
+title: Recursive delete
+tags:
+- ! '*nix'
+- debian
+- os x
+- Windows
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+I new it was possible, just never took the time to <a title="[SVN] Recursively delete .svn folders" href="http://blog.snakehit.be/2007/08/29/svn-recursively-delete-svn-folders/">look it up</a>.
+
+[code]rm -rf `find . -type d -name .svn`[/code]
+
+As with all types of deletes, recursive or not, use with caution.
+
+For windows use:
+
+[code]del /S .svn[/code]

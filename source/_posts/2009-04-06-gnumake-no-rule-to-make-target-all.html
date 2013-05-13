@@ -1,0 +1,59 @@
+---
+layout: post
+title: ! 'gnumake: *** No rule to make target `all'''
+tags:
+- ! '*nix'
+- mac
+- os x
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+I was using <a href="http://www.macports.org/install.php">MacPorts</a> to install ICU and Jam. After running the installer for the first time I got the following error message:
+
+[code]sudo port install icu jam
+Error: Target org.macports.build returned: shell command " cd "/opt/local/var/macports/build/_opt_local_var_macports_sources_rsync.macports.org_release_ports_devel_icu/work/icu/source" && gnumake all " returned error 127
+Command output: sh: gnumake: command not found
+[/code]
+
+Oops forgot to install XCode (you always forget to install something on a new machine :)). Quickly ran the XCode installer, however when I ran the command again I got a new error:
+
+[code]sudo port install icu jam
+--->  Building icu
+Error: Target org.macports.build returned: shell command " cd "/opt/local/var/macports/build/_opt_local_var_macports_sources_rsync.macports.org_release_ports_devel_icu/work/icu/source" && gnumake all " returned error 2
+Command output: gnumake: *** No rule to make target `all'.  Stop.
+[/code]
+
+<a href="https://trac.macports.org/ticket/17384">Turns out you need to do a cleanup</a> before attempting to run the command again:
+
+[code]sudo port clean --work icu
+--->  Cleaning icu
+sudo port clean --work jam
+--->  Cleaning jam
+sudo port install icu jam
+--->  Fetching icu
+--->  Verifying checksum(s) for icu
+--->  Extracting icu
+--->  Configuring icu
+--->  Building icu
+--->  Staging icu into destroot
+--->  Installing icu @4.0_0
+--->  Activating icu @4.0_0
+--->  Cleaning icu
+--->  Fetching jam
+--->  Attempting to fetch jam-2.5.tar from http://distfiles.macports.org/jam/2.5
+--->  Verifying checksum(s) for jam
+--->  Extracting jam
+--->  Applying patches to jam
+--->  Configuring jam
+--->  Building jam
+--->  Staging jam into destroot
+--->  Installing jam @2.5_1
+--->  Activating jam @2.5_1
+--->  Cleaning jam
+[/code]
+
+Time to continue the <a href="http://www.mapnik.org/">Mapnik</a> install.

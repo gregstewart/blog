@@ -1,0 +1,22 @@
+---
+layout: post
+title: Busy
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Apologies again for the lack of posts, but I have been real busy at work completing another mach-ii app. So I thought I'd share a few details about this application that went live today. You won't be able to publicly view it, so below is a screen shot (click on the image to view a larger one) for your viewing pleasure.
+
+<a href="http://gregs.tcias.co.uk/wp-content/uploads/2007/02/bigcma.png" title="CMA screenshot"><img src="http://gregs.tcias.co.uk/wp-content/uploads/2007/02/bigcma.png" alt="CMA screenshot" /></a>
+
+So what is it? It's an application that allows a user to search for comparable properties within a given postcode, district, town, etc... The properties are retrieved from our databases and overlayed on a multimap image of the requested area using SVG. You can then select a series of properties (by either selecting them by clicking on them via the map or from a list). Selecting allows you to view the property?s details or you can add them to a list that you wish to examine more closely. This list can then be exported as Excel or rendered as a PDF document.
+
+The UI makes use of SVG for the rendering of the map and placement of the properties, as well as some serious dHTML for displaying the different views. All the data that drives the application is delivered using the AJAX delivery mechanism. From an implementation/developer point of view it was a whole heap of fun getting a chance to develop an "RIA" using AJAX and dHTML. Despite the debugging hell, it's no more difficult than working with Flash Remoting and I suspect that as more work is done with AJAX the better the debugging solutions will become.
+
+The back end is all driven by CF and the framework we used, like all of our B2B apps, is Mach-ii (our <a href="http://www.hometrack.co.uk/" title="Hometrack">consumer site</a> uses FuseBox). The UI makes remoting calls to our app which retrieves the requested data. The data is returned in the form of XML, where after being decompressed (we compress it server side to speed up things), XSL style sheets are applied to render the output.
+
+Much of the credit for the implementation must go to Zac (where's your blog mate?), and it's been great working him on this project. More so because he is fellow developer who digs Mach-ii. To date this probably my most OO based app yet, but having had a few days to look back on it now, there are still a number of areas that we could improve upon. For the next point release we are looking at quite a few enhancements in terms of the back end and taking a serious look at Tartan to help us manage our Service Layer.
+
+It's been a while since I have had so much fun developing a web app again and have had a chance to work with so many different technologies in one go. And of course CF sits at the heart of it all.

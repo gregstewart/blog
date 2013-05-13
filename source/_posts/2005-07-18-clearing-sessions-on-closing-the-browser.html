@@ -1,0 +1,17 @@
+---
+layout: post
+title: Clearing sessions on closing the browser
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+I keep seeing this question pop up so for google's sake here is how you can kill sessions when the user closes his or her browser.
+
+[html]<!--- set session coookies --->
+<cfif>
+<cfcookie name="cfid" value="#cookie.cfid#">
+<cfcookie name="cftoken" value="#cookie.cftoken#">
+</cfcookie>
+[/html]</cfcookie></cfif>

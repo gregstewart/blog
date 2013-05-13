@@ -1,0 +1,106 @@
+---
+layout: post
+title: How to do multiple inserts
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>How to do multiple inserts</h3>
+<p class="1">Just recently I was been working on an application, where at one stage the user had to enter multiple records from one form into one table, ideally and for ease of use, in one go. In the following I will be describing how I accomplished this.</p>
+
+<p class="1">The best way to explain this is by way of an example (note: the sample Database and code can be downloaded at the end of this tutorial). First off we create a form where a user can specify his name and the Operating systems he knows, for which the code looks like this:</p>
+
+<p class="1">
+<pre>
+&lt;cfquery datasource="test" name="SelectOS"&gt;
+Select OS_ID, OS_Name
+From OS
+&lt;/cfquery&gt;
+
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;Multiple Inserts&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+&lt;form action="multipleinserts.cfm?Insert=Yes" method="post"&gt;
+&lt;table&gt;
+&lt;tr align="center"&gt;&lt;td colspan="2"&gt;&lt;b&gt;Enter details&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right"&gt;User Name:&lt;/td&gt;
+&lt;td align="left"&gt;&lt;input type="text" name="User_Name" size="15"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" valign="top"&gt;Select the OS(s) you know:&lt;/td&gt;
+&lt;td align="left"&gt;&lt;select multiple name="OS_ID"&gt;
+&lt;cfoutput query="SelectOS"&gt;
+&lt;option value="#OS_ID#"&gt;#OS_Name#&lt;/option&gt;
+&lt;/cfoutput&gt;
+&lt;/select&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr align="center"&gt;
+&lt;td colspan="2"&gt;
+&lt;pre&gt;
+&lt;input type="submit" value="Insert Multiple Records"&gt;
+&lt;/pre&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</p>
+
+<p class="1">Let's take a quick look at this code. First off I run a query that retrieves the list of OSs stored in the database, in order to populate the drop down list from which the user will make his selection. Then I have added the form tag, which as an action calls the same page again and specifies the parameter <i>Insert="yes"</i> (more about this in a moment). Next for estical reasons I create a table. The first row represents the table header. The second row enables the user to enter his name. The third row is the drop down menu, which in turn is populated the results of the query I ran at the beginning of the page. In order to specify multiple selects you have to specify the option <i>multiple</i>, when you first define your select tag. The remaining parameters are the same as normally used. The last row is for the submit button.</p>
+
+<p class="1">So far so good, the user specifies his name and selects the OSs he knows by clicking on the relevant ones and pressing the Ctrl key at the same time. The he hits the submit button. Now we turn our attention to the structure of our page and the <i>Insert="yes"</i> parameter. Take a look at the following section of code:</p>
+
+<p class="1">
+<pre>
+&lt;cfif #ParameterExists(Insert)# IS "Yes"&gt;
+The Insert statement will go here
+&lt;cfelse&gt;
+The form code discussed above goes here
+&lt;/cfif&gt;
+</pre>
+</p>
+
+<p class="1">What I have done here is made use of the &lt;cfif&gt; tag. If the parameter Insert exists the page will run the code underneath that statement, else it will display the form. I.e. when you first load the page it will display the form, because the URL will look something like this <i>http://127.0.0.1/multipleinserts.cfm</i>. However once the user has submitted his information, the URL will look something like this <i>http://127.0.0.1/multipleinserts.cfm?Insert=yes</i>. The URL passes the parameter <i>Insert</i> to the page called and specifies its value as <i>yes</i>. This is then interpreted by the &lt;cfif&gt; tag, which in turn executes the code stored there. So far everything clear? (Probably not, but you can read up on the &lt;cfif&gt; tag in the Cold Fusion documentation and I might even do a small tutorial on it sometime soon). Onwards to our Insert code.</p>
+
+<p class="1">
+<pre>
+&lt;CFLOOP INDEX="ListElement" LIST="#Form.OS_ID#"&gt;
+
+&lt;CFQUERY Name="#ListElement#" DataSource="test"&gt;
+   INSERT INTO User_Details (User_Name,OS_ID)
+   VALUES ('#Form.User_Name#','#ListElement#')
+&lt;/CFQUERY&gt;
+
+&lt;/CFLOOP&gt;
+
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;Multiple Inserts&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+&lt;center&gt;&lt;h3&gt;Your details have successfully been entered!&lt;/h3&gt;&lt;/center&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p class="1">Right now we come to the interesting bit. Here we make use of th &lt;cfloop&gt; tag, because we are going to loop over our insert statement for as many times as OSs have been specified (for more information on &lt;cfloop&gt;, please consult your Cold Fusion documentation). OK, so what happens? First off we define an index for our &lt;cfloop&gt; and this index will be composed of a list of items specified by the selection. If we were to look at the code at this point in time it would look something like this (depending on the selection of course):</p>
+
+<p class="1">
+<pre>
+&lt;CFLOOP INDEX="ListElement" LIST="1,2,4,6"&gt;
+</pre>
+</p>
+
+<p class="1">1,2,4,6 are the OS_ID values which I have specified in the drop down list from the form to be stored in the table. In this case we have four inserts to carry out. Next you'll find the Insert query, whose name has to be defined dynamically as it has to be unique. You can also see that it takes its name from the list element that it is currently processing, so in the first instance its name will be <i>1</i>. The insert statement will insert the user name specified in the form in the <i>User_Name</i> field and the list element in the <i>OS_ID</i> field in the table <i>User_Details</i>. This will continue until all list elements have been processed. In this example this will result in four records being added to the <i>User_Details</i> table. The following HTML code simply announces that the information has been processed.</p>
+
+<p class="1">Well that's it. I hope you found this information useful, all that is left now is to provide you with the link to download the sampe code and database. <a href="http://www.armagossa.com/content.cfm?File=Yes&content_ID=55">MultipleInserts.Zip</a></p>

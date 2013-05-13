@@ -1,0 +1,36 @@
+---
+layout: post
+title: How to use cfapplication
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>How to use cfapplication</h3>
+<p class="1">Ever wondered what the <i>cfapplication</i> tag and <i>application.cfm</i> page were for? How to implement it? How to use it? Well I did and that for quite some time (give me a break I am beginner).</p>
+<p class="1">Well as I understand it, and you have to appreciate that this is my first venture into cfapplication and application.cfm, it allows you to store a set of global variables in one page that all other pages will call. Basically the mother of all templates. I am sure you do a lot more with it (as the documentation indicates) and I intend to document this is as I delve deeper into the subject matter. For starters though lets look at creating the application.cfm page, implementing the cfapplication tag and defining some global variables that your application will use.</p>
+
+<p class="1">Code:<br />
+<pre>&lt;cfapplication name="yourApp"&gt;
+
+&lt;!-- Set datasource --&gt;
+&lt;cfset dsn = "YourDSN"&gt;
+
+&lt;!-- Set some global variables --&gt;
+&lt;cfset http="cfdocs/yourDirectory/"&gt;
+</pre>
+</p>
+<p class="1">The first thing you need to do is specify the application name and this is defined in the <i>cfapplication</i> tag using the name option. Then you can go ahead and specify your global variables using the <i>cfset</i> tag, the same way you would if you were specifying variables for individual pages.</p>
+<p class="1">In this example I have set dsn equal to the datasource name configured in Cold Fusion Administrator (why? so that if I should make any changes to the naming convention all I have to do is edit this line and it applies it to the all the other pages. The other variable defines the logical path of the directory.</p>
+<p class="1">This bit of code you know save as <i>application.cfm</i> and include it into the root of your application directory. Calling these global variables is very simple, just look at the following example:</p>
+<p class="1">Code:<br />
+<pre>
+&lt;cfquery datasource="#dsn#" name="YourQueryName"&gt;
+SELECT *
+FROM YourTable
+&lt;/cfquery&gt;
+</pre>
+</p>
+<p class="1">Simple, eh?!?</p>
+<p class="1">Please note though that I have had some difficulties embedding these variables in JavaScript pages. Not sure why it was doing that or more precisely, not doing what it should be doing. However as soon as I have figured that one out I'll let you know!</p>

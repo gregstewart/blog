@@ -1,0 +1,12 @@
+---
+layout: post
+title: Eclipse start up options
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Atfer playing around a little with my USB drive I somehow managed to stuff up Eclipse and every time I attempted to start it, it would crash with an out of memory error. Eventually <a href="http://help.eclipse.org/help21/index.jsp?topic=/org.eclipse.platform.doc.user/tasks/running_eclipse.htm" title="Running Eclipse">I read that you can use the "-refresh" option</a> if you start eclipse from the command line to perform a global refresh of your workspace. The first time I tried this it had no effect, only after I deleted the contents of .metadata folder was the problem fixed by using this start up option.
+
+Another issue I stumbled across was that not all of the plugins I had installed were showing up. Starting up eclipse with "-clean" forced eclipse to reload the plugins and XML buddy which was missing was now available again.

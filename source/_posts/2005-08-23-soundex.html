@@ -1,0 +1,20 @@
+---
+layout: post
+title: SOUNDEX
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Ever wondered how Google does it's little "did you mean this..." when you carry out a search? Well we just put together something similar (though I am sure not quite as clever as the folks over at Google). From some of my previous posts you may have gleaned that I am currently working for company that deals with postcodes, local authorities and properties. The mach-ii application I mentioned in my previous post makes use of this feature as quite frequently users mistype the information. So in order to help them we use two functions to guide them along their way.
+
+[sql]
+SELECT DISTINCT StreetName,CONVERT(INT, ourdB.dbo.LEVENSHTEIN(StreetName, 'the road you are looking for'))
+FROM ourPropertyTable
+WHERE soundex(StreetName) = soundex('the road you are looking for')
+GROUP BY StreetName
+ORDER BY 2
+[/sql]
+
+SOUNDEX is a built in MS SQL function that allows you to do sound matching for strings, which returns a list of similar sounding words to the one you were looking for. LEVENSHTEIN is an third party function that further enhances this search giving the returned set a numeric weighting to determine the accuracy of the match. With these two functions and this query you can in the event of a no results found make some suggestions as to what the end user may have been looking for.

@@ -1,0 +1,34 @@
+---
+layout: post
+title: CFMX 6.1 and JVM memory settings
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+In my development set up I run CFMX as multiple instances. Why? Well the first mirrors our staging environment and is the one I use primarily for development. The other two are used one to test Flex and secondly to test/implement external jar files (such as changing the SAX parser to name an example).
+
+Since my machine has a 512 Meg of Ram and that is the default JVM setting for CFMX I felt I needed to change this to something reasonable for development as well as maintain a degree of flexibility, i.e. be able to assign different instances different JVM settings. The key to doing this is to modify your jvm.config file and create one for each instance in question.
+
+What follows is a step by step guide to doing this and instructions on starting up your CFMX instances with their specific jvm.config files.
+<ol>
+<li class="numbered">locate your jvm.config file, it is usually located under {install Path}Jrun4/bin/</li>
+<li class="numbered">create as many copies of this file as there are instance you want to associate a unique jvm.config to. Give that copy a name that reflects the name of your instance, I usually choose: jvm.config_instanceName</li>
+<li class="numbered">open a copy and look for the following section:
+<em># Arguments to VM
+java.args=-server -Xmx<strong>512m</strong> -Dsun.io.useCanonCaches=false -Xbootclasspath/a:"{application.home}/servers/yourInstanceName/cfusion-ear/cfusion-war/WEB-INF/cfusion/lib/webchartsJava2D.jar" -XX:MaxPermSize=128m -XX:+UseParallelGC -DJINTEGRA_NATIVE_MODE -DJINTEGRA_PREFETCH_ENUMS</em></li>
+<li class="numbered">You can see that the default setting for the memory allocated is 512 Meg. I want to change this to be the same as the MaxPermSize (i.e. 128 Meg). This is what the modified line looks like:<em># Arguments to VM
+java.args=-server -Xmx<strong>128m</strong> -Dsun.io.useCanonCaches=false -Xbootclasspath/a:"{application.home}/servers/yourInstanceName/cfusion-ear/cfusion-war/WEB-INF/cfusion/lib/webchartsJava2D.jar" -XX:MaxPermSize=128m -XX:+UseParallelGC -DJINTEGRA_NATIVE_MODE -DJINTEGRA_PREFETCH_ENUMS</em></li>
+<li class="numbered">In order to start up this instance with it's own jvm.config file I use the command line. You can use the service window, but I found that it doesn't appear to remember my configuration, so I rely on batch files. Here is the command to start up the instance:<em>$ cd {install path}Jrun4/bin
+$ jrun -start -config jvm.config_yourInstanceName yourInstanceName &amp;</em>
+This tells JRun to start up the yourInstanceName instance using the config file: jvm.config_yourInstanceName. Once you see a message like the following: Server yourInstanceName ready (startup time: 31 seconds), you are ready to use your tailored CFMX instance.</li>
+<li class="numbered">simply repeat for each and very instance you want to apply this to.</li>
+</ol>
+That's all there is to it really. There are a number of resources on the topic (simply do a Google search on: <strong>jvm+cfmx instances</strong>), including (shameless plug) <a href="http://www.sys-con.com/story/?storyid=43994&amp;DE=1" title="Using JRun Instances for CFMX Deployment">an article I wrote for CFDJ</a> on my experiences using instances.
+<h5>UPDATE</h5>
+Doug Knudsen posted a message to CF-Talk showing how you can enable the separate config if you are using the windows service. When configuring the service simply type this:
+
+[code]jrunsvc -install yourInstanceName "your service instance name" "Some description" -config jvm.config_yourInstance name[/code]
+
+Marvellous thanks Doug!

@@ -1,0 +1,36 @@
+---
+layout: post
+title: How to clear application/session variables without re-booting your server
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I am sure you have come across this problem, you make some changes to a page or are debugging a page, only to find that your session and application variables are set and viewing the changes or detecting the problem is now impossible. The first option for clearing these variables was to stop and restart your cold fusion application service. Under NT you would type the following command from the command line:</p>
+<p><em>net stop "cold fusion application server"<br />
+The Cold Fusion Application Server service is stopping..<br />
+The Cold Fusion Application Server service was stopped successfully. <br />
+<br />
+<br />
+net start "cold fusion application server"<br />
+The Cold Fusion Application Server service is starting...<br />
+The Cold Fusion Application Server service was started successfully.</em></p>
+<p>This would indeed clear your variables but is a bit cumbersome and down right useless if you don't have access to the server. So what do you do then? Well the answer I found in the CF in the <a href="http://www.amazon.co.uk/exec/obidos/ASIN/0789725657/teacupinastor-20/">Certified CF Developer Study Guide</a> (See reading is useful... and it's a pretty useful book too). All session and application variables are stored in a <strong>structure</strong> and with the help of the <strong>StructClear()</strong> function you are now able to clear these. To facilitate this step I created a new Cold Fusion template, added the following lines and saved it as <em>clear_session.cfm</em></p>
+<p><em>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;<br />
+<br />
+&lt;html&gt;<br />
+&lt;head&gt;<br />
+&lt;title&gt;Clear session variables&lt;/title&gt;<br />
+&lt;/head&gt;<br />
+<br />
+&lt;body&gt;<br />
+<br />
+&lt;cfscript&gt;<br />
+StructClear(session);<br />
+StructClear(application);<br />
+&lt;/cfscript&gt;<br />
+<br />
+&lt;/body&gt;<br />
+&lt;/html&gt;<br /></em></p>
+<p>So there you go, just run this page and your session and application variables will be cleared (please note that if you require to log on to your site and run this page you will clear you session variable for that too and hence be required to log back in again). I'll be writing about how to view the content of these structures in the near future.</p>

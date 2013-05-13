@@ -1,0 +1,23 @@
+---
+layout: post
+title: Creating links in a Flash movie
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Something real basic but since I never did it before, here is how you mimic the <strong>&lt;a href=""&gt;</strong> behaviour of a hyperlink in a Flash movie using a little bit of ActionScript:</p>
+
+<p>When I do Flash work I tend to place most of ActionScript code in Layer 1 Frame 1. And in this place I set a variable called link, which will hold the URL I want to point to, like such:</p>
+
+<p><em>link = "http://gregs.teacupinastorm.com/";<br />
+stop();</em></p>
+
+<p>Next I create a button and make it a symbol and assign an action to this symbol:</p>
+
+<p><em>on (release) {<br />
+	getURL(link, "_blank");<br />
+}</em></p>
+
+<p>The value for link is passed through when the movie starts up and as soon as you click on the button surface you?ll be taken through to the URL.</p>

@@ -1,0 +1,16 @@
+---
+layout: post
+title: Setting your favourite editor to view the source of web pages
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>After having read an article on <a href="http://www.zeldman.com/">Zeldman</a> about setting your favourite editor to view the source of pages viewed through your browser on a Mac, I decided to look into achieving the same on a PC based system and here is how I did it.</p>
+<p>The process starts by having to open the registry editor, so the usual disclaimer applies, modify the registry at your own risk and back it up before you make any changes to it, enough said. You will be looking for the following <strong>Key</strong>: HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer.</p>
+<p>I was not able to locate an entry for <strong>View Source Editor</strong> and <strong>Editor Name</strong>, so if you cannot find them either just add them by adding a new Key for each ot them under HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer (you can do this by right clicking in the right hand window pane and selecting new &gt;&gt; Key from the pop up dialogue). So your tree would now look like this: HKEY_LOCAL_MACHINE\Software\Microsoft\Internet
+Explorer\View Source Editor\Editor Name.</p>
+<p>Now to the part that will specify your favourite editor. When selecting the <strong>Editor Name</strong> Key in the right hand pane there should be a default string value (Name: Default, Type: REG_SZ and the value should be empty). Double click on that entry, which in turn open a new dialogue. The only field you can edit here is the <strong>Value data</strong> field, this is where you will specify the full path to your editor enclosed in quotation marks. In my case it's Cold Fusion Studio and it is located on my C drive under Program Files\Allaire\Cold Fusion Studio 4.5. So this is what the entry would look like:</p>
+<p><em>"C:\Program Files\Allaire\ColdFusion Studio 4.5\cfstudio45.exe"</em></p>
+<p>Should you have have something different just bear in mind the following format and you'll be fine: <strong>"drive letter:\path to executable\executable.file extension"</strong>. Once done just click <strong>OK</strong> and you are done. Open up your browser and right click to view the source of the current web page. Doing this should either fire up your editor and display the source there, or load the source into your already open editor of choice.</p>

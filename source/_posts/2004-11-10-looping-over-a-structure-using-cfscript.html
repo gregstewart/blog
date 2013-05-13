@@ -1,0 +1,25 @@
+---
+layout: post
+title: Looping over a structure using cfscript
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<a href="http://www.informit.com/articles/article.asp?p=24125&amp;seqNum=4">Stumbled across this little bit of code</a>, that shows how to loop over a structure using &lt;cfscript&gt;.
+
+[code]<cfscript>
+// create the structure
+strProducts = StructNew();</cfscript>
+
+// populate the structure
+strProducts.Name = "Core ColdFusion 5";
+strProducts.Price = "44.95";
+strProducts.ISBN = "0119299377";
+
+// loop over it and output the key-value pair
+for (idx in strProducts) {
+WriteOutput("#idx# is #strProducts[idx]#");
+}
+</cfscript>[/code]

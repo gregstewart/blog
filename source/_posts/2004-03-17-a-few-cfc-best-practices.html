@@ -1,0 +1,51 @@
+---
+layout: post
+title: A few CFC best practices
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>A rather <a href="http://www.dintenfass.com/cfcbestpractices/" title="CFC best practice">innocent post about a CFC best practice doc</a> caused a veritable deluge of e-mails and discussions on the CFCDev list yesterday. The discussion ranged from whether to set <strong>OUTPUT="false"</strong> in your CFCs, to invoking CFCs and of course the ever returning discussion over the CFC variable scopes. Admittedly quite a bit of it went over my head but there were a few tidbits that sunk in, which I have attempted to summarise as follows.</p>
+
+<p>The following two implementations of CFC invocation are thread safe. The first is known as the semaphore:</p>
+
+<p><em>&lt;cflock scope="application" type="readonly" timeout="10"&gt;<br />
+	&lt;cfset reload_app_vars = NOT structKeyExists(application,
+"app_vars_loaded") /&gt;<br />
+&lt;/cflock&gt;<br />
+&lt;cfif reload_app_vars&gt;<br />
+&lt;cflock scope="application" type="exclusive" timeout="10"&gt;<br />
+&lt;cfif NOT structKeyExists(application, "app_vars_loaded")&gt;<br />
+	&lt;cfset application.foo = createObject("component", "foo") /&gt;<br />
+	&lt;cfset application.foo.init() /&gt;<br />
+	&lt;cfset application.app_vars_loaded = true /&gt;<br />
+&lt;/cfif&gt;<br />
+&lt;/cflock&gt;<br />
+&lt;/cfif&gt;</em></p>
+
+<p>As would this one, which is known as method chaining:</p>
+<p><em>&lt;cfif not structKeyExists(application,"foo")&gt;<br />
+	&lt;cflock name="myApplication_foo" type="exclusive"&gt;<br />
+		&lt;cfif structKeyExists(application,"foo")&gt;<br />
+			&lt;cfset application.foo =
+createObject("component","com.acme.foo").init() /&gt;<br />
+		&lt;/cfif&gt;<br />
+	&lt;/cflock&gt;<br />
+&lt;/cfif&gt;</em></p>
+
+<p><a href="http://www.corfield.org" title="An Architect's View">Sean Corfield</a> also gave this explanation as to why these would be the correct way of doing it:</p>
+<p><em>"Why? Because the code checks for the *existence* of application.foo, not whether application.foo is initialized. By doing create-and-initialization in one expression, you avoid getting into the state where you have a created-but-not-initialized object." </em></p>
+
+<p>And for completeness here is an example that isn't, just so you can see how not to do it:</p>
+<p><em>&lt;cfif not structKeyExists(application,"foo")&gt;<br />
+	&lt;cflock name="myApplication_foo" type="exclusive"&gt;<br />
+		&lt;cfif structKeyExists(application,"foo")&gt;<br />
+			&lt;cfset application.foo = createObject("component","com.acme.foo") /&gt;<br />
+			&lt;cfset application.foo.init() /&gt;<br />
+		&lt;/cfif&gt;<br />
+	&lt;/cflock&gt;<br />
+&lt;/cfif&gt;</em></p>
+
+<p>The thread safety was an interesting part and lead to the proposition of [or started because of, I really can't remember at this stage] another best practice, using the init() method as your constructor since CFCs don't have them. A key thing I took from it was that whatever I set in my constructor method, in the end I should make it to this: <em>&lt;cfreturn this /&gt;</em>.</p>

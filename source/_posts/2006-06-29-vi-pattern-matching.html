@@ -1,0 +1,17 @@
+---
+layout: post
+title: VI pattern matching
+tags:
+- ! '*nix'
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+Editing documents using vi is something of pain, especially when they are long and you know the bit you are after is buried somewhere in the middle. There is a similar to way to the Find command in GUI editors that allows you to jump to that section:
+
+[code]
+/yourPattern[/code]
+
+Simply substitute '<em>yourPattern</em>' for the string you are looking for and after hitting return, the cursor will jump to the first found match. If you wish to see the next one, then simply type '/' (without the quotation marks) and hit return again.

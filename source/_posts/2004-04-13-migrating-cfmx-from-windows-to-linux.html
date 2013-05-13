@@ -1,0 +1,18 @@
+---
+layout: post
+title: Migrating CFMX from windows to Linux
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>This was a thread from a while back n the <abbr title="ColdFusion Developer Journal">CFDJ</abbr> list in which someone asked what needed to be considered when migrating <abbr title="ColdFusion MX">CFMX</abbr> instance running on JRun from a windows server to a Linux box. I have summarised the findings for posterity:</p>
+<ul>
+	<li>Files are case sensitive on unix, hence Application.cfm, OnRequestEnd.cfm and all cfincludes must have the exact case.</li>
+	<li>The same applies to &lt;a href=""&gt; and &lt;img src=""&gt;, however there is a module for Apache that allows you to fix that potential pitfall.</li>
+	<li>No COM support</li>
+	<li>Any C++ CFX tags would need to be recompiled for Linux</li>
+	<li>Verity Support is limited to certain Linux distros see the release notes</li>
+	<li>talking to an MS Access database is trickier.</li>
+</ul>

@@ -1,0 +1,12 @@
+---
+layout: post
+title: searching a tar
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+No not searching a sailor, but here is a nifty little trick. This command looks into an archive, searches for a string (in this case "cfusion-ear") and spits out the results to screen:
+
+[code]gz cat cfmx_61_multiple_instances.tar.gz | tar tf - | grep cfusion-ear[/code]

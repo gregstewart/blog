@@ -1,0 +1,12 @@
+---
+layout: post
+title: cachedWithin
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Tasked with optmising an application I decided to first look at my queries (based on the adage that the database is the bottleneck) and yes some of the queries were running a little slow, and since the data displayed wasn't changed all to frequently I thought it a good idea to cache these queries. The first thing I decided to do was make use of the cachedWithin attribute of the cfquery tag. However this yielded a small surprise: You cannot use it if you are using cfqueryparam in the same query. Sadly there was no mention of this in the documentation for the cfquery tag, however there was a mention about it in the <a href="http://livedocs.macromedia.com/coldfusion/6.1/htmldocs/tags-b20.htm" title="cfqueryparam">Livedocs</a>, which again highlights the importance of checking the LiveDocs first.</p>
+
+<p>As an aside under the comments there was also <a href="http://www.blinex.com/~sam/CF_SQL_TYPES.cfm" title="view CFSQLTYPES for differenf RDBMSs">this little link</a> to more thorough listing of data types for CFSQLTYPES across RDBMSs.</p>

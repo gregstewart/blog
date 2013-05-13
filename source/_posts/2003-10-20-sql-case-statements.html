@@ -1,0 +1,32 @@
+---
+layout: post
+title: SQL Case statements
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Switch/case will be familiar to most developers, but did you know you could used them in your SQL statements as well?? I didn't and here's how you do it.</p>
+<p>The syntax for this is pretty straightforward, but briefly take a look at the SQL statement below</p>
+<p><em>SELECT TOP #arguments.recordcount# tbl1.someID, tbl1.adDisplayName, type = <br />
+CASE tbl1.someBannerType<br />
+WHEN 0 THEN 'ValueClick'<br />
+WHEN 1 THEN 'Internal'<br />
+ELSE 'Not yet categorized'<br />
+END, <br />
+tbl1.someRanking, tbl1.someStartDateTime, tbl1.someDateAdded, tbl1.someDateUpdated, tbl1.someModifiedBy, tbl2.someCode, tbl3.someName<br />
+FROM tbl_2  tbl2<br />
+INNER JOIN tbl_1 tbl1 ON tbl2.someOtherID = tbl1.someOtherID <br />
+INNER JOIN tbl_3 tbl3 ON tbl2.someCode = tbl3.someCode<br />
+WHERE  1 = 1<br /></em></p>
+<p>The query was used for a banner ad component, so based on the Banner type being passed I wanted to dynamically set a type. If the value was 0 then the column <em>type</em> should display <strong>ValueClick</strong>, if 1 then it was an <strong>internally</strong> served advert. If the value passed was neither 0 or 1 then it should display another message.</p>
+<p>As you can see the syntax differs somewhat from switch/case, but the principal is similar. <strong>CASE</strong> is equal to <em>switch</em> where <em>tbl1.someBannerType</em> is the value being evaluated. Where you would normally use <em>case</em>, you know have <strong>WHEN</strong>. So for each case if you have a <strong>WHEN x THEN something</strong> statement. The default case found if switch/case statements also exists and looks thus: <strong>ELSE something</strong>. And to conclude you'll need to close that block and you do so by way of and <strong>END</strong></p>
+<p>And just as an afterthought, if you are using Oracle the function to use is <strong>DECODE</strong> and this is how you would apply it:</p>
+<p><em>SELECT field1,<br />
+       DECODE (field2,<br />
+               100000, 'Rich',<br />
+               1000000, 'Richer',<br />
+               10000000, 'Richest')<br />
+  FROM table<br />
+</em></p>

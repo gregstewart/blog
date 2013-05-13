@@ -1,0 +1,91 @@
+---
+layout: post
+title: Full text catalogs in MS SQL
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Having recently explored Verity 2K, I have come across another way of implementing a search feature on your site. If most of your content is stored an MS SQL database then you can make use of Full Text Catalogues to search your content for keywords. This article is a little bity as it just covers the basic steps without many in-depth explanations. For those who would like to know more about the various steps, please just consult on-line help books as that's where all of this stuff was lifted from. So without further ado, let's get started.</p>
+<h2>Preparing a full text catalogue</h2>
+<p><em>sp_fulltext_database</em>. This stored procedure initialises full-text indexing or removes all full-text catalogs from the current database, and the syntax is as follows:</p>
+<p><em>USE Northwind<br />
+EXEC sp_fulltext_database 'enable'</em></p>
+
+<h2>Creating a full text catalogue</h2>
+<p><em>sp_fulltext_catalog</em>, this stored procedures drops and creates a full-text catalog, and starts and stops the indexing action for a catalog. Multiple full-text catalogs can be created for each database, e.g.:</p>
+
+<p><em>USE Northwind<br />
+EXEC sp_fulltext_catalog 'our_test_catalogue', 'create'</em></p>
+
+<h2>Preparing the table to be indexed for full-text searching</h2>
+<p><em>sp_fulltext_table</em>, this marks or unmarks a table for full-text indexing, e.g.:</p>
+<p><em>USE Northwind<br />
+EXEC sp_fulltext_table 'Categories', 'create', 'our_test_catalogue', 'PK_Categories'</em></p>
+
+<h2>Adding a column to a catalogue</h2>
+<p><em>sp_fulltext_column</em> specifies whether or not a particular column of a table participates in full-text indexing.</p>
+<p><em>USE Northwind<br />
+EXEC sp_fulltext_column Categories, Description, 'add'</em></p>
+
+<h2>To actually populate the catalogue</h2>
+<p>SQL Server MMC >> Database to be catalogues >> Full Text catalogue >> Actual catalogue >> Right click, then start full population.</p>
+
+<h2>Maintenance</h2>
+<p>You'll want to run a scheduled task to populate the catalogue regularly with new and updated records, as this is not handled automatically.</p>
+
+<h2>Searching</h2>
+<p>Searching your catalogs couldn't be simpler, all you need to do is write a select statement that runs against your catalog.</p>
+
+<p><strong>Basic search: </strong> <em>Select * from Categories where contains(Description, 'formsof(inflectional, coffee)')</em></p>
+
+<p><strong>Advanced search: </strong>Use CONTAINSTABLE as it is faster on larger record sets</p>
+
+<p><strong>Weighting:</strong> Weighting allows you to weigh the importance of your keywords. In this case bread has higher importance.</p>
+<p><em>USE Northwind<br />
+GO<br />
+SELECT FT_TBL.CategoryName, FT_TBL.Description, KEY_TBL.RANK<br />
+FROM Categories AS FT_TBL INNER JOIN <br />
+   CONTAINSTABLE(Categories, Description, <br />
+   'ISABOUT (breads weight (.8), <br />
+   fish weight (.4), beers weight (.2) )' ) AS KEY_TBL<br />
+   ON FT_TBL.CategoryID = KEY_TBL.[KEY]<br />
+ORDER BY KEY_TBL.RANK DESC<br />
+GO</em></p>
+
+<p><strong>Matches the entire string:</strong> Below is an example of matching an entire string, in this case the entire keywords to be searched for are: "soft drinks"</p>
+<p><em>USE Northwind<br />
+GO<br />
+SELECT FT_TBL.CategoryName, FT_TBL.Description, KEY_TBL.RANK<br />
+FROM Categories AS FT_TBL INNER JOIN <br />
+   CONTAINSTABLE(Categories, *, '"soft drinks"') AS KEY_TBL<br />
+   ON FT_TBL.CategoryID = KEY_TBL.[KEY]<br />
+ORDER BY KEY_TBL.RANK DESC<br />
+GO</em></p>
+
+<p><strong>Breaking the string apart without "" and using operators 'and', 'or':</strong></p>
+<p><em>USE Northwind<br />
+GO<br />
+SELECT FT_TBL.CategoryName, FT_TBL.Description, KEY_TBL.RANK<br />
+FROM Categories AS FT_TBL INNER JOIN <br />
+   CONTAINSTABLE(Categories, *, 'soft and drinks') AS KEY_TBL<br />
+   ON FT_TBL.CategoryID = KEY_TBL.[KEY]<br />
+ORDER BY KEY_TBL.RANK DESC<br />
+GO</em></p>
+
+<p><strong>Searching for a list of keywords:</strong></p>
+<p><em>USE Northwind<br />
+GO<br />
+SELECT FT_TBL.CategoryName, FT_TBL.Description, KEY_TBL.RANK<br />
+FROM Categories AS FT_TBL INNER JOIN <br />
+   CONTAINSTABLE(Categories, *, 'ISABOUT (soft, drinks, bread)') AS KEY_TBL<br />
+   ON FT_TBL.CategoryID = KEY_TBL.[KEY]<br />
+ORDER BY KEY_TBL.RANK DESC<br />
+GO</em></p>
+
+<h2>Some links</h2>
+<ul>
+        <li><a href="http://www.sqlmag.com/Articles/Index.cfm?ArticleID=8828">Build a Better Search Engine</a></li>
+        <li><a href="http://www.sqlmag.com/Articles/Index.cfm?ArticleID=8967">Sample full text search</a></li>
+</ul>

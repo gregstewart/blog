@@ -1,0 +1,21 @@
+---
+layout: post
+title: Starting up my dev environment
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+I got a bit tired of starting apache, BlueDragon and Eclipse from the command line every morning so I wrote a quick and dirty bash script that I could leave running while I went off to grab a cup of coffee. Maybe someone else will find this useful as well (requires <a href="http://www.cygwin.com/" title="Cygwin Home">cygwin</a>):
+
+<code>[code]echo "Changing to usb flash drive"
+cd /cygdrive/e/
+echo "Starting apache"
+./Apache\ Group/Apache2/bin/apache &amp;
+sleep 5
+echo "Starting BlueDragon"
+./BlueDragon_Server_JX_62/bin/StartBlueDragon.bat &amp;
+sleep 5
+echo "Starting eclipse"
+./eclipse/eclipse &amp;[/code]</code>

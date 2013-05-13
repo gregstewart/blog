@@ -1,0 +1,130 @@
+---
+layout: post
+title: backbone-jasmine - part 2 - testing routes
+tags:
+- backbone.js
+- bdd
+- jasmine
+- JavaScript
+- javascript
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+  aktt_notify_twitter: 'no'
+---
+<p>The code for this post can be found over at <a href="https://github.com/gregstewart/backbone-jasmine/tree/application-router">GitHub</a></p>
+
+<h2>Routes</h2>
+
+<p>Before dealing with the submission and fetching results, a quick detour into routes where the application is glued together. What follows are some tests to make sure the routes defined are being triggered when we navigate to the url, starting with the index action:</p>
+
+<pre><code>describe('Application routes', function() {
+    beforeEach(function() {
+        this.router = new BackboneJasmine.ApplicationRouter();
+        this.routerSpy = sinon.spy();
+
+        try {
+            Backbone.history.start({silent: true, pushState: true});
+        } catch(e) {
+        }
+
+        this.router.navigate('/javascript/spec/SpecRunner.html');
+    });
+
+    afterEach(function() {
+        this.router.navigate('/javascript/spec/SpecRunner.html');
+        Backbone.history.stop();
+    });
+
+    it('should by default call the index route', function() {
+        this.router.bind('route:index', this.routerSpy, this);
+        this.router.navigate('', {trigger: true});
+
+        expect(this.routerSpy).toHaveBeenCalledOnce();
+        expect(this.routerSpy).toHaveBeenCalledWith();
+    });
+
+});
+</code></pre>
+
+<p>And here's the ApplicationRouter file to make the test pass:</p>
+
+<pre><code>var BackboneJasmine = BackboneJasmine || {};
+
+BackboneJasmine.ApplicationRouter = Backbone.Router.extend({
+    routes: {
+        '': 'index',
+    },
+
+    index: function() {
+
+    }
+});
+</code></pre>
+
+<p>A search route is also needed, test first:</p>
+
+<pre><code>it('should call the search route when #search is navigated to', function() {
+    this.router.bind('route:search', this.routerSpy, this);
+    this.router.navigate('search/1/2', {trigger: true});
+
+    expect(this.routerSpy).toHaveBeenCalledOnce();
+    expect(this.routerSpy).toHaveBeenCalledWith('1','2');
+});
+</code></pre>
+
+<p>And the code to make it pass:</p>
+
+<pre><code>routes: {
+    '': 'index',
+    'search/:realm/:character': 'search'
+},
+
+...
+
+search: function(realm, character) {
+}
+</code></pre>
+
+<p>Now that the scaffold for the application is done, it's time to flesh it out starting with the index route and making it initialise the search interface (SearchView). Start off with editing our initial beforeEach and afterEach</p>
+
+<pre><code>beforeEach(function() {
+    this.router = new BackboneJasmine.ApplicationRouter();
+    this.searchViewStub = sinon.stub(BackboneJasmine, 'SearchView').returns(new Backbone.View());
+
+    ...
+});
+
+afterEach(function() {
+    this.searchViewStub.restore();
+    ...
+});
+</code></pre>
+
+<p>Now for the actual test:</p>
+
+<pre><code>describe('index', function() {
+    beforeEach(function() {
+        this.router.index();
+    });
+
+    it('should created the search view', function() {
+        expect(this.searchViewStub).toHaveBeenCalledOnce();
+    });
+});
+</code></pre>
+
+<p>A stub was created for our SearchView and we are now watching this and want to make sure it gets called when we call the index function. To make the test pass simply instantiate the SearchView in the ApplicationRouter.js file:</p>
+
+<pre><code>index: function() {
+    this.searchView = new BackboneJasmine.SearchView();
+},
+</code></pre>
+
+<p>That's it for now with regards to the routes, I'll coming back to these once the search component has been completed.</p>
+
+<h2>Demo</h2>
+
+<p>In the root of the code there's a little demo index.html file that you can browse to if you are using the 'node app.js' server, just go to: <a href="http://localhost:3000/index.html">http://localhost:3000/index.html</a>.</p>

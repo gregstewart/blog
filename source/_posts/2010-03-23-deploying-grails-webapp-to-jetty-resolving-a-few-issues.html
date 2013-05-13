@@ -1,0 +1,35 @@
+---
+layout: post
+title: Deploying grails webapp to Jetty - resolving a few issues...
+tags:
+- grails
+- jetty
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+So you have deployed your app and can access the start page of your grails app. If you are like me deploying your app to a Debian\Jetty type of configuration you might come across the following error:
+
+[code]java.lang.NoClassDefFoundError: javax/servlet/jsp/jstl/core/Config [/code]
+
+When trying to access a controller from the default start page. I traced this to <a href="http://n4.nabble.com/Grails-1-2-0-JSTL-lib-from-war-td1355918.html#a1355918">a missing dependency in grails</a> (I use SpringSource Tool Suite for development so that maybe the root cause). By opening and editing your /project/grails-app/conf/(default package)/BuildConfig.groovy, add the following under grails.project.dependency.resolution. 
+
+[code]grails.project.dependency.resolution = {
+	...
+	dependencies {
+        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
+	runtime "javax.servlet:jstl:1.1.2"
+        // runtime 'mysql:mysql-connector-java:5.1.5'
+	}
+}[/code]
+
+Build your war and re-deploy. Still getting an error?? I was. For jetty there was still an issue with calling the controller. After spending some time exploring, it looks like Jetty support was removed from Grails 1.2. I stumbled across a post mentioning installing the <a href="http://www.grails.org/plugin/jetty">grails Jetty plugin</a> with:
+
+ [code]. grails install-plugin jetty[/code]
+
+After running this, and re-building my war file and re-deploying it one final time, bingo it all worked.
+
+

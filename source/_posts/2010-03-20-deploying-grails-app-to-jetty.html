@@ -1,0 +1,56 @@
+---
+layout: post
+title: Deploying grails app to Jetty
+tags:
+- ! '*nix'
+- apache
+- debian
+- grails
+- jetty
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+Short and sweet, step by step guide for creating a grails war and deploying it to your Jetty server (includes apache2 proxy steps)
+<ol>
+	<li>grails war (your app), in this case epic.war</li>
+	<li>Copy to server [code]scp epic.war user@server:/location[/code]</li>
+	<li>On Debian the location for jetty webapps is: /var/lib/jetty/webapps</li>
+	<li>Copy from upload location to the above folder (I used sudo)</li>
+	<li>Change permissions: [code]sudo chown jetty:adm epic-0-0.1.war[/code]</li>
+	<li>created a *.xml context file in /etc/jetty/contexts, with something like this [note case is important!!]:
+[code]
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+<Configure class="org.mortbay.jetty.webapp.WebAppContext">
+  <Set name="contextPath">/epic</Set>
+  <Set name="war"><SystemProperty name="jetty.home" default="."/>/webapps/epic-0-0.1.war</Set>
+</Configure>
+[/code]</li>
+	<li>restart jetty : [code]sudo /etc/init.d/jetty restart[/code] (try stop/start as well)</li>
+	<li>test with : [code]lynx http://localhost:8080/epic/[/code]</li>
+	<li>Nice but I'd like http://localhost/epic/ so enable mod_proxy in apache if you haven't already : [code]a2enmod proxy[/code]</li>
+	<li>edit /etc/apache2/mods-enabled/proxy.load and if not present add at end: [code]LoadModule proxy_http_module /usr/lib/apache2/modules/mod_proxy_http.so[/code]</li>
+	<li>edit your virtualhost conf file I am using 000-default and add:[code]ProxyRequests Off
+<Proxy *>
+	Order deny,allow
+     Allow from all
+</Proxy>
+ProxyPass        /epic http://localhost:8080/epic
+ProxyPassReverse /epic http://localhost:8080/epic
+ProxyPreserveHost On[/code]</li>
+	<li>restart apache :  [code]sudo /etc/init.d/apache2 restart[/code]</li>
+	<li>now you can [code]lynx http://localhost/epic/[/code]</li>
+</ol>
+
+<strong>Update: </strong> I had omitted the <code>ProxyPreserveHost On</code>  from the Apache configuration, which resulted in css, images and external javascripts not loading. It also caused an issue with accessing controllers.
+
+Sources:
+<ul>
+	<li><a href="http://docs.codehaus.org/display/JETTY/Configuring+mod_proxy">Configuring mod_proxy</a></li>
+	<li><a href="http://www.enavigo.com/2008/08/29/deploying-a-web-application-to-jetty/">Deploying a web application to Jetty</a></li>
+</ul>
+

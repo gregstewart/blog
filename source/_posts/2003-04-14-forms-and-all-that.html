@@ -1,0 +1,17 @@
+---
+layout: post
+title: Forms and all that
+tags: []
+status: draft
+type: post
+published: false
+meta: {}
+---
+<ol>
+<li>use captchas (completely automated public Turing tests to tell computers and humans apart) to make registration process more secure and less succeptable to automated registrations (http://www.captcha.net/captchas/gimpy/).<li>
+<li>Validate all input client side as much as possible</li>
+<li>validating credit cards: Use Luhn formula to calculate whether the number supplied is in the correct format (see here for more info: http://www.webreference.com/programming/carts/chap7/3/). Also check that the card type matches the card prefixes supplied. Another check is the length of the number supplied based on a card type. Another thing to consider is when processing card numbers is checking that only numeric characters have been supplied (so first strip out any seperating characters such as "-" and then validate for numeric only). Don't forget to also validate the expiry date.<li>
+<li>and then for good measure validate all user input server side again as well. Client side technologies may be disabled!!</li>
+<li>When developing a form sepcify the max number of characters that can be inserted into the field. You may want to use a little JavaScript to content down the number of characters currently entered.</li>
+<li>Use tab indexes. This makes navigating the form using the keyboard so much easier. Consider a form nested within a table where each form field is in a cell with content links in adjacent cells. TAbbing will result in the cursor moving left to right, not necessarily down. Tab index saolves the problem.</li>
+</ol>

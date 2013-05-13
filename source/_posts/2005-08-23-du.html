@@ -1,0 +1,29 @@
+---
+layout: post
+title: du
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+I stumbled across the following command while reading <a href="http://www-128.ibm.com/developerworks/linux/library/wi-wiisp.html?ca=dgr-lnxw01BuildISP" title="Linux scripts make wireless management a snap">this article</a>:
+
+<code>du --max-depth=1 --human-readable --total</code>
+
+This gives you an estimated indication of your file space usage by folder. Here is some sample output:
+
+<code>12K     ./lost+found
+2.5M    ./bin
+84K     ./dev
+3.3M    ./etc
+187M    ./home
+7.6M    ./lib
+1.0K    ./mnt
+1.0K    ./opt
+65M     ./proc
+65K     ./root
+2.3M    ./sbin
+3.0K    ./tmp</code>
+
+There are plenty of other useful scripts and tidbits in <a href="http://www-128.ibm.com/developerworks/linux/library/wi-wiisp.html?ca=dgr-lnxw01BuildISP" title="Linux scripts make wireless management a snap">the article</a>.

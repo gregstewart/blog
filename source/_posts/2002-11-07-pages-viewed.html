@@ -1,0 +1,120 @@
+---
+layout: post
+title: Pages viewed
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Just the other day I had to write a bit of functionality for a web site whereby a user would be able to hover over a link and display a dHTML pop up list of the last 5 pages he had browsed on the site. In the following I'll talk you through how I built up this little feature. So let's get cracking</p>
+<p>Since we are going to be tracking the users motion through the web site, we'll need to somehow keep track of the pages he has viewed. For this purpose I decided to use a session variable. So you'll need to enable session management, i.e. create an <strong>application.cfm</strong> (for a brief introduction have a look at: <a href="http://gregs.teacupinastorm.com/html/article/article.php?id=70ED1E5B-2B75-43F8-BFF7D22990558E95">How to use cfapplication
+</a>) like such:</p>
+<p><em>&lt;!--- -Enable session management ---&gt;<br />
+&lt;cfapplication name="Pages_viewed" sessionmanagement="Yes" sessiontimeout="#CreateTimeSpan(0,1,0,0)#"&gt;<br />
+
+&lt;cfset application.http="http://127.0.0.1/pages_viewed/"&gt;</em></p>
+<p>I also took the opportunity at this stage to specify an application variable <strong>application.http</strong> to store the full url of where the application is located (I use this in some of the scripts to specify the full url to images). OK with session management enabled, let's have a look at capturing the pages viewed by the user that will ultimately build up our pop up menu.</p>
+<p>All the information we need I decided to capture after the page has been processed, so I could have either created a template that I include at the bottom of the page or use <strong>OnRequestEnd.cfm</strong>, which works in the same manner that <strong>application.cfm</strong> does, with the difference that it is included at the end of every page. However it has to reside in the same directory as your <strong>application.cfm</strong>. Before delving into any more detail here is the code for that page:</p>
+<p><em>&lt;!--- -Pages viewed ---&gt;<br />
+&lt;!--- -First hit of the site, set session.current to home so that at next page display it has a name to display ---&gt;<br />
+&lt;cfif NOT isDefined("HTTP_REFERER")&gt;<br />
+&nbsp;&nbsp;&lt;cflock scope="SESSION" timeout="10" type="EXCLUSIVE"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset session.current = local.location&gt;<br />
+&nbsp;&nbsp;&lt;/cflock&gt;<br />
+&lt;/cfif&gt;<br />
+&lt;!--- -OK now we are in the site- ---&gt;<br />
+&lt;cfif isDefined("HTTP_REFERER")&gt;<br />
+&nbsp;&nbsp;&lt;!--- -If accessed from a different section of the site, insert the new http_referer and section name in front of the existing information- ---&gt;<br />
+&nbsp;&nbsp;&lt;cfif isDefined("session.pagesViewed")&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cflock scope="SESSION" timeout="10" type="EXCLUSIVE"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset session.pagesViewed = session.current&"-"&HTTP_REFERER&","&session.pagesViewed&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/cflock&gt;<br />
+&nbsp;&nbsp;&lt;cfelse&gt;&lt;!--- -If accessing site by hitting the home page for the first time ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cflock scope="SESSION" timeout="10" type="EXCLUSIVE"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset session.pagesViewed = session.current&"-"&#HTTP_REFERER#&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/cflock&gt;<br />
+&nbsp;&nbsp;&lt;/cfif&gt;<br />
+&nbsp;&nbsp;&lt;!--- -Now let's remember the current location for the next page hit.- ---&gt;<br />
+&nbsp;&nbsp;&lt;cflock scope="SESSION" timeout="10" type="EXCLUSIVE"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset session.current = local.location&gt;<br />
+&nbsp;&nbsp;&lt;/cflock&gt;<br />
+&lt;/cfif&gt;<br />
+<br />
+&lt;!--- -Include hiermenu loader- ---&gt;<br />
+&lt;cfinclude template="js/HM_loader.cfm"&gt;<br />
+</em></p>
+<p>Still with me? In order to track the pages that the user has viewed we will be making use of a variable provided by the cold fusion server: <strong>HTTP_REFERER</strong>, which is the page the user has just come from to get to this point. Furthermore for each page I set a local variable that captures the page name for display purposes (named <strong>local.location</strong>). This last variable you will need to declare at the beginning  each and every page, and assign it a value (such as <em>&lt;cfset local.location = "your page title"&gt;</em>). In order for us to use that defined page title from page to page I store it's value in a session variable, <strong>session.current</strong>, which is then accessible to the next page. Why does it need to be accessible to next page? The url value, i.e. <strong>HTTP_REFERER</strong> doesn't get set until the following page and we want to associate that url value with a logical name, i.e. the page title, of the previous page then and hence it needs to be passed from page to page so that the values can be associated with one another. Please note that I overwrite the value of this variable with the new page value once the page has been processed. But before I do this I store this variable and the <strong>HTTP_REFERER</strong> in another session variable called <strong>session.pagesViewed</strong>, which is a list of all the pages viewed and their associated title. Well that's the logic, now for the explanation of the code listed above.</p>
+<p>The first time a user hits the site, Cold Fusion won't define or assign a value to the <strong>HTTP_REFERER</strong> variable, however I still need to capture the page title information all I really need to set <strong>session.current</strong> to is the title of the page and I can leave the <strong>HTTP_REFERER</strong> variable blank (since it wil be set on the next page hit and it is the url of the page that I have just come from that I am after). At this stage no dHTML menu is being built yet, that comes after we build the list of pagess visited, which is what comes next.</p>
+<p>The conditional statement looks for <strong>HTTP_REFERER</strong> and since on the second hit, it is defined it moves to the next conditional statement which looks for <strong>session.pagesViewed</strong> and sees if that has been defined. Since this is our first hit it won't be and the processing moves to the else statement, which marks the start of the list building process. There we defined <strong>session.pagesViewed</strong> and assign it a pair value of <strong>HTTP_REFERER</strong> and <strong>session.current</strong> (please note that the value pair is delimited by "-"). There you go the first item of your list has been built. Next hit of the site it will recognise that <strong>session.pagesViewed</strong> has been declared and pre-pend <strong>session.pagesViewed</strong> with a new pairing and that this new pairing is delimited form the old one by ",". And so on and so forth. A quick aside, every time you access a session variable you should lock it exclusively, so that the values don't get corrupted.</p>
+<p>Now that all the list building is over for that hit we can move onto building the pop menu (which is the last statement of the code, where we include the HM_Loader.cfm page), which takes us neatly onto the JavaScripts and dHTML. The whole thing is based on the hierarchical menus from webreference (the whole source and relevant explanation can be found <a href="http://www.webreference.com/dhtml/column61/">here</a>). These scripts work pretty much in all browsers and are under ongoing development. I had to modify them slightly and here is what I did. Once you extract the source you will see that there are a whole heap of javascript files (<em>hierarrays.js, hiermenus.js, HM_Arrays.js, HM_loader.js, HM_ScriptDOM.js, HM_ScriptIE4.js, HM_ScriptNS4.js</em>). The menus are built based on a set of arrays that are stored in external file called: <em>HM_Arrays.js</em>. Now for the purposes of our pages viewed functionality these are no good. This would work great with a set of menus that are built based on database content, but since we are tracking an individual users movement through the site, we would be permanently overwriting other users Array of pages viewed. To solve this problem I opted for the easiest solution and that was to modify the HM_Loader.js file. For starters I turned it into a cfm page, so that I could use the <strong>application.http</strong> to specify the full path to images and also use the <strong>&lt;cfinclude&gt;</strong> tag. The main modification can be found at the end of the <em>HM_loader.cfm</em> (lines 86 and 87), where originally you have two <strong>document.write</strong> Javascript statements.
+<p><em>if(HM_IsMenu) {<br />
+&nbsp;&nbsp;document.write("&lt;SCR" + "IPT LANGUAGE='JavaScript1.2' SRC='../js/HM_Arrays.js' TYPE='text/javascript'&gt;&lt;\/SCR" + "IPT&gt;");<br />
+&nbsp;&nbsp;document.write("&lt;SCR" + "IPT LANGUAGE='JavaScript1.2' SRC='../js/HM_Script"+ HM_BrowserString +".js' TYPE='text/javascript'&gt;&lt;\/SCR" + "IPT&gt;");<br />
+}</em></p>
+<p>Their purpose is to in the first place load the external menu array and secondly load the script that builds the menu system. Now modify the script to include <strong>HM_Arrays.cfm</strong>, rather than <strong>HM_Arrays.js</strong>. What we are doing here is making the building of the array dynamic and rather than loading an external file we are embedding the arrays which is populated on the fly into the page and hence overcoming the problem we had with ensuring that each users only sees his list of pages viewed. Here is how the end of the script should look like now:</p>
+<p><em>if(HM_IsMenu) {<br />
+&nbsp;&nbsp;&lt;cfinclude template="HM_Arrays.cfm"&gt;<br />
+&nbsp;&nbsp;document.write("&lt;SCR" + "IPT LANGUAGE='JavaScript1.2' SRC='js/HM_Script"+ HM_BrowserString +".js' TYPE='text/javascript'&gt;&lt;\/SCR" + "IPT&gt;");<br />
+}</em></p>
+<p>Now moving on swiftly to populating the array that we will use for pop up menu. As I mentioned I renamed the <strong>HM_Arrays.js</strong> file to a <em>.cfm</em> file so that I could use Cold Fusion to dynamically build the list. SO have a quick look at the code and then I'll explain what is going on:</p>
+<p><em>&lt;!--- -Display options for the dHTML pop up menu, such as positioning and colours- ---&gt;<br />
+HM_Array1 = [<br />
+[160,      // menu width<br />
+130,       // left_position<br />
+55,       // top_position<br />
+"#787e98",   // font_color<br />
+"#d2404a",   // mouseover_font_color<br />
+"white",   // background_color<br />
+"white",   // mouseover_background_color<br />
+"#787e98",   // border_color<br />
+"#787e98",    // separator_color<br />
+0,         // top_is_permanent<br />
+0,         // top_is_horizontal<br />
+0,         // tree_is_horizontal<br />
+1,         // position_under<br />
+1,         // top_more_images_visible<br />
+1,         // tree_more_images_visible<br />
+"null",    // evaluate_upon_tree_show<br />
+"null",    // evaluate_upon_tree_hide<br />
+,          // right_to_left<br />
+],     // display_on_click<br />
+<br />
+&lt;!--- -Supress any error messages session.pages viewed is not defined ---&gt;<br />
+&lt;cfif isDefined("session.pagesViewed")&gt;<br />
+&nbsp;&nbsp;&lt;!--- -Counter used to limit the total output (set to 5)- ---&gt;<br />
+&nbsp;&nbsp;&lt;cfset local.counter = 1&gt;<br />
+&nbsp;&nbsp;&lt;!--- -Now loop over the page urls and titles stored- ---&gt;<br />
+&nbsp;&nbsp;&lt;cfloop list="#session.pagesViewed#" index="i"&gt;<br />
+&nbsp;&nbsp;&lt;!--- -Check to limit output to 5, if counter less than five then process this- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfif local.counter lte 5&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--- -Use another counter to first grab the title (1) then the url (2)- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset local.loop_counter = 1&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--- -Loop over our new list, with a specific delimiter "-"- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfloop list="#i#" delimiters="-" index="j"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--- -If 1 then set title value- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfif local.loop_counter eq 1&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset local.title=j&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--- -if anything else, i.e. 2 then grab the url- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfelse&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset local.url=j&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/cfif&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--- -Increment loop_counter for this loop and continue looping ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset local.loop_counter = local.loop_counter +1&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/cfloop&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--- -Now that we have both values we can build up the Javascript array- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfoutput&gt;["#local.title#","#local.url#",1,0,0]&lt;cfif local.counter neq 8&gt;,&lt;/cfif&gt;&lt;/cfoutput&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--- -If local counter greater than 5 break out of the loop- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfelse&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfbreak&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/cfif&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--- -Incrememnt counter and return to beginning of loop- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset local.counter = local.counter + 1&gt;<br />
+&nbsp;&nbsp;&lt;/cfloop&gt;<br />
+&lt;/cfif&gt;<br />
+]</em></p>
+<p>The opening lines of the code show here are just display options, i.e. setting the positioning, the colouring, etc, so go wild tinkering with the settings. Where the Cold Fusion code begins is where we start building the arrays. If you remember we set a list called <strong>session.pagesViewed</strong>, which in the first instance was a list made up of a combination of page title and url. The page title and url combination was delimited by a ",", whereas the page title and url were separated by "-". So what we have in essence is a list within a list. So we can loop over both these lists to build up our array, which is in the format: <em>["page title", "url",1,0,0]</em>. We are only interested in the values between quotation marks as this will be  a simple menu with any child menus or the likes, so we can set the three remaining values to <em>1,0,0</em> (for full details on what these values do, please consult <a href="http://www.webreference.com/dhtml/column61/">this web reference column</a>.</p>
+<p>So we start looping over the first list (the combined page title and url list, delimited by a ","). Since I only want the first 5 values I first declared a counter before beginning the loop process (<em>&lt;cfset local.loop_counter = 1&gt;</em>) and inserted a conditional check to make sure the counter was less than or equal to five. If you wish to display more than the last 5 pages viewed modify that conditional statement (&lt;cfif local.counter lte 5&gt;). If the value for the counter is greater, then I break out of the loop, else I use the index value "<em>i</em>" and loop a second time over that list using the delimiter "-" to break apart the page title and the url. Since I knew that I had stored the title in the first instance and the url next I set a internal counter for that loop (<em>local.loop_counter</em>) and a conditional statement. If the <em>local.loop_counter</em> value is one set a local variable, <em>local.title</em> to the index value of <em>j</em> and if the value of <em>local.loop_counter</em> is anything else (i.e. 2) then set <em>local.url</em> to <em>j</em>. Now that have both values we require the internal loop terminates and we can write the array element to the page. The external loop starts over and grabs the next combination of values and so on and so forth until you have reached the desired number of pages viewed to output.</p>
+<p>Right we are nearly there, now all you need to do is include the initial javascript code for the dHTML pop up menus in your page header section (which I stored in a template called <strong>_pages_viewed.cfm</strong> and included in every page that I made use of the pages viewed functionality) and a function call to will actually display the pop up menu. Which you do like such:</p>
+<p>&lt;a href="" onMouseOut="popDown('HM_Menu1');" onMouseOver="popUp('HM_Menu1',event);"&gt;Pages viewed&lt;/a&gt;</p>
+<p>Well that's it. It's a lot to digest and I hope it makes sense. <a href="http://gregs.teacupinastorm.com/downloads/pages_viewed.zip">If anything is unclear I have included a functional set of pages that should demonstrate the workings of this feature here</a> and if things still aren't clear well then don't hesitate to drop me a line. Until next time.</p>

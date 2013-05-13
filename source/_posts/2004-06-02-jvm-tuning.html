@@ -1,0 +1,29 @@
+---
+layout: post
+title: JVM tuning
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Stumbled across <a href="http://www.sumoc.com/blog/index.cfm?mode=entry&entry=CDCDBF8B-5004-2066-B7460CDEAB79328F" title="CFMX JVM Tuning - The difference between MaxPermSize and Heap Size">this post</a> from Cameron Childress about  JVM tuning and specifically the difference between MaxPermSize and Heap Size.</p>
+<ul>
+	<li>A JVM is the amount of memory assigned to store Java classes and objects</li>
+	<li>keep the heap size the same as the MaxPermsSize (ideally at least 512)</li>
+	<li>What is "MaxPermSize"? This set the size for Permanent Generation and this contains information about the objects and classes in the heap.</li>
+	<li>The MaxPermSize is in addition to the Heap, so if you have 512 as your heap and 512 as MaxPermSize, then your server has an overall setting of 1024 in size.</li>
+</ul>
+
+<p>A place to look at if you are experience problems with "java.lang.OutOfMemoryError", Cameron states is "<em>/coldfusionmx/wwwroot/WEB-INF/cfclasses/</em>" (or if you are running instances on JRun: "<em>{install path}\JRun4\servers\{instance name}\cfusion-ear\cfusion-war\WEB-INF\cfclasses\</em>") and see if there are a lot of class files in that folder. If the answer is yes you are likely to have to increase the MaxPermSize setting.</p>
+
+<p>Some external sources that Cameron put together:</p>
+<ul>
+	<li><a href="http://www.bpurcell.org/blog/index.cfm?mode=entry&entry=967" title="Performance Tuning and Monitoring Coldfusion or JRun">Performance Tuning and Monitoring Coldfusion or JRun</a></li>
+	<li><a href="http://java.sun.com/docs/hotspot/gc1.4.2/" title="Tuning Garbage Collection with the 1.4.2 Java[tm] Virtual Machine">Tuning Garbage Collection with the 1.4.2 Java[tm] Virtual Machine</a></li>
+	<li><a href="http://java.sun.com/docs/hotspot/gc1.4.2/faq.html" title="Frequently Asked Questions
+about Garbage Collection in the HotspotTM JavaTM Virtual Machine">Frequently Asked Questions
+about Garbage Collection in the HotspotTM JavaTM Virtual Machine</a></li>
+	<li><a href="http://www.macromedia.com/support/coldfusion/ts/documents/cfmx_perf_tips.htm" title="ColdFusion MX: Tips for performance and scalability">ColdFusion MX: Tips for performance and scalability</a></li>
+</ul>
+<p>And finally I'd also like to add this resource to the list (courtesy of <a href="http://www.talkingtree.com/blog/index.cfm?getCategory=ColdFusion" title="Talking Tree, Steven Erat's Blog">Steven Errat</a>):<a href="http://www.ferdia.org/blog/index.cfm?getCategory=ColdFusion" title="Ferdia's Blog">Ferdia's Blog</a>, which also contains some jvm tuning options and out of memory solutions.</p>

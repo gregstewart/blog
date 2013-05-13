@@ -1,0 +1,20 @@
+---
+layout: post
+title: Memory usage
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Here is another code snippet, this time from the CF-Talk mailing list, which allows you to display server memory info.</p>
+<p><em>&lt;cfscript&gt;<br />
+	runtime = CreateObject("java","java.lang.Runtime").getRuntime();<br />
+	freeMemory = runtime.freeMemory() / 1024 / 1024;<br />
+	totalMemory = runtime.totalMemory() / 1024 / 1024;<br />
+	maxMemory = runtime.maxMemory() / 1024 / 1024;<br />
+<br />
+	writeOutput("Free Allocated Memory: " & Round(freeMemory) & "mb&lt;br /&gt;");<br />
+	writeOutput("Total Memory Allocated: " & Round(totalMemory) & "mb&lt;br /&gt;");<br />
+	writeOutput("Max Memory Available to JVM: " & Round(maxMemory) & "mb&lt;br /&gt;");<br />
+&lt;/cfscript&gt;</em></p>

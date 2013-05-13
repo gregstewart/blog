@@ -1,0 +1,28 @@
+---
+layout: post
+title: Gem install issues
+tags:
+- gems
+- mac
+- os x
+- osx
+- ruby
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+[code]Installing nokogiri (1.4.3.1) with native extensions /Users/username/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/rubygems/installer.rb:483:in `rescue in block in build_extensions': ERROR: Failed to build gem native extension. (Gem::Installer::ExtensionBuildError)[/code]
+
+Installing the nokogiri gem was throwing the above exception, but the clue to the problem lay at the end of the stack trace where the process was complaining about:
+
+[code]ld: in /opt/local/lib/libz.1.dylib, file was built for i386 which is not the architecture being linked (x86_64)[/code]
+
+the fix courtesy of : http://www.refresherate.com/2010/01/08/fixing-ld-warning-in-usrlocalliblibz-dylib-file-is-not-of-required-architecture/
+
+[code]sudo mv /opt/local/lib/libz.dylib /opt/local/lib/libz.dylib.original
+sudo /Developer/SDKs/MacOSX10.6.sdk/usr/lib/libz.dylib /opt/local/lib/
+sudo mv /opt/local/lib/libz.1.dylib /opt/local/lib/libz.1.dylib.original
+sudo cp /Developer/SDKs/MacOSX10.6.sdk/usr/lib/libz.1.dylib /opt/local/lib/[/code]

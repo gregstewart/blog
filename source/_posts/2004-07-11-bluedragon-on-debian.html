@@ -1,0 +1,47 @@
+---
+layout: post
+title: BlueDragon on debian
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I have just completed setting up the free <a href="http://www.newatlanta.com/products/bluedragon/product_info/overview.cfm" title="BlueDraong product overview">BlueDragon 6.1 server</a> [BD] on my Debian box running Apache 1.3.26  and wanted to set down the steps I took to get it up and running. On the whole the instructions were good, though as they were no specific Debian instructions available a few things deviated from the documentation. I'd also like to point to the great <a href="http://www.newatlanta.com/products/bluedragon/self_help/archive_search/index.cfm" title="BlueDragon Self-Help: Mailing List">New Atlanta</a> mailing list where my questions were answered with useful suggestions and good pointers to figure out some of the difficulties I encountered from a variety of helpful people.</p>
+
+<p>My debian installation only supports console access, so I ran the install with the following command (BTW this was executed from the folder where the BlueDragon_Server_61-Linux.sh installer was downloaded to).</p>
+
+<p><em>sh ./BlueDragon_Server_61-Linux.sh -I console</em></p>
+
+<p>I had to wait something like 30 seconds for the script to get started. It seemed to hang for quite a while before progressing, so be aware of that, just in case it seems to take a while to get going. Next follow the instructions and prompts and you should be fine. According to what I read I thought that it would be during the install that BD would attempt to configure Apache but the prompt never came. Don't worry if that happens to you as well, just let the install complete.</p>
+
+<p>Ok so now you should find that BD was installed to <strong>/usr/local/NewAtlanta/BlueDragon</strong>. We'll be configuring the web connector next and the way this is done is by using the BD admin interface. Somehow I had managed to miss this in the documentation and I was already preparing myself to configure the httpd.conf manually, when someone on the mailing list pointed out that he set it using the BD admin interface. So we need to fire up BD and use the built-in server to do this. Before we do that let's look at why BD didn't configure Apache and work through some preparatory steps.</p>
+
+<p>So why doesn't BD detect apache and configure the connector itself? This, in my case, was down to the somewhat non-standard installation of Apache on a Debian system. To work around that you'll be creating a few directories and creating a number of symbolic links. If you haven't already read up on the sections in 3.7.4 onwards to get an understanding on what needs to be done to get this working, do it now! Finished? Good let's continue here are the commands I used to mimic a default Apache setup or one that BD recognises at least.</p>
+
+<p><em>mkdir -p /usr/local/apache<br />
+ln -s /etc/apache/conf /usr/local/apache/conf<br />
+ln -s /var/www /usr/local/apache/htdocs<br />
+ln -s /usr/lib/apache/1.3 /usr/local/apache/libexec<br />
+ln -s /usr/lib/apache/1.3 /usr/local/apache/modules<br />
+mkdir -p bin // because it didn't exists<br />
+ln -s /usr/sbin/apache /usr/local/apache/bin/httpd</em></p>
+
+<p>The following line was not needed, the system told me the file already existed.</p>
+
+<p><em>ln -s /etc/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf</em></p>
+
+<p>Right those are the mappings I needed to make BD believe it was using a default apache installation. Next I copied the start (StartBlueDragon.sh) and shutdown (StopBlueDragon.sh) scripts to my /etc/init.d, as they weren't in there (again I may have misread this, but I expected them to be copied over during install). Those two scripts can be found in: <strong>/usr/local/NewAtlanta/BlueDragon_Server_61/bin</strong>. There is also an apache folder there that contains the apache modules. Which I also copied over to <strong>/usr/lib/apache/1.3</strong>.</p>
+
+<p>Time to fire up BD and access the BD admin interface. Now the admin interface runs on localhost on port 8080 (unless specified otherwise), so I had to set up SSH tunneling. Again the BD documentation comes up trumps (see 6.2.2) and you'll be up in no time accessing the admin interface following those instructions. Once logged in to the BD admin console, select the option "web server adapter" and follow the instructions to configure apache. Nearly there now... BD should have edited your httpd.conf file accordingly, however in my case BD had written the wrong location for my apache modules. So I commented out the BD instruction and added my own as shown below.</p>
+
+<p><em># LoadModule servletexec_module libexec/mod_servletexec.so<br />
+LoadModule servletexec_module /usr/lib/apache/1.3/mod_servletexec.so</em></p>
+
+<p>Right, now re-start BD and re-start apache. Everything appears OK, apart from this little message I saw:</p>
+
+<p><em>[Thu Jul  1 20:23:39 2004] [warn] Loaded DSO /usr/lib/apache/1.3/mod_servletexec.so uses plain Apache 1.3 API, this module might crash under EAPI! (please recompile it with -DEAPI)<br />
+[Thu Jul  1 20:23:40 2004] [warn] NameVirtualHost 65.19.178.219:80 has no VirtualHosts
+Syntax OK</em></p>
+
+<p>Which indicates a problem but so far I haven't had any major issues. Maybe I should be using the other mod_servletexec2.so? But I'll be looking at this shortly to make it go away as well. So far I have been really impressed with BD it runs really smoothly on this little Debian box and I am looking forward to experimenting with it. BTW I make no assertions to the reliability or security of this information. This is simply how I got it to work, no guarantees!!</p>

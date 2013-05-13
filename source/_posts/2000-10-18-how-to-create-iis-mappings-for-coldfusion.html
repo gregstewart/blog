@@ -1,0 +1,22 @@
+---
+layout: post
+title: How to create IIS mappings for coldfusion
+tags:
+- ColdFusion
+- iis
+- web server
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+<p>Just the other day I installed Cold Fusion Enterprise on one of our web servers hosted externally. After the re-boot I fired up a browser to test the installation. Alas the server wouldn't execute <em>.cfm</em> file extensions, instead offering me the chance to download these. The problem was down to the installation program not mapping <em>.cfm</em> extensions to the <strong>Application settings</strong>. You can check the mappings and fix this by carrying out the following steps:</p>
+<ol>
+<li>Start up IIS MMC.</li>
+<li>Right click on your site and select <strong>Properties</strong>.</li>
+<li>Change to Home Directory, and in the <strong>Application settings</strong> box, click on the configuration button.</li>
+<li>Under the <strong>Add mapping</strong> tab yo can see all the file extensions that your server can interpret. If <em>.cfm</em> is not listed, this is the reason your server s not executing the Cold Fusion templates.</li>
+<li>Click on the <strong>Add</strong> button and complete the dialogue. Under executable specify the path and file name for your CF server executable, usually <em>&lt;drive letter&gt;:CFUSION\Bin\iscf.dll</em>. Next specify the file extension, i.e. <em>.cfm</em> and make sure that the option for <strong>Scrip engine</strong> is ticked.</li>
+</ol>
+<p>Repeat the same step for the file extension <em>.dbm</em>, if it's not listed either. Once done click on OK and OK again to return to the console. Fire up your browser and try it again. The files should now execute.</p>

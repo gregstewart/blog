@@ -1,0 +1,24 @@
+---
+layout: post
+title: Basic SNMP Configuration
+tags:
+- ! '*nix'
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+This little document will show you how to configure the <em>snmpd.conf</em> file and enable snmp on your linux box. In order to this you are going to have to be familiar with Vi editing (see <a href="http://gregs.tcias.co.uk/2000/10/19/basic-vi-editingbasic-vi-editing/">Basic Vi editing</a> for an introduction).
+
+First off telnet into your server and log on (you'll need su rights for the latter stages of this introduction). The first step I had to do was find the relevant snmpd.conf file. To do this I typed <em>whereis snmd.conf</em>. In most installations it will be in the /etc directory. So change to that directory and make a backup  copy of the <em>snmpd.conf</em>. Then you can open it in your vi editor. The only entry I modified dealt with the systemn contact and system location. Look for the following entry:
+
+[code]
+##
+## the entry for system.Contact and system.Location:
+##
+[/code]
+
+There you can uncomment and edit the entries labelled <em>system contact:</em> and <em>system location:</em>. Once done save your changes and exit the file.
+
+Next I'll show you how to stop and re-start the snmpd daemon. Check to see if it is already running. If that is the case then type <em>killall -9 snmpd</em>, if it isn't then you simply need to type: <em>snmpd &amp;</em> to start it. Now yo can use for example MRTG to monitor the network traffic going through the Linux box.

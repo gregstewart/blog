@@ -1,0 +1,62 @@
+---
+layout: post
+title: PHP and servlets - part i
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>It was my intention from the outset to build this site using PHP, however as I was working my way through building the CMS and the front end that it would be cool to build certain parts of the functionality in Java or maybe all of it? I decided to proceed along the PHP path first, after all it was nearly done and I might gaina few more insights along the way. But now that this done I figured it was time to delve a little deeper.</p>
+
+<p>I'll be looking into setting up the PHP environment first. Most of the following will concern itself with editing the php.ini file. I am assuming that you have downloaded and installed the JDK. Without it, the whole exercise is a little pointless. OK, open edit the <em>php.ini</em> (usually located in a Windows based system in your Windows system folder). Look for segment that looks like the following:</p>
+
+<p><em>[Java]<br />
+;java.class.path = .\php_java.jar<br />
+;java.home = c:\jdk<br />
+;java.library = c:\jdk\jre\bin\hotspot\jvm.dll <br />
+;java.library.path = .\</em></p>
+
+<p>The <strong>ini</strong> file needs to be modified to point to the class path, the java home, the java virtual machine and finally the location of the Java extensions.</p>
+
+<p><em>[Java]<br />
+java.class.path = "C:\PHP\extensions\php_java.jar;"<br />
+java.home = "C:\j2sdk1.4.0_01\bin"<br />
+java.library = "C:\j2sdk1.4.0_01\jre\bin\server\jvm.dll"<br />
+java.library.path = "C:\PHP\extensions;"</em></p>
+
+<p>I have simply used all the default locations provided by the install programs. The next thing you need to edit applies to the Dynamic Extensions section, there look through the commented out list of extensions for <strong>extension=php_java.dll</strong> and uncomment it.</p>
+
+<p>These changes need to take effect and this can only be done by restarting your web server. If the server started up alright and PHP is still running then you edited properly the <strong>ini</strong> file, which by no means indicates that the configuration was successful. Only one way to find out and that's to try it out. Here is a bit of code I found on the PHP site (<a href="http://www.php.net/">http://www.php.net/</a>) that helped me test my installation. The full code can be found here: <a href="http://www.php.net/manual/en/ref.java.php">http://www.php.net/manual/en/ref.java.php</a></p>
+
+<p><em>&lt;?php<br />
+  // get instance of Java class java.lang.System in PHP<br />
+  $system = new Java('java.lang.System');<br />
+<br />
+  // demonstrate property access<br />
+  print 'Java version='.$system-&gt;getProperty('java.version').' &lt;br&gt;';<br />
+  print 'Java vendor=' .$system-&gt;getProperty('java.vendor').' &lt;br&gt;';
+  print 'OS='.$system-&gt;getProperty('os.name').' '.<br />
+              $system-&gt;getProperty('os.version').' on '.<br />
+              $system-&gt;getProperty('os.arch').' &lt;br&gt;';<br />
+<br />
+  // java.util.Date example<br />
+  $formatter = new Java('java.text.SimpleDateFormat',<br />
+                        "EEEE, MMMM dd, yyyy 'at' h:mm:ss a zzzz");<br />
+<br />
+  print $formatter->format(new Java('java.util.Date'));<br />
+?&gt;</em></p>
+
+<p>This sample PHP code access the Java System class, accesses a few properties and returns the appropriate values. If everything is configured properly then you should see something like this:</p>
+
+<p><em>Java version=1.4.0_01<br />
+Java vendor=Sun Microsystems Inc.<br />
+OS=Windows XP 5.1 on x86<br />
+Tuesday, October 22, 2002 at 11:56:32 AM Greenwich Mean Time </em></p>
+
+<p>If you are having any difficulties just make sure you are pointing to the right locations for the java environment. Another suggestion I can make is to take a closer look at your <strong>php.ini</strong> file and look for:</p>
+
+<p><em>; Directory in which the loadable extensions (modules) reside.<br />
+extension_dir = "C:\PHP\extensions"</em></p>
+
+<p>Just make sure that <strong>extension_dir</strong> is pointing at the right location for your PHP extensions. So far so good, next time I'll talk a little about my first forays into running my own classes (and that's where the tribulations truly begin).</p>

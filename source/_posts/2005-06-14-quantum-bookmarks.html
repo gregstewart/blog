@@ -1,0 +1,16 @@
+---
+layout: post
+title: Quantum bookmarks
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Now that I have my mobile development environment set up I thought I'd take a few moments to make a note on how you create bookmarks to your databases when using the <a href="http://www.eclipse.org/" title="eclipse.org Main Page">Eclipse</a> plugin <a href="http://quantum.sourceforge.net/" title="QuantumDB Eclipse Plugin">Quantum</a>. First off make sure you are in the Quantum perspective (Window &gt; Open Perspective &gt; Other &gt; Quantum). In the Database Bookmark pane right click and select New Bookmark.
+
+For MySQL I decided to use the driver provided by the people behind MySQL (you can download it <a href="http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-3.1.8.zip/from/pick" title="Select a mirror">here</a>) since this is the one I use in conjunction with BlueDragon. If this is the first time you are setting up a bookmark/connection for a MySQL database you'll need to add the driver first (Add Driver &gt; Add External Jar &gt; Select a class name [com.mysql.jdbc.Driver] &gt; Type = MySQL &gt; Finish). Next make sure the MySQL driver is selected and click Next.
+
+Simply specify the normal details you would when say creating a datasource (username, password, hostname, port and database name) and once you click on Finish you are done!
+
+For Oracle databases though I initially struggled a little, because I had opted to use the driver included with JRun/CFMX. By using the ones that came with BlueDragon the problems went away. So as with MySQL add a new driver and use the BD one (class name: oracle.jdbc.driver.OracleDriver) and after clicking next simply provide the information you are prompted for as per the MySQL instructions.

@@ -1,0 +1,22 @@
+---
+layout: post
+title: Refreshing web service stubs
+tags:
+- ColdFusion
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+I have been spending a few days building a bunch of web services for a client, however whenever I made a change to the web service itself the only way I could get that change to be reflected was by either waiting or re-starting cfmx. I did remember a post a while back that showed a better way. Finally I had enough today and  went looking for <a title="Refreshing Web Service Stubs in ColdFusion MX" href="http://www.bpurcell.org/blog/index.cfm?mode=entry&amp;entry=965">the solution</a>.
+
+For my own benefit here is the code required to refresh the stub:
+
+[code]
+
+[/code]
+
+Big thanks once again to <a title="burcell.org " href="http://www.bpurcell.org/">Brandon Purcell</a> for sharing this with us
+<h4>Update</h4>
+Or I could have just looked in the CF Administrator (if you are using 7.0.1) under Data &amp; Services and looked at the registered web services and refreshed them there...

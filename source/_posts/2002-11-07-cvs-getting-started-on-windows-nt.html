@@ -1,0 +1,34 @@
+---
+layout: post
+title: ! 'CVS: Getting started on Windows NT'
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>After experiencing a few quirky problems with our server, which was replacing files with older copies (whether this was down to the server, the back up or just a careless user is not of importance here) I decided it was time for some form of Source Control. The purse strings being tight, I searched the web for source control solutions and stumbled across CVS (<a href="http://www.cvshome.org">http://www.cvshome.org</a>), which suited my needs perfectly, i.e. it did the job and was free. In the following I would like to relate how I installed and configured CVS on a Windows NT workstation working in local mode. Furthermore I am assuming that you will be doing all this from the command line.</p> <p>First off grab the install files by looking through <a href="http://www.cvshome.org/dev/codewindow.html">this page</a>. Once downloaded, extract the zip file to the root of your drive keeping the default folder name (e.g. <em>c:\cvs1-11</em>). So far so good, now let the fun begin. Then go to the install directory and create a sub directory called <strong>cvsroot</strong>. Before you do anything else you will need to set a few environment variables. Open a command prompt and type the following lines one after the other:</p>
+<p><em>c:\set HOME=c:\cvs1-11<br /> c:\set CVSROOT=:local:c:\cvs1-11\cvsroot </em></p>
+<p>Now the only draw back with setting the variables in such a fashion is that after every re-boot the will have gone, you might want to set them with the help of your system [configuration] (found in your Control Panel) under the <strong>Environment</strong> tab. Simply specify the variable name (e.g. HOME) and it's value (e.g. c:\cvs1-11). You might also want to consider adding cvs to your path so that you can easily invoke the program from where ever you are when you are in the command line mode (from here on in I will be assuming that you did that, if you haven't you will always need to specify the full path to your cvs executable when executing commands).</p> <p>Right let's get ready to roll. <strong>CVSROOT</strong>, as the name would appear to suggest, is going to be the root directory for all your repositories. Now a repository is where you keep your source files under version control. So the first step is to initialise the root repository, you do this by typing the following command from the command line:</p>
+<p><em>cd cvs1-11<br /> cvs -d :local:c:\cvs1-11\cvsroot init </em></p>
+<p>Don't worry if you don't see any messages appear (as matter of fact take that as a good sign). Right now we are ready to add some files to our repository. For the sake of this example go to your temp directory and create a <strong>test</strong> directory, change to that newly created directory and add the following directories to it: <strong>sub1, sub2 and sub3</strong>. Also add a text file called <strong>File1.txt</strong> to your <strong>sub1</strong> directory. In the next few steps we will be adding these files (well strictly speaking and directories) to our Source Control system. So let's go ahead and add them. Staying in your test directory type the following command in:</p> <p><em>cvs import -m "test import" test test start</em></p>
+<p>This should result in the following output (assuming that your install directory is <em>c:\cvs1-11</em>):</p>
+<p>output: cvs import: Importing c:\cvs1-11\cvsroot/test/sub1<br />
+N test/sub1/file1.txt<br />
+cvs import: Importing c:\c:\cvs1-11\cvsroot/test/sub2<br />
+cvs import: Importing c:\c:\cvs1-11\cvsroot/test/sub3</p>
+<p>If you saw a message like this you have successfully added your sub1, sub2, sub3 directories to a repository called <strong>test</strong>. How? Well let's backtrack and have a look at the command we typed in a few lines back. The command <strong>import</strong> is pretty straight forward, the switch -m followed by the text in quotation marks, is a log message. The first word after the quotation mark (in this case <strong>test</strong>) is the name of the repository you are creating, the following <strong>test</strong> is known as a vendor tag (not too sure what they are there for yet) and the word <strong>start</strong> is a release tag (again not too sure what they do just yet, but from what I gather this isn't so important when getting started).</p>
+<p>OK! Your files are now under source control. Now you need to know how to edit these files. So we will need to check these out of CVS. The first thing you will need to do is go to the directory that you wish to work on these files with. Since I was doing web work and using Apache as my web server, it made sense for me to stick them under the root web folder (i.e. htdocs). The command that you will type in will use the name of the repository you are specifying as the folder name it will create, so based on our example <strong>test</strong> the command would look like this:</p> <p><em>cvs checkout test</em></p>
+<p>With the following output:</p>
+<p><em>cvs checkout: Updating test<br />
+cvs checkout: Updating test/sub1<br />
+U test/sub1/FILE1.TXT<br />
+cvs checkout: Updating test/sub2<br />
+cvs checkout: Updating test/sub3</em></p>
+<p>As the command executes you will see a list of folders and files that are being copied across, which has the result of creating a test directory with all the files and folders stored underneath it. Now you are ready to open these files in your favourite editor and modifying them.</p> <p>Finally I am going to show you how to check modified files back into CVS (which is after all the whole point of using CVS). Now go ahead and open <strong>file1.txt</strong>, modify it (just add some text to it) and save the changes. Assuming that you are in the directory where the file resides (if not change to it now), type the following command:</p>
+<p><em>cvs commit -m "added text to file1.txt" file1.txt</em></p> <p>After hitting the enter key you should see the resulting output:</p>
+<p><em>Checking in file1.txt;<br />
+c:\cvs1-11\cvsroot/test/sub1/file1.txt,v <-- file1.txt<br />
+new revision: 1.2; previous revision: 1.1<br />
+done</em></p>
+<p>And there you go. You have installed, configured CVS, created a repository, created a working folder (checked out your project), modified a file and checked it back in to CVS. As and when I figure out more things I will be posting them here.</p>

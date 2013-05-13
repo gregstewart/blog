@@ -1,0 +1,38 @@
+---
+layout: post
+title: Mass mailouts and mail applications
+tags: []
+status: draft
+type: post
+published: false
+meta: {}
+---
+<p>A set of suggestions for dealing with mass mailouts and other email related applications</p>
+<ol>
+<li>build in mechanism to verify that the scehduled mail out task has occured and executed properly (expected numbers vs actual numbers and log each entry)</li>
+
+<li>consider mail server performance and know how it handles messages it can't send immediately (i.e. if the domain can't be looked up does it queue the message and send another or does it hold them up while waiting to try again, how long is the lag in processing when an incident occurs)</li>
+<li>gage the number of messages to be sent</li>
+<li>stager mailouts</li>
+<li>Presentation in CF do this: &lt;cfset application.mailfrom = """Your name"" <your@mail_address.com>"&gt; and Johnniw Walker will appear in the sent from field in the received email message</li>
+<li>Below a suggestion for PHP in the same vane, just a little more elaborate as it provides a set of headers as well to be passed by the mail message. This will stop your message from bouncing from services such as Hotmail.<br />
+	<em>$myname = "Info";<br />
+	$myemail = "info@teacupinastorm.com";<br />
+	<br />
+	$contactname = "Greg Stewart";<br />
+	$contactemail = "gregs@teacupinastorm.com";<br />
+	<br />
+	$message = $msg;<br />
+	$subject = "Invoice process run";<br />
+	<br />
+	$headers .= "MIME-Version: 1.0\r\n";<br />
+	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";<br />
+	$headers .= "From: ".$myname." &lt;".$myemail."&gt;\r\n";<br />
+	$headers .= "To: ".$contactname." &lt;".$contactemail."&gt;\r\n";<br />
+	$headers .= "Reply-To: ".$myname." &lt;".$myemail."&gt;\r\n";<br />
+	$headers .= "X-Priority: 1\r\n";<br />
+	$headers .= "X-MSMail-Priority: High\r\n";<br />
+	$headers .= "X-Mailer: Just My Server";<br />
+	<br />
+	mail($contactemail, $subject, $message, $headers);</em></li>
+</ol>

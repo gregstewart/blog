@@ -1,0 +1,22 @@
+---
+layout: post
+title: Configuring MySQL Client
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>As much fun as command line stuff can be, every now and then a graphical user interface toll can come in handy. Hence I decided to use <strong>mysqlgui</strong> tool, which can be found here: <a href="http://www.mysql.com/downloads/gui-mysqlgui.html">http://www.mysql.com/downloads/gui-mysqlgui.html</a>. Once downloaded the install is pretty straightforward, just unzip the files in the downloaded zip file anywhere to your hard disk. I recommend also creating a desktop shortcut for your this application as it doesn't install any shortcuts in your start menu.</p>
+<p>Now double click on the icon, you will be prompted to enter a password. This is pretty inconsequential at this time as the client is only configured to connect to the localhost MySQL server. However if you are working with MySQL installed locally then type in your root password. For the rest, just type anything. For users with MySQL installed locally this concludes this article. For everybody else who will be attempting to connect to a remote MySQL server, read on.</p>
+<p>Once you have logged on, you may notice an error appearing at the bottom of the screen. This just informs you that the client was unable to connect to the localhost server. So what we will be doing next is changing the host to connect to and specify a username to use when connecting to the server. Click on the dark blue <strong>Options</strong> button in the second menu row. This brings up a dialogue, that starts on the server page. Where is reads host name, you should enter the name of the server you wish to connect to, this can be either it's name or it's IP address. You may also have to change the port number should your server be listening on an other port.</p>
+<p>Next click on the <strong>Client</strong> tab. Where it reads username enter the username used to connnect to the database server and that is pretty much it (in our example where username is <strong>admin</strong>, with a password value of <strong>passw0rd</strong>). Click Save and try connecting to the server.</p>
+<p>Sometimes a problem still occurs and this is down to the hostname that is assigned to the username you are using to connect. It be should <strong>localhost</strong> and not the name of the host that you are trying to connect from. There are 2 ways that you can remedy this. The first is to create a new user with host set to localhost as shown below. A word of warning in this example the user created gets full privileges, identical to <strong>root</strong> (i.e. access to all tables with INSERT, UPDATE and DELETE capabilities and ability to GRANT), so this may not be adequate for your set up. Consult your DBA and create a user with the appropriate privileges (or wait for an upcoming article on it). Without further ado here are the instructions:</p>
+<p><em><ol>
+  <li>Connect to your server from the command line.</li>
+  <li>Connect to the mysql database with the following commmand and provide the password when prompted: <strong>mysql -u root -p mysql</strong></li>
+  <li>Then just type the following: <strong>GRANT ALL PRIVILEGES ON *.* TO admin@localhost IDENTIFIED BY 'passw0rd' WITH GRANT OPTION;</strong></li>
+  <li>You can type: <strong>SELECT user,host FROM mysql.user;</strong> to see a listing of usernames and their hosts.</li> '
+  <li>Disconnect from your server and try reconnecting with your MySQL Client.</li>
+</ol></em></p>
+<p>The other alternative is to grant a username regardless of his host association access to the database server. The instructions are the same as above (and the security implications just as applicable, if not more so since now all hosts have the same access privileges). Just type in the following command:</p> <p><em><strong>GRANT ALL PRIVILEGES ON *.* TO admin@"$" IDENTIFIED BY 'passw0rd' WITH GRANT OPTION;</strong></em></p> <p>And there you have it, you should now be able to use the MySQL client. Until I find a spare moment again to write some stuff up.</p>

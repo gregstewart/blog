@@ -1,0 +1,31 @@
+---
+layout: post
+title: ! 'JavaScript: Trapping the enter key event'
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Here is a refined script for trapping the user pressing the enter key. In certain cases under Netscape, where you have two text input fields, hitting the enter key will result in nothing happening. To this end I searched the web and found the following script:
+
+[js]<script language="JavaScript">
+<!--
+var nav4 = window.Event ? true : false;
+function codes(e) {
+if (nav4) // Navigator 4.0x
+var whichCode = e.which
+else // Internet Explorer 4.0x
+if (e.type == "keypress") // the user entered a character
+var whichCode = e.keyCode
+if ( whichCode == "13" ) {
+document.form2.submit();
+}
+}
+// -->
+</script>
+[/js]
+
+This script first looks up the version of the browser you are using and if the user uses NS whichCode is equal to the event <em>e.which</em>. Since IE handles it differently you need to the else if statement and we set which Code for IE equal to the event <em>e.keyCode</em>. In both cases this will return a value. Now hitting the enter key returns the value <strong>13</strong>. So in the next step we check for that value and if this is the case then we submit the form.
+
+This function is called by including the event handler onKeyPress next to your input fields. Hence you could call the <strong><em>code()</em></strong> function first to check whether return was hit or not, then maybe run a validation script and if successful submit the form. I would also like to point out that you will need to provide a action property to your form for Netscape to submit the form successfully. Not doing so will result in the page just sitting there. Short and sweet, but useful.

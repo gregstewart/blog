@@ -1,0 +1,26 @@
+---
+layout: post
+title: Centered designs CSS stylee
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>This is a real short one. A while back I got inpired about Doug Bowman's work for a client (Adative Path) where he was using CSS to control layouts, determening from within the style sheet whether or not to have 1, 2 or three columns to display content. This alone blew me away, as it does work so well. I added the following stylesheet definition to one of our sites to add a simple centered layout:</p>
+
+<p><em>#content {<br />
+margin: 0 auto 0 auto;<br />
+}</em></p>
+
+<p>I lifted this little bit of CSS from <a href="http://www.studiotwin.com/" title="studio twin">this site</a>.</p>
+<p>I should also point out the #content is a div that encompasses the previously mentioned three columns.</p>
+
+<p>Update: Well I noticed that this doesn't work with IE 5.5, but as usual there is a work around.</p>
+<p><em>body {<br />
+	background: #fff;<br />
+	text-align: center;/* centre it for IE5.5 */<br />
+	voice-family: "\"}\""; /* Now re-adjust for Mozilla and IE6 since we don't want all of our text centred*/<br />
+  	voice-family:inherit;<br />
+	text-align: left;<br />
+}</em></p>

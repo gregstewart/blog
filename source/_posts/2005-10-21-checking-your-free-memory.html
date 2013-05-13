@@ -1,0 +1,36 @@
+---
+layout: post
+title: Checking your free memory
+tags:
+- ColdFusion
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+Here is a handy little script that I stumbled across a while back (probably on a mailing list), sorry I can't remember who posted it, but for posterity here it is:
+
+[code]
+<cfscript>
+rt = createObject("Java", "java.lang.Runtime");
+freemem=rt.getruntime().freeMemory();
+maxmem=rt.getruntime().maxMemory();
+usepercent=freemem/maxmem;
+</cfscript>
+<cfoutput> </cfoutput>
+<table>
+<tr>
+<td>Free memory</td>
+<td align="right">#numberformat(freemem)#</td>
+</tr>
+<tr>
+<td>Max memory</td>
+<td align="right">#numberformat(maxmem)#</td>
+</tr>
+</table>
+Percent use: #numberformat(usepercent * 100)#
+[/code]
+
+<h4>UPDATE</h4>
+It was from <a href="http://www.petefreitag.com/item/115.cfm" title="ColdFusion Memory Usage Stats">Pete Freitag's site</a> that I gleaned this tid bit of information and Niklas over at Primsix was kind enough to also point out that he put together <a href="http://www.prismix.com/blog/archives/2005/08/coldfusion_memo.cfm" title="ColdFusion Memory Usage Stats (Revisited)">a graphical version</a>.

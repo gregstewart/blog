@@ -1,0 +1,38 @@
+---
+layout: post
+title: How to edit a cisco router access list
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>How to edit a cisco router access list</h3>
+<p class="1">This little document will show you the necessary steps required to edit a Cisco Router 2503 (don't know if it's the same for other routers). However it does not give you all the different access-list configuration options, it just shows you the best way to edit the access-list safely. Disclaimer time: <b>as ever if anything goes wrong (i.e. you hose your router configuration) it's not my fault and I will not be held responsible.</b></p>
+<p class="1">Right now that we dispensed with the formalities on with the task at hand. Telnet into your router and login. Once logged in type <i>en</i> to enable the interface. You will be required to enter an additional password.</p>
+<p class="1">First we are going to create a copy of the current configuration. From the toolbar of your telnet program ( Iuse the standard Windows telnet program), select Terminal and Start Logging (note you will have to specify the file name and location, e.g.: C:	emp	elnet.log). At the command prompt type <i>wr t</i>. This command displays the content of your current config file and because Logging is enabled it copies the content to the C:Temp	elnet.log file you created earlier.</p>
+<p class="1">Click TerminalStop Logging and logout of your session with the router. Next open Notepad and load you telnet.log file. Scroll down until you see a list looking something like this:<br />
+access-list 100 permit ip any any<br />
+access-list 103 permit ip host 10.10.10.10 any<br />
+access-list 103 permit icmp host 10.10.10.10 any<br />
+access-list 103 permit icmp host 10.10.10.11 any<br />
+<p class="1">Now cut the entire list where you see access-list 103 and paste it just beneath the last 103 entry. This is the list we are going to modify. Save the file as under a different name before doing any editing. Once that is done change all the 103 entries to 104. Using the example above, your access list should now look something like this:<br />
+access-list 100 permit ip any any<br />
+access-list 103 permit ip host 10.10.10.10 any<br />
+access-list 103 permit icmp host 10.10.10.10 any<br />
+access-list 103 permit icmp host 10.10.10.11 any<br />
+access-list 104 permit ip host 10.10.10.10 any<br />
+access-list 104 permit icmp host 10.10.10.10 any<br />
+access-list 104 permit icmp host 10.10.10.11 any<br />
+<p class="1">Now you can safely edit the access-list to reflect your access requirements. For all those of you who want to know what different access-list options there are I will in the near future try to provide another document introducing some of the concepts.<p/>
+<p class="1">Ok once you have carried your modifications highlight the lates access-list, i.e. 104 and copy it. Now log back in to your cisco router and enable the interface again. First type conf, which takes you to the config mode and hit return once you see this message:<br />
+Configuring from terminal, memory, or network [terminal]? Enter configuration commands, one poer line. End with CNTL/Z.
+<p class="1">Now type <i>int serNumber</i> (where Number is the number of the interface you wish to edit, e.g. 0 so you would type int ser0). First we are going to disable the existing access-list:<br />
+no ip access-group 103 in
+<p class="1">Note: where 103 is the number of your access list and it controls inbound traffic.
+<p class="1">Type <i>exit</i> and then go to Edit and choose the paste option. All the entries you created for 104 should now be added to your existing configuration file. And now the moment of truth. Go back to edit your interface (i.e. int serNumber) and type: <i>ip access-group 104 in</i> (where 104 is your new access-list). Hit CNTL and type <i>wr t</i> ro review your config file.</p>
+<p class="1"><b>Optional things:</b><br />
+To save this config to your start up config type: <i>save run start</i><br />
+If you wish to tidy up your access-list, i.e. do not have all the 103, 104, 105 modfications listed go back into conf and type no access-list 103 (where 103 is the list you wish to remove).
+<p class="1">
+That's all folks!</p>

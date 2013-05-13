@@ -1,0 +1,20 @@
+---
+layout: post
+title: ! 'Javascript: Best practice using the with statement'
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p class="1">This section forms part of the discussion surrounding variable <i>scope</i> and <i>scope chain</i> (which is a list of objects searched in order). The <b>with</b> statement allows you to brake that order and insert the object that you created with the <b>with</b> statement and insert it ahead of the scope chain.</p>
+<p class="1">Commonly it used to reduce the amount of typing required, i.e. when defining form property names. For example:</p>
+<p class="1"><i>with(document.form_name){<br />
+&nbsp;name.value="";<br />}</i></p>
+<p class="1">What happens here is that now the object <i>document.form_name</i> is no longer needed in front of every form property. However there are a few drawbacks to using this technique.</p>
+<p class="1"><li> For one according to the O'Reilly Javascript book, code optimisation becomes difficult and hence can be slow to process.
+<li> Secondly functions and variables defined within the statement may display erratic behaviour (what this behaviour is, I can't tell you just yet as it was beyond the scope of the book).</p>
+<p class="1">Hence it is advisable to simply define a variable that will hole aforementioned object:</p>
+<p class="1"><i>var fn = document.your_form_name;<br />
+fn.name.value="";<br />
+</i></p>

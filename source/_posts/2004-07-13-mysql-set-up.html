@@ -1,0 +1,20 @@
+---
+layout: post
+title: Mysql set up
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I have to give the guys at BD a lot of credit for the documentation and the level of support they provide on the <a href="http://www.newatlanta.com/products/bluedragon/self_help/archive_search/index.cfm" title="BlueDragon Self-Help: Mailing List">New Atlanta mailing list</a>, this time they stepped into the breach and helped resolve my problems getting the MySQL jdbc driver to work with BlueDragon.</p>
+<p>First things first though, the fact that I had problems with MySQL and verifying a connection from BD, had nothing to do with <a href="http://www.newatlanta.com/biz/c/products/bluedragon/self_help/faq/detail?faqId=216" title="How can I define a MySQL datasource?">the instructions</a> provided by BD. Rather this was a Debian issue and Gregg Orangio was quick to point out that the verification failure was most likely down to MySQL not accepting connections via port 3306. Which struck me as odd, since I had been happily using PHP/MySQL to drive this site for yonks now... Well assumptions are the mother of all f*#ck ups as I always say.</p>
+<p>PHP uses the MySQL.sock file to carry out it's connections, JDBS however relies on tcp/ip. So here is how you check if the MysQL is listening on port 3306:</p>
+<p><em>netstat -ltpn</em></p>
+<p>This nifty little Linux shell command, returns all the services and what ports they are listening on. And guess what? Yep no MySQL. A little more digging pointed the finger at Debian's default install which disables networking. Locate your mysql.conf and comment out the <strong>skip-networking</strong> directive.</p>
+<p><em># The skip-networkin option will no longer be set via debconf menu.  You<br />
+# have to manually change it if you want networking i.e. the server<br />
+# listening on port 3306. The default is "disable" - for security<br />
+# reasons.<br />
+# skip-networking</em></p>
+<p>Next simply re-start MySQL so that the configuration changes can take effect and you are done!</p>

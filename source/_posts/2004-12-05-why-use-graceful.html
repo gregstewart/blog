@@ -1,0 +1,20 @@
+---
+layout: post
+title: Why use graceful
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+If like me you have ever wondered why you should use:
+
+[code]{Path to}/apachectl graceful[/code]
+
+Instead of restart, then consider these simple but very good reasons to do so: graceful executes config test to see if any errors are present in your httpd.conf file. If there are the process is aborted (to be precise the parent process is aborted, but your child processes keep on running [until they finish serving their last request]) and you are notified of the problems. If everything is OK, then the server re-starts, but it's also very clever in that it tells child processes to finish serving requests before restarting (i.e. re-loading the config file) thus ensuring continuity of service for your end users.
+
+So the best thing to do really is to:
+<ul>
+	<li>check your config file using {Path to}/httpd -t</li>
+	<li>then use {PathTo}/apachectl graceful</li>
+</ul>

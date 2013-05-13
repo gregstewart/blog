@@ -1,0 +1,26 @@
+---
+layout: post
+title: SQL to XML
+tags:
+- MS SQL
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+Just came across this neat trick that uses SQL to generate XML on the fly:
+
+[code]
+DECLARE @x xml
+SET @x=(select geoAreaCode
+, geoLevelCode
+, geoLevelId
+, geoAreaId
+from tbl_geoLevel
+where uuid =
+for xml raw('geoArea'), root('geoAreas'), type)
+SELECT @x AS geoAreaInfo
+[/code]
+
+The above will create an XML structure that has a root value of geoAreas and child elements of geoArea for each row found.

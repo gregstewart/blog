@@ -1,0 +1,14 @@
+---
+layout: post
+title: A little optimisation trick
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Here is a really nice way to reduce some of the page weight in your <acronym title="HyperText Markup Language">HTML</acronym> code. Simply introduce the &lt;base&gt; tag into your template between the &lt;head&gt; tags with the <acronym title="Unified Resource Locator">URL</acronym> of your site as the value of the <em>href</em> attribute and all of your links, path to images, styles, javascript files can be referenced relatively. Consider this example:</p>
+<p><em>&lt;a href="http://www.tcias.co.uk/v2/products/amp.php" title="Read more about &amp;amp;"&gt;Read more about &amp;amp;&lt;/a&gt;</em></p>
+<p>Could now simply be referenced like such if you set your base href to "<em>http://www.tcias.co.uk/v2/</em>":</p>
+<p><em>&lt;a href="products/amp.php" title="Read more about &amp;amp;"&gt;Read more about &amp;amp;&lt;/a&gt;</em></p>
+<p>This saves yourself a few bits here and there.</p>

@@ -1,0 +1,47 @@
+---
+layout: post
+title: ! 'JavaScript: Search and replace (addendum)'
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p class="one">Just a brief follow up on the previous article on <b>Search and replace</b>. I mentioned to ward the end that in order to improve the performance of the script I was considering moving the the Regular Expression bit outside of the main script into a separate function. The focus of this article will be calling the new function and returning the value. As ever here is the whole script for you to look at first.</p>
+
+<p class="one"><i>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;<br />
+&lt;html&gt;<br />
+&lt;head&gt;<br />
+&lt;title&gt;Example match and replace&lt;/title&gt;<br />
+&lt;script language="JavaScript1.2"&gt;<br />
+function strip(str) {<br />
+&nbsp;&nbsp;&nbsp;var ar = str.match(/(w+)?([^# ]*)/);<br />
+&nbsp;&nbsp;&nbsp;var str = RegExp.$2.replace(/_|'/g, ' ');<br />
+&nbsp;&nbsp;&nbsp;return (str);<br />
+}<br />
+function validate(f) {<br />
+&nbsp;&nbsp;&nbsp;for (var i=0;i&lt;f.length;i++) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e = f.elements[i];<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(((e.type == "text") || (e.type == "textarea")) &amp;&amp; !e.optional) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ((e.value == null) || (e.value == "")) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichEl = eval("document.all.elField" + i);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichEl.innerHTML = strip(e.name);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;return false;<br />
+}<br />
+&lt;/script&gt;<br />
+&lt;/head&gt;<br />
+&lt;body&gt;<br />
+&lt;form name="form1" action="" method="post" enctype="multipart/form-data" onsubmit="return validate(this);"&gt;<br />
+&lt;input type="Text" name="r_test1_'test_1'" size="25"&gt;&nbsp;&nbsp;&lt;SPAN ID="elField0"&gt;&lt;/SPAN&gt;&lt;br&gt;<br />
+&lt;input type="Text" name="r_test2_'test_2'" size="25"&gt;&nbsp;&nbsp;&lt;SPAN ID="elField1"&gt;&lt;/SPAN&gt;&lt;br&gt;<br />
+&lt;input type="Submit" name="sub_but_2" value="Submit"&gt;&nbsp;&nbsp;&lt;SPAN ID="elField2"&gt;&lt;/SPAN&gt;<br />
+&lt;/form&gt;<br />
+&lt;/body&gt;<br />
+&lt;/html&gt;</i></p>
+<p class="one">OK now for the changes. Looking at the actual form first I have renamed the function being called on submit to <b>validate(this)</b>, hence you will need to rename the main function in your scrip as well. That's it with the form so now let's look at the script.</p>
+<p class="one">The first thing you will notice is the addition of a function called <b>strip(str)</b> with the parameter <b><i>str</i></b> included. This function basically includes the lines of code we used to strip out the "_" and single quotes. As a final step I added the <b>return</b> statement. This was required in order to pass the result of this function back to the calling function, which in this case is <b>validate(f)</b>.</p>
+<p class="one">The last change we need to make is remove the old stripping code and make sure that the new <b>strip</b> function is being called. To this end you need to locate the line with <i><b>whichEl.innerHTML = str;</b></i> and replace <b><i>str</i></b> with the function call <b><i>strip(e.name)</i></b>. You need to pass the parameter <b><i>e.name</i></b>, so that <b>strip</b> knows which element to parse.</p>
+<p class="one">There you go you are done. When the form is submitted the function <b>validate</b> is called and if one of the fields is empty and error message is generated. To publish this message the script needs to know the field name, which it determines by calling the function <b>strip</b>. That's it.</p>

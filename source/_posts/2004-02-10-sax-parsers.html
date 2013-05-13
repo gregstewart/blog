@@ -1,0 +1,10 @@
+---
+layout: post
+title: SAX parsers
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>A while ago I spent a while configuring JRun to use the Xalan SAX parser, thinking incorrectly that CFMX could not do XML validation. My assumption for this was based on the CF documentation which points to DOM based parsing, as it turns out CFMX uses the Crimson as the underlying parser and by accessing the Java API it is totally possible to validate an XML document. Massimo of CFCDev list posted a few links to code snippets (<a href="http://www.cfmentor.com/code/index.cfm?action=script&amp;id=130" title="view the thread and code for: validateXMLString">validateXMLString</a> [also available for <a href="http://www.massimocorner.com/demos/validateXMLString.zip" title="Download validate XML String UDF">download here</a>] and <a href="http://www.cfmentor.com/code/index.cfm?action=script&amp;id=129" title="view the thread and code for: validateXMLFile">validateXMLFile</a> [also available for <a href="http://www.massimocorner.com/demos/validateXMLFile.zip" title="Download validate XML File UDF">download here</a> ]) that accessed aforementioned API and validated XML.</p>

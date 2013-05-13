@@ -1,0 +1,14 @@
+---
+layout: post
+title: CFMX updater woes
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+We just applied the updater to our servers, everything appeared to be working very nicely, apart from when we logged into the Administrator we encountered the following error once the site nav had loaded:
+
+[code]Unknown tag: admin:l10n.ColdFusion cannot determine how to process the tag admin:l10n because the tag is unknown and not in any imported tag libraries. The tag name might be misspelled. The specific sequence of files included or processed is: {install path}/jrun4/servers/{instance name}/cfusion-ear/cfusion-war/CFIDE/administrator/navserver.cfm[/code]
+
+Somehow during the install the udpater decided to install part of the upgrade into the specified instance folder and some into the Apache htdocs where a copy of the CFIDE resided as well. Copying the files from the htdocs (i.e. the Apache CFIDE folder) into the instance one ({install path}/Jrun4/servers/{instance name}/cfusion-ear/cfusion-war/CFIDE/Administrator) resolved this problem. Now I am not if this is a Solaris problem only as when I applied the updater to my windows development machine I didn't encounter this problem. For more information have a read <a href="http://www.macromedia.com/cfusion/webforums/forum/messageview.cfm?catid=274&amp;threadid=880855" title="CFMX Administrator Error: Unknown Tag admin:l10n">here</a> and <a href="http://www.mail-archive.com/cf-talk@houseoffusion.com/msg190761.html" title="RE: Unknown tag: admin:l10n">here</a>.

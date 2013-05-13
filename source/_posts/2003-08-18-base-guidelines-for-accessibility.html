@@ -1,0 +1,117 @@
+---
+layout: post
+title: Base guidelines for accessibility
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Having recently been faced with an accessibility complaint I was tasked with rectifying the issues that one of our sites faced. In the following I have drawn up my very own base guidelines for making a site accessible, well at least as far as I understand it and do please note that this is by no means a complete listing of the requirements. For more information, please take a look <a href="#resources" title="resource listing">at the resource listing</a> below.</p>
+
+<h2>Priority 1</h2>
+<ol>
+	<li> give alternative text options for non-text elements: Flash, images (concentrating on image content, functionality or representation [for bullet point image use for example "* bullet item"]). Note spacer images is used should be have alt attribute value of "*" [according to RNIB]. If a longer description is required (due to an elaborate image) use the <strong>longdesc</strong> attribute for &lt;img&gt; and title for &lt;a&gt;.</li>
+	<li>another reason not to use Frames: if used need to provide meaningful NOFRAMES content (such as links to navigation and content)</li>
+	<li>avoid image maps or provide redundant links for these</li>
+	<li>if multimedia is being used (videos for example): there should be a text based description of the auditory track</li>
+	<li>in addition to the previous items, consider providing a closed caption for the presentation</li>
+	<li>colours, where colours are used to convey information (i.e. red for errors), ensure that information is also conveyed without (i.e. "warning: errors have occurred!", bolded and bigger font size)</li>
+	<li>natural language: if you change the language used in the body of text say from English to French, clearly mark it using the <strong>lang</strong> attribute within and encapsulating tag</li>
+	<li>where tables are used make sure you clearly identify column and row headers. For example:<br /><br />
+<em>&lt;table summary="table description goes here"&gt;<br />
+	&lt;caption&gt;table caption goes here&lt;/caption&gt;<br />
+	&lt;tr&gt;<br />
+		&lt;th id="header1"&gt;column header&lt;/th&gt;<br />
+		&lt;th id="header2"&gt;2nd column header&lt;/th&gt;<br />
+	&lt;/tr&gt;<br />
+	&lt;tr&gt;<br />
+		&lt;td id="header1"&gt;column value 1&lt;/td&gt;<br />
+		&lt;td id="header2"&gt;column value 2&lt;/td&gt;<br />
+	&lt;/tr&gt;<br />
+&lt;/table&gt;</em><br /><br />
+Which would be rendered as follows by a screen reader:<br /><br />
+<strong>Caption:</strong> table caption goes here<br />
+<strong>Summary:</strong> table description goes here<br />
+<strong>Column header:</strong> column value 1, 2nd column header: column value 2<br /></li>
+	<li>Organise documents so that can be read without style sheets (semantic use of <acronym title="HyperText Markup Language">HTML</acronym>/<acronym title="eXtensible HyperText Markup Language">xHTML</acronym> tags)</li>
+	<li>If dynamic content is used make sure that all the text for non text equivalents is also updated, i.e. images, applets, frames. For example:<br /><br />
+
+<em>&lt;applet code="Press.class" width="500" height="500" alt="Java applet: how temperature affects pressure"&gt;<br />
+         As temperature increases, the molecules in the balloon...<br />
+&lt;/applet&gt;</em><br />
+<br />
+OR<br />
+<br />
+<em>&lt;object classid="java:Press.class" width="500" height="500"&gt;<br />
+        As temperature increases, the molecules in the balloon...<br />
+&lt;/object&gt;</em><br />
+<br />
+If scripts are used to present dynamic content (such as JavaScript to load in content), then make use of the &lt;noscript&gt; tag to represent alternative content</li>
+	<li><acronym title="Portable Document Format"><strong>PDFs</strong></acronym>: provide text alternative for PDF files, such text or <acronym title="eXtensible HyperText Markup Language">xHTML</acronym>. Also consider directing user to <a href="http://www.adobe.com/products/acrobat/solutionsacc.html" title="Acrobat solutions for accessibility">this link</a></li>
+	<li>since most user agents (browsers and <acronym title="personal digital assistant">PDA</acronym>s for example) don't allow for control over flickering content such as &lt;blink&gt;, avoid using it!!!</li>
+	<li><strong>server side image maps</strong>: where image maps are generated server side use redundant links again to allow for access to the site as an alternative, also use the alt attribute in the image to inform the user of the meaning and where the redundant links are</li>
+	<li>frames: gives frames meaningful names and titles.</li>
+</ol>
+
+<h2>Priority Level 2 and 3</h2>
+<ol>
+	<li>while rendering image maps make sure appropriate text equivalents are displayed (lv 3)</li>
+	<li>provide enough contrast between foreground and back ground colours (both for HTML and images) (lv 2)</li>
+	<li>where possible use a text link rather than an image. (lv 2)</li>
+	<li>font sizes use relative rather than absolute values , i.e. use em, rather than px, pt, cm (lv 2)</li>
+	<li>user header elements to outline document structure (hidden <hx> [where x is a numeric value] tag that renders when style sheet is disabled) (lv 2)</li>
+	<li>Only use tables for presentation when their content can be linearised (i.e. each cell translates to a paragraph and is rendered from column to column, row by row) (lv 2)</li>
+	<li>do not visually table cell content (lv 2)</li>
+	<li>do not use auto-refreshing pages, until browsers can allow end users to control this behaviour (lv 2)</li>
+	<li>tabbing, create a logical tab order in your navigational links, form controls and other objects [use the attribute <strong>tabindex</strong>] (lv3)</li>
+	<li>no to pop ups and no to changing the window focus without warning the user first (lv 2)</li>
+	<li>Label your form controls (lv 2). e.g:<br />
+<br />
+<em>&lt;label for="firstname"&gt;First name: <br />
+	&lt;input type="text" id="firstname" tabindex="1"&gt;<br />
+&lt;/label&gt;</em><br />
+<br />
+Another point to consider is grouping a large amount of fields together into logical groups. You can do this using the <strong>&lt;fieldset&gt;</strong> tag around a grouping of form controls. You also may want to consider using the an additional <strong>&lt;legend&gt;</strong> tag to describe the logical grouping.
+	</li>
+	<li>when using links clearly label the target link, i.e. use the title attribute in <strong>&lt;a&gt;</strong> to indicate the target document (such as the document title) (lv 2)</li>
+	<li>provide semantic information about each document in your site, e.g. <strong>&lt;title&gt;</strong> and meta data. (lv 2)</li>
+</ol>
+
+<p>There you go my review of the base requirements with some hints on how to achieve Level 1,2 and three compliance. Below I have listed a whole raft of additional resources that delve into more depth or simply provide good tools for testing your site. </p>
+
+<a name="resrouces"></a>
+<h2>External resources</h2>
+<ul>
+	<li><a href="http://joeclark.org/book/sashay/serialization/">http://joeclark.org/book/sashay/serialization/</a> - the complete book "Building accessible web sites" by Joe Clark is available on-line!</li>
+	<li><a href="http://www.accessify.com/">http://www.accessify.com/</a> - A great first stop for finding out information about accessibility guidelines and issues</li>
+	<li><a href="http://www.juicystudio.com/services/colourcontrast.asp">http://www.juicystudio.com/services/colourcontrast.asp</a>  - a handy tool for measuring the colour contrast to make sites accessible according to 2.1 of the priority 1 guidelines. </li>
+	<li><a href="http://www.w3.org/TR/WCAG10/full-checklist.html">http://www.w3.org/TR/WCAG10/full-checklist.html</a> - the checklist for achieving basic accessibility</li>
+	<li><a href="http://www.vischeck.com/">http://www.vischeck.com/</a> - Simulates colour blind vision</li>
+</ul>
+
+<h2>Font control resources</h2>
+<ul>
+	<li><a href="http://www.useit.com/alertbox/20020819.html">http://www.useit.com/alertbox/20020819.html</a></li>
+	<li><a href="http://www.wilk4.com/webdevres/fontcss3.htm">http://www.wilk4.com/webdevres/fontcss3.htm</a></li>
+	<li><a href="http://www.happycog.com/thinking/colophon.html">http://www.happycog.com/thinking/colophon.html</a></li>
+	<li><a href="http://www.alistapart.com/switcher.html">http://www.alistapart.com/switcher.html</a></li>
+	<li><a href="http://hotwired.lycos.com/webmonkey/00/16/index2a_page2.html">http://hotwired.lycos.com/webmonkey/00/16/index2a_page2.html</a></li>
+	<li><a href="http://www.alistapart.com/stories/sizematters/">http://www.alistapart.com/stories/sizematters/</a></li>
+	<li><a href="http://devedge.netscape.com/">http://devedge.netscape.com/</a></li>
+</ul>
+
+<h2>Tools</h2>
+<ul>
+	<li><a href="http://www.uoguelph.ca/~stuartr/articles/favlets.shtml">http://www.uoguelph.ca/~stuartr/articles/favlets.shtml</a> - colour contrast favelet</li>
+	<li><a href="http://liftonline.usablenet.com/as/download/gT9lTKLd/download.html">http://liftonline.usablenet.com/as/download/gT9lTKLd/download.html</a> - Dreamweaver extension</li>
+</ul>
+
+<h2>CSS/xHTML</h2>
+<ul>
+	<li><a href="http://www.w3.org/Style/CSS/">http://www.w3.org/Style/CSS/</a> - CSS specification</li>
+	<li><a href="http://jigsaw.w3.org/css-validator/">http://jigsaw.w3.org/css-validator/</a> - CSS validator</li>
+	<li><a href="http://www.w3.org/MarkUp/">http://www.w3.org/MarkUp/</a> - Markup specifications</li>
+	<li><a href="http://validator.w3.org/">http://validator.w3.org/</a> - Markup validator</li>
+	<li><a href="http://www.csszengarden.com/">http://www.csszengarden.com/</a> - a superb example of CSS and xHTML working together</li>
+</ul>

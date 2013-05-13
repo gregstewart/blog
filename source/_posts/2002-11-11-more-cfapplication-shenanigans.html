@@ -1,0 +1,67 @@
+---
+layout: post
+title: More cfapplication shenanigans
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>The last time I delved into this area was 2 years ago, so I thought it's about time to revisit this topic and document a few more things I have learned over the years. Before we move on you might want to take a brief side step and have a look at <a href="http://gregs.teacupinastorm.com/html/article/article.php?id=bd91e0d39a9254ef42cec02d0b228b44">scoping your variables</a>. It's not integral to further reading, but it does provide a useful insight into variable naming conventions when defining variables in the <strong>application.cfm</strong>.</p>
+
+<p>Before we delve any further here a few points to be aware off. Firstly you need to know that the <strong>application.cfm</strong> is always called/parsed first (if found) and then the template that was called by the user. This means that no matter what page your visitor accesses if an <strong>application.cfm</strong> file exists then it will be processed first by Cold Fusion. This makes it an ideal candidate for storing site wide variables.</p>
+
+<p>When I first visited this topic this is exactly what I suggested. A good example was defining your database variables (username, password, and datasource for example). Now this is not such a good idea as you are exposing some potentially critical information to any person who can view the source of the <strong>application.cfm</strong>. It is a far better idea to store these within <em>Cold Fusion administrator</em>. However failing that (your ISP may well not give you access to the <em>Cold Fusion administrator</em>), storing those details in the <strong>application.cfm</strong> makes good sense from a maintenance point of view. Since these variables will be available application wide, they should be scoped as such. So you would defined them as follows:</p>
+
+<p><em>&lt;!--- -Set datasource- ---&gt;<br />
+&lt;cfset application.dsn = "YourDSN"&gt;<br />
+&lt;!--- -Set the username- ---&gt;<br />
+&lt;cfset application.dBUsername = "YourdBUsername"&gt;<br />
+&lt;!--- -Set the password- ---&gt;<br />
+&lt;cfset application.dBPassword = "YourdBPassword"&gt;<br /></em></p>
+
+<p>I may have jumped the gun a bit as the first thing you should do in your <strong>application.cfm</strong> is define your application name and enable your session management. For those who are a bit unsure as to what session management is, briefly and very much simplified this part allows you to track your site users as they interact with the web site. Session timeouts specified in the <strong>application.cfm</strong> override the ones set in the <em>Cold Fusion Administrator</em>.</p>
+
+<p><em>&lt;!--- -Declare the application and enable session management- ---&gt;<br />
+&lt;cfapplication name="YourApp" sessionmanagement="Yes" sessiontimeout="#CreateTimeSpan(0,1,0,0)#"&gt;</em></p>
+
+<p>The next really useful thing you can do is enable site wide error handling. This is a topic in it's own right but I'll give you a brief insight into this area. This is how you enable the site wide error handling:</p>
+
+<p><em>&lt;!--- - If an error occurs re-direct to this page- ---&gt;<br />
+&lt;cferror type="REQUEST" template="error/error.cfm"&gt;</em></p>
+
+<p>This tag <em>&lt;cferror&gt;</em> with the attribute <strong>type</strong> set to "<em>request</em>" is essentially the catch all setting, this means that most, if not all errors cause by your application will result in the the user being re-directed to <em>error/error.cfm</em>. This allows you to display a more user friendly error message than your Cold Fusion debug code or error message.</p>
+
+<p>One thing that I should point out though, is that this is not the most graceful or intelligent way of dealing with errors. Working with <em>&lt;cftry&gt;&lt;/cftry&gt;</em> and <em>&lt;cfcatch&gt;&lt;/cfcatch&gt;</em> is far superior approach to error handling. However if you are looking for a quick and easy way to stop those ugly Cold Fusion errors from popping up on your site and confusing users, use <em>&lt;cferror&gt;</em>. Also note that you cannot include any Cold Fusion tags on that page, however you are able to output the following diagnostic variables (just wrap them in between "#", e.g. #Error.Diagnostics#):</p>
+<ul>
+ <li>Error.Diagnostics</li>
+ <li>Error.MailtTo</li>
+ <li>Error.DateTime</li>
+ <li>Error.Browser</li>
+ <li>Error.GeneratedContent</li>
+ <li>Error.RemoteAddress</li>
+ <li>Error.HTTPReferer</li>
+ <li>Error.Template</li>
+ <li>Error.QueryString</li>
+</ul>
+
+<p>These variables should give you a good indication as to what went wrong and resulted in the error template being called. You may wonder how you could put this information to good use and in the near future I'll show you a neat trick that will allow you to have this information mailed out to you so that you can track errors on your site and deal with them in your own time.</p>
+
+<p>OK that's us pretty much done on the topic of <strong>application.cfm</strong>. Just one or two more things. <strong>Application.cfm</strong> forms a part of the Cold Fusion application framework and is usually found in the root of your site. However you can have several <strong>application.cfm</strong> files in your application, these should be kept in sub folders to denote a special set of functionality. The reason for that is that Cold Fusion will work it's way up through the tree structure of your server until it encounters an <strong>application.cfm</strong> template. This is important to note, it won't stop searching at the root of your site, but continue to traverse the tree structure until it hits the root of the drive.</p>
+
+<p>You may be wondering why you would need several <strong>application.cfm</strong>, for example if you were building an application that required a user to log in, the you could perform that check (i.e. check that a session variable for that user is defined) in the root <strong>application.cfm</strong> so that it applies to all pages in your application. If the check failed, i.e. the user isn't logged in, then you could re-direct the user to another folder with an another <strong>application.cfm</strong> that doesn't include the log in check, but say still contains all the database connection information. Similarly if you have other sub folders you do not need to specify additional log in checks, because as I already indicated Cold Fusion will work it's way up through your directory structure until it finds the <strong>application.cfm</strong> template.</p>
+
+<p>The final thing I'd like to mention is that <strong>application.cfm</strong> is not the place to keep say a site wide header include, as tempting as it may be. Right that's it, below is a sample <strong>application.cfm</strong> template for you to base your applications on.</p>
+
+<p>Code:<br />
+<em>&lt;!--- -Declare the application and enable session management- ---&gt;<br />
+&lt;cfapplication name="YourApp" sessionmanagement="Yes" sessiontimeout="#CreateTimeSpan(0,1,0,0)#"&gt;<br />
+&lt;!--- -Set datasource- ---&gt;<br />
+&lt;cfset application.dsn = "YourDSN"&gt;<br />
+&lt;!--- -Set the username- ---&gt;<br />
+&lt;cfset application.dBUsername = "YourdBUsername"&gt;<br />
+&lt;!--- -Set the password- ---&gt;<br />
+&lt;cfset application.dBPassword = "YourdBPassword"&gt;<br />
+&lt;!--- - If an error occurs re-direct to this page- ---&gt;<br />
+&lt;cferror type="REQUEST" template="error/error.cfm"&gt;
+</em></p>

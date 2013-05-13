@@ -1,0 +1,23 @@
+---
+layout: post
+title: Configuring Jetty's memory usage
+tags:
+- ! '*nix'
+- debian
+- jetty
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+Debian specific, but if you need to edit jvm configuration details for Jetty, look for this file:
+
+[code]/etc/default/jetty[/code]
+
+And locate the lines below to start fine tuning Jetty's memory usage: 
+[code]
+# Extra options to pass to the JVM         
+JAVA_OPTIONS="-Xmx256m -Djava.awt.headless=true"
+[/code]

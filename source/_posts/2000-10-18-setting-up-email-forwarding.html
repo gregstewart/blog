@@ -1,0 +1,48 @@
+---
+layout: post
+title: Setting up email forwarding
+tags:
+- ! '*nix'
+- email
+- sendmail
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+In this document I will show you two methods of configuring e-mail forwarding on a Linux mail server. You will need to have superuser access rights or login as root. Secondly you will need to know how to use the Vi editor (see <a href="http://gregs.teacupinastorm.com/html/article/article.php?id=881FE5AB-0398-4FF2-B9800809DAADB3F0">Basic Vi editing</a> for an introduction). Also in the examples don't type the information in brackets, unless othewise specified, as it's only their for comment purposes.So let's get cracking.
+
+<strong>Using .forward</strong>
+
+In the first method we will create a file in the users home directory. So change to the user's directory (in our example it will be jsmith [Or our trusty John Smith user]). There you will have to create a file called <em>.forward</em> using vi. In the file you will enter the e-mail address where all the messages are to be forwarded to. Follow the example below and substitute jsmith for your user's name.
+
+<em>cd /home/jsmith
+
+vi .forward
+
+(enter the e-mail address to which all incomming messages are to be forwarded)
+
+jsmith@otherdomain.com
+
+(save and quit the file)</em>
+
+You have now configured all of John Smith's e-mails to be sent to jsmith@anotherdomain.com
+
+<strong>Using the aliases file</strong>
+
+The second method is to use the aliases file. So just open the file in your Vi editor and create a new category at the end of the file called forwarding. There you will enter the username and point to the new address. The example below should help clarify this:
+
+<em>vi /etc/aliases
+
+(scroll to the end of the file and insert the following statements)
+
+# Forwarding
+
+jsmith:	jsmith@anotherdomain.com
+
+(save and quit the aliases file and enter the following command)
+
+sendmail -bi</em>
+
+This method allows for better centralised control, as all the information is stored in one place and therefore easier to maintain. Again I hope you found this tidbit of information useful.

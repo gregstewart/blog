@@ -1,0 +1,24 @@
+---
+layout: post
+title: Creating a Google like auth token
+tags: []
+status: draft
+type: post
+published: false
+meta:
+  _edit_last: '2'
+---
+... using CF
+
+[code]
+<!--- set the token --->
+<cfset attributes.userid="15588/">The new auth variable is now a comma delimited list of values. Since we have two values in the example (userid and accountid), you'll have a comma separated list of two values.<cfset attributes.accountid="123456/">
+<cfset attributes.seed="wibble&amp;wobble">
+<!--- encrypt them and create a string that we can use in the URL --->
+<cfset auth="toBase64(encrypt(attributes.userId">
+<cfdump var="#auth#">
+<!--- on any pages that needs to evaluate the token --->
+<!--- convert our string back ito a binary object, then back to a string so can decrypt it --->
+<cfset auth="decrypt(toString(toBinary(duplicate(auth))),">
+<cfdump var="#auth#">
+[/code]</cfdump></cfset></cfdump></cfset></cfset></cfset></cfset>

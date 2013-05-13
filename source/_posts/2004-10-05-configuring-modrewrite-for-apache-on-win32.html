@@ -1,0 +1,34 @@
+---
+layout: post
+title: configuring modRewrite for apache on win32
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Here's another one that has taken me a while to figure out. I had mod_rewrite working perfectly on this Linux box, but somehow never got it to work properly on Win32. To start off open up your httpd.conf file and un-comment:
+
+[code]LoadModule rewrite_module modules/mod_rewrite.so[/code]
+
+Then locate the following segment:
+
+[code]#
+# Each directory to which Apache has access can be configured with respect
+# to which services and features are allowed and/or disabled in that
+# directory (and its subdirectories).
+#
+# First, we configure the "default" to be a very restrictive set of
+# features.
+#
+<directory>
+Options FollowSymLinks
+AllowOverride None
+</directory>[/code]
+
+After much tinkering and experimenting I stumbled across the following settings, which after saving and re-starting Apache results in mod_rewrite picking up the rules you set up in your .htaccess file.
+
+[code]<directory>
+Options All
+AllowOverride FileInfo
+</directory>[/code]

@@ -1,0 +1,95 @@
+---
+layout: post
+title: Coding best practices
+tags: []
+status: draft
+type: post
+published: false
+meta: {}
+---
+<p>comment your code</p>
+
+<p>adhere to standards</p>
+
+<p>do cross browser testing </p>
+
+<p>level the playing field by agreeing with the client which browsers to develop for</p>
+
+<p>validate input, be sure to be extremely strict about validation for example when numbers are required then filter everything but 0-9, and not a-z, because that would still allow for A-Z, punctuation and white space.</p>
+<p>See here for info: http://m.bacarella.com/papers/secsoft/html/
+This should help limit cross browser scripting. Check here for more info:
+http://www.cert.org/advisories/CA-2000-02.html</p>
+
+<p>table rendering can be sped up by using the following CSS1 declaration:</p>
+<p><em>&lt;TABLE STYLE="table-layout: fixed" WIDTH="600"&gt;<br />
+&lt;TR HEIGHT="30"&gt;<br />
+&lt;TD WIDTH="150">happy&lt;/TD&gt;<br />
+&lt;TD WIDTH="200">happy&lt;/TD&gt;<br />
+&lt;TD WIDTH="250">happy&lt;/TD&gt;<br />
+&lt;/TR&gt;<br />
+&lt;TABLE&gt;<br /></em></p>
+
+
+<p>Furthermore when working with CSS be sure not to use "_" in your style names, some borwsers will not parse this. And the validator returns an error until you fix it.</p>
+
+<p>From webreference:
+http://www.webreference.com/programming/optimize/speedup/chap10/3/</p>
+<p>Use switch statements where ever possible, because if/else needs to evaluate
+each condition (i.e. each if statement), where as with switch statements no
+evaluation is required.</p>
+
+<p>Reverse loops can be twice as fast as normal loops. So instead of counting
+up (i++), consider counting down (i--)</p>
+
+<p>Also should you be doing any kind of calculation in your loops, consider
+moving it out of the loop. So instead of this:</p>
+
+<p><em>for (i=0;i<iter;i++) {<br />
+  d=Math.sqrt(y);<br />
+  j+=i*d;<br />
+}</em>
+</p>
+
+<p>Do this:</p>
+
+<p><em>
+d=Math.sqrt(y);<br />
+for (i=0;i<iter;i++) {<br />
+  j+=i*d;<br />
+}</em></p>
+
+<p>This technique here proved to be the fastest: Flipped Loop with Optimized Reverse Count</p>
+<p><em>function loopDoWhileReverse3() {<br />
+var i=iter;<br />
+do<br />
+{<br />
+  // do something here<br />
+}<br />
+while (--i);<br />
+}<e/m></p>
+
+<p>do.. while loops are generally considered faster than for loops.</p>
+
+<p>Check out more on Duff's device</p>
+
+<p>If you have two loops that follow the same number of iterations and are
+clsoe together fuse them together so instead of this:</p>
+
+<p><em>for (i=0; i<j; i++) {<br />
+  sumserv += serv(i);<br />
+}<br />
+for (i=0; i<j; i++) {<br />
+  prodfoo *= foo(i);<br />
+}</em></p>
+
+<p>Do this:</p>
+
+<p><em>for (i=0; i<j; i++) {<br />
+  sumserv += serv(i);<br />
+  prodfoo *= foo(i);<br />
+}</em></p><br />
+
+<p>Credit Card number validation formula
+http://www.webreference.com/programming/carts/chap7/3/</p>
+
+<p>Two ways to improve your database security. If you are using ColdFusion validate your input into SQL queries by way of the &lt;cfqueryparam&gt; paramater for &lt;cfquery&gt;. This helps validate the data to a strict expected type and will abort if the supplied information doesn't match. Another way and possibly better is to move this kind of checking to the database. Set up different user types that have different access privileges and hence can't execute statements like <strong>drop</strong> if say display queries are run based on URL IDs. This is pretty secure and also moves the processing to the database rather than burdening the application server further.</p>

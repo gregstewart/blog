@@ -1,0 +1,97 @@
+---
+layout: post
+title: AJAX calls and expired sessions
+tags:
+- ColdFusion
+- JavaScript
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+I have been updating a bunch of code recently to make use of the new features in <a href="http://prototypejs.org/">Prototype 1.6</a> and one of the great additions in this release was the introduction of <a href="http://prototypejs.org/api/ajax/request">Automatic JavaScript response evaluation</a>. This allowed me to improve on my session checking code without having to fuff around with the response information sent back to the client. The problem was with XHR requests: i.e. if the user initiated such a request when his session had expired, then usually the response would fail or worse just hang.
+
+The snippet below shows my new session checking code.
+
+[javascript]
+<script type="text/javascript"><!--
+function myAjaxCall() {
+ 	url = "index.cfm";
+ 	pars="?fuseaction.someFuseaction&par1=1&par2=2";
+	new Ajax.Updater(\\'div_to_populate\\',
+ 		url, {
+ 		method: \\'post\\',
+ 		postBody: pars,
+ 		onLoading: function()
+ 		{
+ 			//code to run while making the request
+ 		},
+ 		onComplete : function(transport,json)
+ 		{
+ 			if(json && json[\\'session\\'])
+ 			{
+ 				setSessionExpired();
+ 			} else {
+            			//Code to run when the request has completed
+ 		  }
+ 	   },
+ 	   onFailure: function ()
+ 	   {
+ 		  alert(\\'something went wrong\\');
+ 	   },
+	   evalScripts:true
+ 	});
+ }
+
+function setSessionExpired()
+{
+ 	alert(\\'Your session has timed out\\');
+ 	window.location=\\'http://<cfoutput>#cgi.HTTP_HOST#</cfoutput>/?fuseaction=home.home\\';
+}
+// --></script>[/javascript]
+
+The trick is to intercept the call when you do your session checking at the back end. Let's say you have a fuseaction called login.login (see below and yes this is fusebox 3 :S) where you display the login form when a user is not logged in, this is where I inserted the check for an XHR request, by looking at the http headers sent along with the request. The key here is a new header attribute passed in with Prototype "X-Requested-With". If this attribute exists then I know it's an XHR request and I can create a custom JSON header with an error struct that holds a key called session with a value of timeout. All I then need to do is encode the struct as JSON and pass that encoded struct back to the browser.
+
+[code]
+<cfcase value="login">
+		<!--- gvs 1Feb08 - handles XHR requests that session timeout --->
+		<cfset attributes.request = GetHttpRequestData()/>
+		<cfif StructKeyExists(attributes.request.headers,"X-Requested-With")>
+			<cfsetting showdebugoutput="false">
+			<cfparam name="attributes.jsonObj" default="#CreateObject('component','com.jehiah.json')#"/>
+			<cfparam name="error" default="#StructNew()#"/>
+			<cfset error['session']='timeout'/>
+			<cfif StructKeyExists(attributes,"jsonObj")>
+				<cfheader name="X-JSON" value="#trim(attributes.jsonObj.encode(error))#" /><cfabort>
+			</cfif>
+		</cfif>
+
+        <cfif StructKeyExists(session,'login')>
+            <cfset attributes.login = session.login/>
+        <cfelse>
+            <cfparam name="attributes.login" default=""/>
+        </cfif>
+
+		<cfscript>
+			xfa.submitform='index.cfm?fuseaction=login.processlogin';
+		</cfscript>
+		<cfinclude template="#affiliate('dsp_login.cfm')#"/>
+</cfcase>
+[/code]
+
+Now let's jump back to the JavaScript code and take a look at the onComplete function again:
+
+[javascript]
+onComplete : function(transport,json)
+{
+        if(json &amp;&amp; json['session'])
+        {
+                setSessionExpired();
+        } else {
+                //Code to run when the request has completed
+        }
+}
+[/javascript]
+
+If there's a JSON object and it has a key of session then I call my setSessionExpired function which redirects the users. Now the json session key only exists in these situations since the call normally just passes back the result of the call.

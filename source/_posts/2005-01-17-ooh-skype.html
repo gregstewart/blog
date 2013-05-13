@@ -1,0 +1,27 @@
+---
+layout: post
+title: Ooh Skype
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+I just re-installed everything on my home workstation and tried to install Apache 2.052 on it and the install kept failing while trying to install the service with the following message:
+
+[code](OS 10048)Only one usage of each socket address (protocol/network address/port) is normally permitted. : make_sock: could not bind to address 0.0.0.0:80
+no listening sockets available, shutting down
+Unable to open logs
+Note the errors or messages above, and press the <esc> key to exit. 10...</esc>[/code]
+
+Checked the list of services running, no sign of an httpd daemon, no sign of IIS. After a few botched attempts at un-installing and re-installing I remembered the netstat command and with the help of the following command:
+
+[code]netstat -ab[/code]
+
+I got a list of all ports that were in use and their associated applications. It turns out that Skype had bound to that address. I stopped <a href="http://www.skype.com/" title="Free Internet telephony that just works">Skype</a> (if you haven't heard of it, go check it out it's a nifty Internet telephony ap) and installed the service again using:
+
+[code]apache -k install -n "Apache 2"[/code]
+
+Using the apache monitor I was able to start apache and it's all working like a treat.
+
+BTW Skype by default listens on port 80 for "alternative incoming connections" you can uncheck this option quite safely as it should use the user defined port (which is apparently randomly selected at install time).

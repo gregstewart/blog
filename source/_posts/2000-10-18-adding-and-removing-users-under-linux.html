@@ -1,0 +1,60 @@
+---
+layout: post
+title: Adding and removing users under Linux
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>Adding and removing users under Linux</h3>
+<p class="1">I guess one of the more important things to do is to know how to administrate users under Linux. This little document will show you how to add and remove users. Everything in this document relates to administrating users from the shell. The reason being that you can do all this remotely by telneting into the server and hence don't have the graphical user interface that you usually have if you are running X-Windows.</p>
+
+<p class="1"><b>Adding users</b><br />
+Let's first off start by creating a new user. Not only will the user be able to login into the Linux server, but this process also automatically creates a user email account. So let's begin. You start off by having to have superuser access rights or by being logged in as root. Also in the examples don't type the information in brackets, unless othewise specified, as it's only their for comment purposes. Next you can type:</p>
+
+<p class="1"><i>adduser username</i></p>
+
+<p class="1">It's a pretty straightforward command where <i>adduser</i> is the command to be executed and <i>username</i> is the name of the actual user you wish to create an account for. So if we say had a user named John Smith and you had the user naming convention of using the first name initial and the surname your command would look something like this:</p>
+
+<p class="1"><i>adduser jsmith</i></p>
+
+<p class="1">Decide as early on as possible which type of naming convention you are going to choose and apply it rigourosly. I recommend using the first name initial followed by the surname, as it gives you more scope than using say firstname followed by the first letter of the surname. Also you can use other symbols such as full stop or underscore when creating user names, i.e. <i>j.smith</i> or <i>j_smith</i>.</p>
+
+<p class="1">Once you have entered the command <i>adduser username</i> the system will remind you to set the username password. You do this by typing the following command:</p>
+
+<p class="1"><i>passwd username</i></p>
+
+<p class="1">Yes it is <i>passwd</i> and not <i>password</i>. You will then be prompted to enter the username password and confirm it after you have hit return once. If you fail to confirm the password the password is not set (by either hitting return or mistyping it) and you'll have to type <i>passwd username</i>. Again think about your password convention. Later versions of Linux enforce a strict policy, if I remember correctly no less than 6 characters an it's not allowed to be a dictionary word. Older versions don't necessarily enforce this policy, so it's up to you as the administrator to enforce it. For security purposes try also mixing upper case and lower case, and also make the password alpha numeric. UK car number plates make great passwords, as long as it's not your current car sat outside in the car park. So for our user John Smith the complete sequence would look something like this:</p>
+
+<p class="1"><i>passwd jsmith</i><br />Enter the password:******<br />Confirm password:******<br />Password set.</p>
+
+<p class="1"><b>Removing users</b><br />
+Deleting users is slightly more involving than adding users as you have tomake sure that all references have been removed from the system. Again newer versions of Linux are better at it than the older ones. But for safety's reasons we'll go through all the files you need to check. You'll need to be familiar with Vi editing (see <a href="http://www.armagossa.com/content.cfm?content_ID=20">Basic Vi editing</a> for an introduction).</p>
+
+<p class="1">Right onto the ineteresting stuff. First off let's delete the user account. To delete a user you need to type in the following command (again you'll superuser access rights or be logged in as root):</p>
+
+<p class="1"><i>userdel -r username</i></p>
+
+<p class="1">Again subsitute <i>username</i> for your actual username, using John Smith as our example your command would look as follows:</p>
+
+<p class="1"><i>userdel -r jsmith</i></p>
+
+<p class="1">Also notice that we have used a switch (<i>-r</i>), for a whole listing a switches and their explanation you can type <i>man userdel</i> from the command prompt. Right now you have removed the username from the user database, all you need to do now is make sure that all the user directories and entries in the password file have been removed. First off let's check the directory entries. Linux when adding a user creates a directory with the users login name in the <i>/home</i> directory. Secondly it creates a file, again with the user's login name in the <i>/var/spool/mail</i> directory, where all mail messages are held if they are kept on the server. So if you find an entry in any of those directories (making sure that you change to the relevant directory first), you can type:</p>
+
+<p class="1"><i>rm -rf username</i></p>
+
+<p class="1">Or using our example:<br />
+<i>cd /home<br />
+ls -l |more <br />
+(if entry is found)<br />
+rm -rf jsmith<br />
+cd /var/spool/mail<br />
+ls -l |more <br />
+(if entry is found)<br />
+rm -rf jsmith<br />
+</i></p>
+
+<p class="1">This command should remove the users directories and files (again for a complete listing and meaning of the command <i>rm</i> switches type: <i>man rm</i>). Now we need to check that all entries relating to the user have been removed from the password file. So change to your <i>/etc</i> directory and open up <i>group</i> file in your vi editor (type: <i>vi group</i>) and scroll through it looking for and entry relating to your user, it will look something like this <i>username:501:</i>. Delete the entry and then quite and save the ammended file.</p>
+
+<p class="1">You don't have to stop or restart the server. Just make sure you edit that file carefully. That completes the introduction to Adding and Removing users. Hope you found it useful.</p>

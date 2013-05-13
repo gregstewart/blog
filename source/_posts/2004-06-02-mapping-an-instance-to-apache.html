@@ -1,0 +1,14 @@
+---
+layout: post
+title: Mapping an instance to Apache
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Having started a new job, I set about building up my development environment. I opted to run multiple CFMX instances on top of JRun. Apache is on the production servers so it made sense to run Apache on my development machine. When it came to installing Apache I opted for al of the default paths which resulted in the application being installed under <strong>Program files</strong>.</p>
+
+<p>When the time came to create the connector I stumbled across something that I hadn't anticipated. The space between "program" and "files", when executing the command. Here is an amended command line statement to create a connector (in bold, please note the quotation marks):</p>
+
+<p><em>{your install path}JRun4runtimejrebinjava -jar {your install path}JRun4libwsconfig.jar -host 127.0.0.1 -server www.yoursite.com -ws Apache -dir <strong>"C:Program FilesApache GroupApacheconf"</strong> -norestart -map .cfm,.cfc,.cfml -coldfusion -v</em></p>

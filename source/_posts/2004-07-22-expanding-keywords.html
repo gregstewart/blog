@@ -1,0 +1,26 @@
+---
+layout: post
+title: Expanding keywords
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>In my last work place we had this nifty stuff in place that updated the templates we were working on with version info, modification time and other bits and bobs, when the files were checked back into Visual Source Safe. I thought this was really handy to quickly review what had been happening to a template and that it would be a good idea to apply this in my new job as well. The first hurdle: enabling "it". Actually figuring out what "it", this technique, is called should have been my starting point. After some digging I finally stumbled across an article on MSDN and the answer: Enabling <strong>expanding keywords</strong>.</p>
+
+<p>The info for enabling the keyword expansion can be <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/guides/html/vstskenable_keyword_expansion.asp" title="Enable Keyword Expansion">found here</a>. Essentially using this feature edits your ssafe.ini file and adds the following entry to it (note I work mainly with ColdFusion templates so that is why you see .cfm and .cfc file extensions):</p>
+
+<p><em>Keyword_Masks = *.cfm,*.cfc</em></p>
+
+<p>Close the SourceSafe Administrator and SourceSafe Explorer. Now you can re-start SourceSafe Explorer and the changes you made to your .ini file will have been read in and applied. Now all you need to do is add these keywords that are to be expanded to your development templates. <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/guides/html/vstskexpand_keywords.asp" title="Expand Keywords">A list can be seen here</a>. In the end I settled for these and stuck them between &lt;cfsetting&gt; tags to suppress the output of white space:</p>
+
+<p><em>&lt;cfsetting enablecfoutputonly="yes" /&gt;<br />
+&lt;!--- <br />
+	$Archive:  $<br />
+	$Author:  $<br />
+	$Date:  $<br />
+	$History:  $<br />
+	$Logfile:  $<br />
+ ---&gt;<br />
+&lt;cfsetting enablecfoutputonly="no" /&gt;</em></p>

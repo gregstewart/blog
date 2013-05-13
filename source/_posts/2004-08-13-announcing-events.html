@@ -1,0 +1,18 @@
+---
+layout: post
+title: announcing events
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+There are two ways that you can announce events in the <a href="http://www.mach-ii.com/" title="Mach-ii">Mach-ii framework</a>. The first way is inside a <acronym title="ColdFusion Component">CFC</acronym> (typically I believe a Listener) and that is by calling the <strong>announceEvent()</strong> method and passing in the event name and any arguments that you wish to pass along as well. For example:
+
+[code]<cfset announceEvent("someEvent",arguments.event.getArgs()) />[/code]
+
+The other way is in the <em>mach-ii.xml</em> config file. Here you can make use of the following syntax to announce a new event
+
+[code]<announce event="someEvent" />[/code]
+
+Just make sure you have an event-handler set for "someEvent". And also do note that announcing events is not like re-directing to that event. This adds the event to the event queue.

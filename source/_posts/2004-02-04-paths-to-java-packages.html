@@ -1,0 +1,16 @@
+---
+layout: post
+title: Paths to java packages
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>From the <a href="http://www.cfczone.org/" title="CFCzone.org">cfcdev-zone list</a>, Stephen Bosworth posted the following explanation about paths to packages in Java. This made it clear once and for all what com.package.something actually meant and how it relates to your stored files:</p>
+<p>"Say I have a suite of classes that I want to sell, I would create a package name based on my domain (newcastle.edu.au). All my classes would belong to my package, and be assured of no conflict with any one else?s on their systems (unless they create a package named after my domain with the same classes, but why would you want to do that :-) )</p>
+<p>Example:<br />
+======<br />
+Say I have a component name user and I want to give it to you, and you also have a component named user, and you need to use both of them in an application.<br />
+All your components should be in your own "package", namely a reference to au.com.tq (the reference to component would look something like {root}\au\com\tq\user.cfc).<br />
+I could give you a "package" of my components, namely au.edu.newcastle (e.g. {root}\au\edu\newcastle\user.cfc ). Now you can reference both without the worry of reference conflicts."</p>

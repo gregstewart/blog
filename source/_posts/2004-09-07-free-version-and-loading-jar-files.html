@@ -1,0 +1,28 @@
+---
+layout: post
+title: free version and loading jar files
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+The free version of BlueDragon sadly has no option for loading additional jar files such as jTidy or log4J at startup or by adding them to server the classpath. However thanks to <a href="http://www.newatlanta.com/c/products/bluedragon/self_help/archiveSearch/detail?page=1&amp;messageId=74160" title="Re: [BlueDragon] Argument is not an array">Phil Cruz's post</a> to the NewAtlanta mailing list and Spike's <a href="http://www.spike.org.uk/blog/index.cfm?data=03/06/2004" title="Loading java class files from a relative path">post on his blog</a> there is way round this slight annoyance. Below is the code for loading jTidy from a relative path, which quite frankly pleases me no end!!
+
+<em>&lt;cfscript&gt;
+pathToTidy = "/your/Path/To/Tidy.jar";
+// Create an instance of java.net.URL for passing to the URLClassLoader
+URLObject = createObject('java','java.net.URL');
+// Initialize the object with the jar file
+URLObject.init("file:" &amp; pathToTidy);
+// Create an Array and add our URLObject to it
+arr[1] = urlobject;
+// Create and the URLClassLoader and pass it the array containing our path
+loader = createObject('java','java.net.URLClassLoader');
+loader.init(arr);
+// Use our new class loader to load the Tidy class
+tidy = loader.loadClass("org.w3c.tidy.Tidy").newInstance();
+&lt;/cfscript&gt;
+&lt;cfdump var="#tidy#" /&gt;</em>
+
+You can see it in action <a href="http://www.tcias.co.uk/projects/dev/loader.cfm" title="go see it in action">here</a>

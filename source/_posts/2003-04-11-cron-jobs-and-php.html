@@ -1,0 +1,48 @@
+---
+layout: post
+title: Cron jobs and PHP
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I have been wanting to schedule a few tasks on my hosted site that call PHP scripts and "do stuff" for ages, but just never found the time to look into it. Finally the opportunity arose to look into it. As with all things, I started by scouring the Internet here is the resources I came across that purely refers to PHP and the command line:</p>
+
+<ol>
+  <li>http://www.phpfreaks.com/phpmanual/page/features.commandline.html</li>
+</ol>
+
+<p>So the idea was all along to write a bunch of scripts that would be executed say on a daily basis using the cron job. Now my initial impression was that you could only call scripts from the command line. However then I also read the CPanel documentation in a little more depth and realised that I can call php pages via the GET command... So I went ahead and wrote this little script that would send a message out to me (which is one of the examples from the PHP documentation for using the <strong>mail()</strong> function).</p>
+
+<p><em>&lt;?php<br />
+$myname = "My name";<br />
+$myemail = "my@emailaddress.com";<br />
+<br />
+$contactname = "The person to be contacted";<br />
+$contactemail = "contact@emailaddress.com";<br />
+<br />
+$message = "hello from happy me";<br />
+$subject = "A mail not refused by Hotmail";<br />
+<br />
+$headers .= "MIME-Version: 1.0\r\n";<br />
+$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";<br />
+$headers .= "From: ".$myname." <".$myemail.">\r\n";<br />
+$headers .= "To: ".$contactname." <".$contactemail.">\r\n";<br />
+$headers .= "Reply-To: ".$myname." <$myreplyemail>\r\n";<br />
+$headers .= "X-Priority: 1\r\n";<br />
+$headers .= "X-MSMail-Priority: High\r\n";<br />
+$headers .= "X-Mailer: Just My Server";<br />
+<br />
+mail($contactemail, $subject, $message, $headers);<br />
+?&gt;</em></p>
+
+<p>By calling the url I tested that the page worked properly and in due time I received a message. So now it was time get the CRON job up and running. To this end I entered the following command into the "command to run" field of CPanel: <strong>GET http://www.teacupinastorm.com/clients/sample_mail.php</strong>. I set an interval of five minutes for the job, so in theory I would receive a message every five minutes. I submitted it and all that was left for me to do was wait patiently for a message to wing it's way into my inbox. While I was waiting I did  a little more research which is listed below. Having said that this solution worked a treat and the message landed in my inbox!! Hurrah!</p>
+
+<p>The documentation for setting up Cron jobs in CPanel can be found here: http://www.cpanel.net/docs/cp/cronJobs.htm</p>
+<p>And RedHat has some additional information on CRON jobs here: http://www.redhat.com/support/resources/tips/cron/cron.html</p>
+
+<p>And below is an alternative suggestion for PHP and Cron:</p>
+<p>http://www.htmlcenter.com/tutorials/tutorials.cfm/155/PHP/<br />
+This tutorial makes use of PHP and Lynx to call a page (if you are using PHP as an Apache module) and the cron command looks something like this:<br />
+<em>* * * * * lynx -dump http://www.somedomain.com/cron.php</em></p>

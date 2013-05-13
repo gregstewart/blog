@@ -1,0 +1,52 @@
+---
+layout: post
+title: Installing and using Stubbie
+tags:
+- ColdFusion
+- generator
+- install
+- stubbie
+- stubs
+- tdd
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+I thought it would also be useful if I post the installation and usage instructions here.
+
+<h3>Installation</h3>
+The simplest way to install stubbie is to just place it in your webroot, alternatively you can just create a mapping called /stubbie and point it to your install folder.
+
+<h3>Usage</h3>
+Using stubbie requires 2 steps the first is editing config.xml and the second is calling the component.
+
+Step 1
+Open up the config.xml file and edit it the following settings
+
+[code]
+<stubbie>
+
+	<config>
+		<appName value="myAppName" /><!-- the name of your app, e.g. the folder name under which the app resides, used to suffix the root path of your app -->
+		<appPath value="/Full/Path/To/Root/Of/Your/App" /><!-- full path to the app, minus the app folder name -->
+		<packageRoot value="com.myDomain" /><!-- if you have a mapping for your app's cfcs, e.g. com.mydomain, specify it here -->
+		<saveTestFilesTo value="" /><!-- Not implemented yet, optional storage location for the test stubs -->
+		<unitTestFramework value="cfcUnit"/><!-- cfcUnit and cfUnit are allowed options here -->
+	</config>
+	
+</stubbie>
+[/code]
+
+Step 2
+
+Place the following code anywhere you wish to invoke stubbie from:
+
+[code]
+<cfset configFilePath = ExpandPath("./config.xml")/>
+
+<cfset stubbie = CreateObject("component","Stubbie").init(configFilePath)/>
+<cfset stubbie.build()/>
+[/code]

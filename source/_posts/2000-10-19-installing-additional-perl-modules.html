@@ -1,0 +1,22 @@
+---
+layout: post
+title: Installing additional Perl modules
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>Installing additional Perl modules</h3>
+<p class="1">Every now and then you will have to install new Perl modules, for a multitude of reasons, such as installing a new Perl application that requires new libraries/modules. In order to do this you will have downloaded these from the web (or obtained from a different source) and extracted them from their compressed state (for more information on how to extract files in Linux check out <a href="http://www.armagossa.com/index.cfm?contentID=37">decompressing files in Linux</a>)</p>
+<p class="1">Once you have done this, make sure that you have sufficient permissions to execute files, i.e. you are logged on as root or as superuser. Change to the relevant directory and you should always read the INSTALL and README files before doing anything. Ok, once you have done all this you are ready to install the modules.</p>
+<p class="1">The first thing you will need to do is to create is a <i>make</i> file. This is achieved by typing at the command prompt:</p>
+<p class="1">Perl Makefile.PL</p>
+<p class="1">Please not the case of the statement, remember Linux (as any other flavour of Unix) is case sensitive. The <i>make</i> file describes dependencies and contains instructions. So now you are ready to execute the make file, again from the command prompt type:</p>
+<p class="1">make</p>
+<p class="1">OK now everything is in place to actually begin installing the module. This process takes place in two stages. The first tests the installation and the second carries out the installation, assuming that the test was successful. Ready to install? Type the following commands one after the other:</p>
+<p class="1">make test <i><= wait for the execution to finish</i><br />
+make install</p>
+<p class="1">Once this step is finished, the module should be installed. If you wish to check whether this is the case or not, type the following command:</p>
+<p class="1">find `Perl -e 'print "@INC"'` -name '*.pm' -print |more</p>
+<p class="1">This will generate a long list (hence the pipe more command). Scroll through the list until you find the module you were adding to your Perl installation. If you are looking for a great Perl reference book, then I can seriously recommend the following book by O'Reilly, <a href="http://www.amazon.co.uk/exec/obidos/ASIN/1565924622/armagossacom">The Perl CD Bookshelf</a>.  It basically contains all the Perl books they have published in a CD format. Very, very useful... Hope you enjoyed this page, as per usual, comments and feedback are welcome.</p>

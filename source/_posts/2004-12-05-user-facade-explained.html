@@ -1,0 +1,256 @@
+---
+layout: post
+title: user facade explained
+tags: []
+status: draft
+type: post
+published: false
+meta: {}
+---
+User objects in Mach-ii.info
+In our Application plugin the configure method initialise the userFacade (remember the configure method is only called when the application is initialised). So in your configure methos place the following line:
+
+var userFacade = createObject("component","appPath.user.UserFacade");
+
+This is what the userFacade object contains
+
+<cfcomponent displayname="User Facade" hint="I am a facade to manipulate the user in session scope."></cfcomponent>
+
+<cffunction name="init" access="public" returntype="userFacade" output="false" displayname="Init" hint="I initialise the component and return it's instance">
+<cfreturn>
+</cfreturn></cffunction>
+
+<cffunction name="getUser" access="public" returntype="user" output="false" displayname="get user" hint="I return the user object stored in the session">
+<cfreturn>
+</cfreturn></cffunction>
+
+<cffunction name="setUser" access="public" returntype="void" output="false" displayname="set user" hint="I put the user object into the session">
+<cfargument name="user" required="true">
+<cfset session.user="arguments.user">
+</cfset></cfargument></cffunction>
+
+<cffunction name="hasUser" access="public" returntype="boolean" output="false" displayname="has user" hint="check if the user objects exists in session">
+<cfreturn>
+</cfreturn></cffunction>
+
+[the facade is the actual object that can access the session scope, it's the object that can do so safely]
+
+Next pass the facade into properties (the property manager (pm) is created just before the userFacade):
+pm.setProperty("userfacade",userFacade);
+
+Now before each event is processed (applicationPlugin using the preEvent method) we grab the current event and retrieve our userFacade from the properties. Using the hasUser() method from the userFacade object we check if it exists.
+
+var event = arguments.eventContext.getCurrentEvent();
+var uf = getAppManager().getPropertyManager().getProperty("userfacade");
+var user = 0;
+//if the user doesn't have a session create it (using the facade)
+if (not uf.hasUser()){
+user = createObject("component","appPath.model.user.user").init();
+uf.setUser(user);
+}
+
+If the user object doesn't exist in the session, we create a user object and pass it into the userFacade. The user object (a very basic implementation) can be seen below.
+
+<cfcomponent displayname="User" hint="I model a single user."></cfcomponent>
+
+<cffunction name="init" access="public" returntype="user" output="false" displayname="User Constructor" hint="I initialize a user.">
+<cfargument name="userID" type="numeric" required="false" default="0" displayname="user ID" hint="I am the unique user ID passed in">
+<cfargument name="username" type="string" required="false" displayname="my user name" hint="I am the user name">
+<cfargument name="isLoggedIn" type="boolean" required="false" default="false" displayname="is logged in" hint="I am a boolean value indicating whether the use is logged in">
+<cfscript>
+variables.instance = structNew();
+setuserID(arguments.userID);
+setUsername(arguments.username);
+setIsLoggedIn(arguments.isLoggedIn);
+</cfscript>
+<cfreturn>
+</cfreturn></cfargument></cfargument></cfargument></cffunction>
+
+<cffunction name="getMemento" access="public" returntype="struct" output="false" hint="I return a memento of this users instance data.">
+<cfreturn>
+</cfreturn></cffunction>
+
+<cffunction name="setMemento" access="public" returntype="appPath.model.user.user" output="false" hint="I set this user's instance data from a new memento.">
+<cfargument name="memento" type="struct" required="yes" displayname="Memento" hint="I am a memento - a struct containing data.">
+<cfset variables.instance="arguments.memento">
+<cfreturn>
+</cfreturn></cfset></cfargument></cffunction>
+
+<!--- GETTERS/SETTERS --->
+
+<cffunction name="getUserID" access="package" returntype="numeric" output="false" displayname="get user ID" hint="I return userID">
+<cfreturn>
+</cfreturn></cffunction>
+
+<cffunction name="setUserID" access="package" returntype="void" output="false" displayname="set user ID" hint="I set the userID">
+<cfargument name="userID" type="numeric" required="true">
+<cfset variables.instance.userid="arguments.userID">
+</cfset>	</cfargument></cffunction>
+
+<cffunction name="getIsLoggedIn" access="public" returntype="boolean" output="false" displayname="get is logged in" hint="I return a boolean value flagging the login status">
+<cfreturn>
+</cfreturn></cffunction>
+
+<cffunction name="setIsLoggedIn" access="public" returntype="void" output="false" displayname="set the login status" hint="I set the login status">
+<cfargument name="isLoggedIn" type="boolean" required="true" displayname="I am the logged in flag">
+<cfset variables.instance.isloggedin="arguments.isLoggedIn">
+</cfset></cfargument></cffunction>
+
+<cffunction name="getUsername" access="package" returntype="string" output="false" displayname="get user name" hint="I return the user name">
+<cfreturn>
+</cfreturn></cffunction>
+
+<cffunction name="setUsername" access="package" returntype="void" output="false" displayname="set user name" hint="I set the user name">
+<cfargument name="username" type="string" required="true" displayname="I am the username passed in">
+<cfset variables.instance.username="arguments.username">
+</cfset></cfargument></cffunction>
+
+<!--- <cffunction name="getUserTO" access="public" return="appPath.model.user.userTO" output="false" displayname="get user Transfer Object" hint="I return the user Transfer Object">
+<cfreturn createUserTO() />
+</cffunction> --->
+
+<!--- <cffunction name="setUserFromTO" access="public" return="void" output="false" hint="set the instance data from TO">
+<cfargument name="userTO" type="machii_info.model.user.userTO" />
+<cfscript>
+setuserID(userTO.userID);
+setUsername(userTO.username);
+setFirstname(userTO.firstName);
+setLastname(userTO.lastName);
+setEmail(userTO.email);
+setPassword(userTO.password);
+setPassword2(userTO.password);
+setCompany(userTO.company);
+setIsAdmin(userTO.isAdmin);
+</cfscript>
+</cffunction> --->
+
+<!--- <cffunction name="createUserTO" access="package" return="appPath.model.user.userTO" output="false" displayname="create the user TO" hint="I create the user TO">
+<cfscript>
+var userTO = createObject("component", "userTO").init(argumentcollection=variables.instance,errors=variables.errors);
+return userTO;
+</cfscript>
+</cffunction> --->
+
+This object acts as a bean setting and returning user instance data. It also initialises and returns an instance memento and User Transfer Object (Not sure if we'll be using this). TOs are used for passing objects between application layers and also for remote calls. I don't think either is applicable here, so I commented it out.
+
+Returning to our application plugin regardless of whether the user existed in the session (if it didn't it was created at that point), userFacade creates a userTO (by virtue of putting the user object into the userFacade) by first getting the user object out of the session and then creating thw aforemtioned userTO. This userTO is created so that the user session information can be passed into the event arguments. As seen below:
+
+// set the session user transfer object in the event  using the facade
+event.setArg("sessionUser", uf.getUser().getUserTO());
+
+It still seems excessive, I decided to simply getting the session object and placing it into the event argument (as sessionUser). Like so:
+
+// set the session user in the event  using the facade
+event.setArg("sessionUser", uf.getUser());
+
+OK how is it all used then?
+
+There is a filter than can be called from event to event (i.e. when needed) called Security.cfc. This filter grabs the userFacade out of the properties and does some work:
+
+<cfcomponent extends="MachII.framework.EventFilter" display="Security filter" hint="I am an event filter that manages security of an application"></cfcomponent>
+
+<cffunction name="filterEvent" access="public" returntype="boolean" displayname="filterEvent method" hint="I am invoked by the Mach II framework.">
+<cfargument name="event" type="MachII.framework.Event" required="true" displayname="event object" hint="I am the current event object created by the Mach II framework.">
+<cfargument name="eventContext" type="MachII.framework.EventContext" required="true" displayname="eventContext object" hint="I am the current event context object created by the Mach II framework.">
+<cfargument name="paramArgs" type="struct" required="false" default="#structNew()#" displayname="paramArgs structure" hint="I am the structure containing the parameters specified in the filter invocation in mach-ii.xml.">
+<cfscript>
+var pm = getAppManager().getPropertyManager();
+var uf = pm.getProperty("userfacade");
+var invalidEvent = "";
+var clearEventQueue = true;
+var isLoggedIn = false;</cfscript></cfargument></cfargument></cfargument></cffunction>
+
+if (uf.hasUser()){
+isLoggedIn = uf.getUser().getIsLoggedIn();
+}
+if ( structKeyExists( arguments.paramArgs, "invalidEvent" ) ) {
+invalidEvent = arguments.paramArgs.invalidEvent;
+} else {
+invalidEvent = getParameter( "invalidEvent", "" );
+}
+if ( structKeyExists( arguments.paramArgs, "clearEventQueue" ) ) {
+clearEventQueue = arguments.paramArgs.clearEventQueue;
+} else {
+clearEventQueue = getParameter( "clearEventQueue", true );
+}
+<cfif>
+<cfreturn>
+<cfelse>
+<cfif>
+<cfset>
+</cfset>
+<cfset>
+<cfreturn>	 <!--- abort the current event handler --->
+</cfreturn>
+</cfset></cfif></cfelse></cfreturn></cfif>
+
+It checks whether a there is a session user in this facade and if true looks up the boolean value for isLoggedIn. If true the processing can continue, but if not a new event can be announced (like a prompt to login). This covers event based session checks (just remember to include your filter in your event handler declarations).
+
+The next place where our user session object comes in handy is in our views. Remember we passed in our user session object into the event args. At the top of your view set it to a local variable:
+
+sessionUser = request.event.getArg("sessionUser");
+
+Then in your view code you can access the user object methods (e.g. getUserID to display information). You can also do some conditional checking to control display parts (like using isLoggedIn).
+
+So how do you log someone in?
+Based on the login example provided by Ben Edwards, so look that up as I'll pick up where isLoginValid is called.
+
+<cffunction name="isLoginValid" access="private" returntype="boolean">
+<cfargument name="username" type="string" required="true">
+<cfargument name="password" type="string" required="true">
+<cfset qry_user="variables.userGateway.getUserByUsernamePassword(arguments.username,arguments.password)">
+<cfif>
+<cfset>
+<cfreturn>
+<cfelse>
+<cfreturn>
+</cfreturn>
+</cfelse></cfreturn></cfset></cfif></cfset></cfargument></cfargument></cffunction>
+
+The isLoginValid runs a quey verifying the user credentials passed. This is handed of to the userGateway, which was initialised when the listener was created (configure method).
+
+var appConstants = getAppManager().getPropertyManager().getProperty("appConstants");
+var dsn = appConstants.getDsn();
+variables.userGateway = createObject("component","appPath.model.user.usergateway").init(dsn);
+
+In addition a user DAO object is created so that we can carry out database interactions:
+
+variables.userDAO = CreateObject("component", "appPath.model.dao.DAOFactory").init(dsn, "machii_info").getDAOFactory(dbtype).getUserDAO();
+
+The query in isLoginValid returns a database record if found. If this is the case doLogin is called and the userID passed in:
+
+<cffunction name="doLogin" access="private" returntype="void">
+<cfargument name="userID" type="numeric" required="true">
+<cfscript>
+var uf = pm.getProperty("userfacade");
+var user = createObject("component","appPath.model.user.user").init();
+var userTO = variables.userDAO.read(arguments.userid);
+user.setUserFromTO(userTO);
+user.setIsLoggedIn(true);
+uf.setUser(user);
+</cfscript></cfargument></cffunction>
+
+Here we retrieve the userFacade from properties and and create a new user object. The mach-ii info app again makes a use of a TO, we are not so we set the result from userDAO to a user object rather than a userTO. So our doLogin method looks like this:
+
+<cffunction name="doLogin" access="private" returntype="void">
+<cfargument name="userID" type="numeric" required="true">
+<cfscript>
+var uf = pm.getProperty("userfacade");
+var user = createObject("component","appPath.model.user.user").init(variables.userDAO.read(arguments.userid));
+user.setIsLoggedIn(true);
+uf.setUser(user);
+</cfscript></cfargument></cffunction>
+
+I pass in the result from the DAO read straight into the initialisation of the user object. Now there is a slight risk because the query attempts to retrieve the record and if it's not found then it will error. HOwever since we just checked the username and password in our userGateway it should be OK. Furthermore we set the isLoggedIn to true and finally we pass the user object into the userFacade (i.e. we set the user session). Next we return to isLoginValid and return true.
+
+What about logging out?
+Again the loginListener contains a method called doLogout, which retrieves the userFacade from the properties object, set a user var holding the userFacade object and set the isLoggedIn flag to false.
+
+<cffunction name="doLogout" access="public" returntype="void">
+<cfargument name="event" type="MachII.framework.Event" required="true">
+<cfscript>
+var uf = pm.getProperty("userfacade");
+var user = uf.getUser();
+user.setIsLoggedIn(false);
+</cfscript>
+</cfargument></cffunction>

@@ -1,0 +1,16 @@
+---
+layout: post
+title: Dynamic gateway connection
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I always found the documented method for connecting to the gateway is a little bit backward as it required you to hard code the URL to the gateway, e.g. http://yourDomain/flashservices/gateway.</p>
+
+<p>Now obviously when you have different servers for say development and production this is less than ideal, unless we could always guarantee that the specified URL would be available, which in our case we couldn't. So here is the work around courtesy of Flash-remoting.com (you can <a href="http://www.flash-remoting.com/notablog/home.cfm?newsid=71" title="Overriding the gatewayUrl">view full article here</a> ). Basically this sets a variable on the template that holds your Flash movie that can be passed into your movie. In your movie you set a default value which is overridden if it (the var) is passed in. The only thing to note is that the example I believe makes a mistake: the variable name in the Flash movie should have been called <strong>gatewayUrl</strong> not <strong>myURL</strong> as is stated. Also be sure to use <strong>setDefaultGatewayUrl</strong> not <strong>setDefaultGatewayURL</strong>.</p>
+
+<p>You can review errors caused by Flash Remoting in a log file in CFIDE/administrator called flash.log. I also just noticed that when you run CFMX from the command line (in my case using a JRun instance) you can trace all of the component method calls on screen.</p>
+
+<p>And finally there was also <a href="http://www.flash-remoting.com/notablog/home.cfm?newsid=21" title="New updater for ColdFusion MX and Flash Remoting">a little pointer</a> to some Flash Remoting connection issues using web services.</p>

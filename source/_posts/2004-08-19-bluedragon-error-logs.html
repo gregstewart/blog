@@ -1,0 +1,15 @@
+---
+layout: post
+title: BlueDragon error logs
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+I was intrigued by a wee message that appears at the foot of every error message that gets displayed in your browser when BlueDragon encounters an error. Specifically where are these held and how can you view them. I initially assumed that there would be an option in the administrator to view error logs, but could only find the an option to view the log file. Now the first time I did this, I had re-started BD prior to looking at this section and after having encountered an error. The outcome no reference to my error. As I started posting this I decided to make doubly sure that there was nothing there and sure enough there was this time:
+
+[code]17/08/04 19:18.08: Error: java.io.FileNotFoundException: /{pathToWebRoot}/post_comment.cfm (No such file or directory), displaying source code snippet for: /{pathToWebRoot}/post_comment.cfm
+17/08/04 19:18.08: -] RunTimeError written to: [./work/temp/rtelogs/bderror46803.html][\code]
+
+Which would have saved me some time stepping through the BD folders to locate: {installFolder}/NewAtlanta/BlueDragon_Server_61/work/temp/rtelogs/. There still is no obvious way to view them, so maybe in an upcoming release the admin could have a link from the generated error in view log file to the actual html template? Or even better an option to view all the errors in one go, like you can when using CFMX?

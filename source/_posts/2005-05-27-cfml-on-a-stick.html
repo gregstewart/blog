@@ -1,0 +1,80 @@
+---
+layout: post
+title: CFML on a stick
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+In the last couple of posts I made passing references to using a USB Flash drive for development. My dad just got back from a trip to the US and brought me back a little present: <a href="http://www.transcendusa.com/products/ModDetail.asp?ModNo=45" title="Transcend - JetFlash 2A">a 1 Gig usb drive</a>. It is absolutely awesome, as soon as I got home I loaded Eclipse onto it and fired it up and it just worked (no surprises there as quite a few others had already achieved that feat). Next I put my current development files on there and I just pointed Eclipse to the new work space and after a restart - mobile development here we come!!
+
+Then I wanted to see how far I could take this: so I downloaded <a href="http://www.apachefriends.org/en/xampp.html" title="XAMPP">XAMPP</a> (XAMPP is based on the popular LAMP [Linux, Apache, Mysql and PHP] and includes a bunch of other tools) and extracted the contents of the package to my USB drive. Switching to the command prompt I navigated to XAMPP folder and started Apache using the included apache_start.bat file, opened a browser and went to http://localhost/ and there you go Apache and PHP working of the USB key (note: make sure you don't have any other Apache instances running).
+
+But could I get CFMX or BlueDragon to run off of this configuration as well?
+
+First off I selected <a href="http://www.caucho.com/index.xtp" title="Caucho Technology - Resin... faster">Resin</a> as my application server and proceeded to set up resin to talk to Apache. I ran the setup.exe file and specified the path to my Apache folder, i.e. E:\xampp\apache and restarted Apache. But that failed, for some reason resin assumed that I was running apache-1.3.x so I edited Apache's httpd.conf file to this:
+
+[code]LoadModule caucho_module "E:/resin-3.0.12/win32/apache-2.0/mod_caucho.dll"
+#AddModule mod_caucho.c
+...
+<ifmodule>
+ResinConfigServer localhost 6802
+CauchoStatus yes
+AddHandler caucho-request jsp
+</ifmodule>[/code]
+
+Once done I restarted Apache and it started up no problem. Now to test the connection between Apache and resin, simply locate resin.conf (in my case I found it at E:\resin-3.0.12\conf\) and right at the end you should see an entry like the following one:
+
+[code]<!-- configures the default host, matching any host name -->
+<host root-directory=".">
+<!--
+- configures an explicit root web-app matching the
+- webapp's ROOT
+-->
+<web-app id="/" document-directory="webapps/ROOT">
+</web-app></host>[/code]
+
+Change it to this, which tells resin to use Apache's default document directory.
+
+[code]<!-- configures the default host, matching any host name -->
+<host root-directory=".">
+<!--
+- configures an explicit root web-app matching the
+- webapp's ROOT
+-->
+<web-app id="/" document-directory="E:/xampp/htdocs">
+</web-app></host>[/code]
+
+All this information can be <a href="http://www.caucho.com/resin-3.0/install/cse-apache-win.xtp" title="Resin with Apache on Windows">found here</a>, including steps to test your set up by creating a test.jsp file. Then I started resin using (where "E" is the drive letter of my usb drive):
+
+[code]E:\resin-3.0.12\httpd[/code]
+
+And browsed as per the instructions to http://localhost/test.jsp and it worked just like that.
+
+Since I was on a roll, I decided to try out  BlueDragon, so I downloaded the J2EE version and extracted the files and copied the BlueDragon62.war file to E:\resin-3.0.12\webapps and restarted resin so that BlueDragon could be deployed. A little bit of patience is required here as it starting the Application server can take a wee while (this becomes the norm regardless of whether BlueDragon has been deployed, obviously this is a limitation of running it off the USB stick). Here is that output from the server start up:
+
+[code]E:\resin-3.0.12&gt;httpd
+Resin-3.0.12 (built Wed, 23 Feb 2005 10:29:38 PST)
+Copyright(c) 1998-2004 Caucho Technology.  All rights reserved.
+
+Using Resin(R) Open Source under the GNU Public License (GPL).
+
+See http://www.caucho.com for information on Resin Professional,
+including caching, clustering, JNI acceleration, and OpenSSL integration.
+
+Starting Resin on Wed, 13 Apr 2005 14:57:38 +0100 (BST)
+
+[14:57:54.562] http listening to *:8080
+[14:57:54.562] ServletServer[] starting
+[14:57:57.625] Host[] starting
+[14:58:17.484] In-place class redefinition (HotSwap) is not available.  In-place
+class reloading during development requires a compatible JDK and -Xdebug.
+[14:58:24.343] Application[http://localhost:8080/BlueDragon62] starting
+[14:58:44.921] cfmServlet: init
+[15:02:06.984] cfcServlet: init
+[15:06:42.312] Application[http://localhost:8080/resin-doc] starting
+[15:06:51.562] Application[http://localhost:8080] starting
+[15:06:56.125] hmux listening to 127.0.0.1:6802[/code]
+
+You know that everything is running once you see <strong>hmux listening to 127.0.0.1:6802</strong>. You can now test your deployment by browsing to: http://localhost/BlueDragon62/, which should display the BlueDragon CFML test page. If you want to locate the admin section of BD browse here: http://localhost/BlueDragon62/bluedragon/admin/index.cfm

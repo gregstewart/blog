@@ -1,0 +1,35 @@
+---
+layout: post
+title: Enabling full text searching on MySQL
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>A while back I played around with the idea of building a search facility for my site and as since it's driven by a database I used queries using the <em>LIKE '%%'</em> clause to return results. Since then however I have stumbled across full text searching. In the following I'll talk you through setting up your database to accept full text searches and then run a basic query to test it.</p>
+<p>Since my table was already up and running I had to ALTER it to create a <strong>Full text</strong> index on the column I wanted to search against. So if you are in the same boat and are adding such a feature to an existing database, you will have to type something similar to the following:</p>
+<p><em>ALTER TABLE `yourTable` ADD FULLTEXT `yourFullTextColumnName` (<br />
+`yourTableColumnName`<br />
+)</em></p>
+<p>If you are creating your table form scratch, then you can add this to the CREATE table statement, like such:</p>
+<p><em>CREATE TABLE yourTable (<br />
+id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,<br />
+yourTableColumnName body TEXT,<br />
+FULLTEXT (yourTableColumnName)<br />
+);</em></p>
+<p>So far so good, so know let's test our set up. Executing a full text search will require you to require select statement, like the one shown below:</p>
+<p><em>SELECT *<br />
+FROM yourTable<br />
+WHERE MATCH (<br />
+yourFullTextColumnName<br />
+)<br />
+AGAINST (<br />
+'keyword'<br />
+)</em></p>
+<p>The MATCH statement executes a natural language search for a given string (in this case 'keyword') against the column listed in the MATCH and returns a result set ranked by highest relevance but only if the statement appears in the where clause. The following statement gives you a chance to also generate a score for your result set. Please note that by using MATCH () AGAINST () statement in the WHERE clause we ensure that the result is ordered by relevance.</p>
+<p><em>SELECT other columns,<br />
+MATCH (yourFullTextColumnName) AGAINST ('keyword') AS score<br />
+FROM yourTable<br />
+WHERE MATCH (yourFullTextColumnName) AGAINST ('keyword')</em></p>
+<p>So there you go, a rough guide to enabling and testing full text searching on MySQL.</p>

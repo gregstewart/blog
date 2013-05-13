@@ -1,0 +1,17 @@
+---
+layout: post
+title: LIKE and Oracle
+tags:
+- database
+- Oracle
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+I never spotted this before but the LIKE operator is case sensitive! Which was skewing my search results quite severely. The work around is to put everything into upper case, both the values in the column you are performing the search against as well as the value of the varibale you are searching for.
+
+[code]SELECT col1, col2, col3
+FROM table
+WHERE UPPER(col4) LIKE '%UPPER(yourValue)%'[/code]

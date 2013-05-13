@@ -1,0 +1,87 @@
+---
+layout: post
+title: Working with Verity 2K
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Now yesterday we set about configuring our verity server and today we are going to test it and actually do some stuff with it.</p>
+
+<p>Before delving to deep I'd like to mention two command line tools: rck2 and mkvdk. The first is a utility that allows you to query collections from the command line you use it as follows:</p>
+
+<p><em>rck2 - server localhost -port 9901</em></p>
+
+<p>Once in, typing "h" will give you a complete listing of the command line options. The other tool is a command line is an indexing utility. You can use to carry out more sophisticated maintenance of your collections. We will be using the latter to create our collections, add files to them. Then to test the implementation fully we will use the former tool to query the collection.</p>
+
+<p>To create a collection we will be using the mkdvk command with the following two switches: create and collection. The first is self explanatory, the second provides both the name and the path where the collection is to be created. So if we wanted to create a collection called myCollection, as we specified in the previous article, in "c:\cfusion\verity\collections\" type in the following command:</p>
+
+<p><em>mkvdk -create -collection "c:\cfusion\verity\collections\myCollection"</em></p>
+
+<p>And this is the screen output you should be presented with:</p>
+
+<p>mkvdk - Verity, Inc. Version 2.6.1 (_nti40, Aug 11 2000)<br />
+mkvdk done</p>
+
+<p>Incidently if you want delete a collection I recommend that you first purge the collection and then you'll need to delete the folders manually. This is what the command line and screen output would look like:</p>
+
+<p><em>mkvdk -purge -collection myCollection<br />
+<br />
+mkvdk - Verity, Inc. Version 2.6.1 (_nti40, Aug 11 2000)<br />
+State: Collection is down<br />
+State: Collection is up<br />
+mkvdk done</em></p>
+
+<p>But back to setting up the collection. Ok now we have a collection called myCollection in "c:\cfusion\verity\collections\", it's time to add a few documents to the collection. Again we will be using mkvdk and we will be using a file that contains a list of documents to be added to the collection. The command here is:</p>
+
+<p><em>mkvdk -collection collectionname -bulk -insert filespec</em></p>
+
+<p>Or using our example and an external file containing the list of the documents to be added called filelist.txt (stored in the same folder as mkvdk):</p>
+
+<p><em>mkvdk -collection "c:\cfusion\verity\collections\myCollection" -bulk -insert @filelist.txt</em></p>
+
+<p>The file that contains the list has the following format</p>
+
+<p><em>"c:\path to files\filename 1"<br />
+"c:\path to files\filename 2"<br />
+"c:\path to files\filename 3"</em></p>
+
+<p>As the process runs all the debug information will be displayed on the screen, burt as it tends to fly past, you'll be hard pressed to see what is actually going on, other than spot the odd error message from parsing the document. You can review all this output in the sysinfo.log file that is generated for the collection you are adding the documents to (in our example this would be: c:\cfusion\verity\collections\myCollection\sysinfo.log).</p>
+
+<p>For completeness though here is how you add a single file to a collection.</p>
+
+<p><em>mkvdk -collection "c:\cfusion\verity\collections\myCollection" -insert "C:\Documents and Settings\gstewart\Desktop\some_text.txt"</em></p>
+
+<p>And this is the output that is generated:</p>
+
+<p><em>mkvdk - Verity, Inc. Version 2.6.1 (_nti40, Aug 11 2000)<br />
+Initializing dataset 00000003.ddd, index 00000003.did<br />
+Totals (1 documents): 12 para  32 sent  770 word  (1392 Kb used)<br />
+(400 ms) Indexed 1 docs into c:/cfusion/verity/collections/myCollection/parts/00000003<br />
+Writing partition index data<br />
+mkvdk done</em></p>
+
+<p>OK now to test a search against the collection. To this end we will be making use of the previously mentioned rck2 utility. Launch it from the command line as shown below.</p>
+
+<p><em>C:\CFusion\Verity\_nti40\bin>rck2 -server localhost -port 9901
+RCK2 - Verity, Inc. Version 2.20
+Type 'h' for a list of commands</em></p>
+
+<p>Next change to your collection</p>
+
+<p><em>rck2> c myCollection</em></p>
+
+<p>Then run a search against the collection:</p>
+
+<p><em>rck2> s *<br />
+Retrieved: (1)1 of 1</em></p>
+
+<p>Now display the results:</p>
+
+<p><em>rck2> r<br />
+docId: 1<br />
+score: 1.0000<br />
+k2dockey: c:/cfusion/verity/collections/myCollection/some_text.txt@myCollection</em></p>
+
+<p>And there you go all done, your collection has been created, documents added to it and results returned.</p>

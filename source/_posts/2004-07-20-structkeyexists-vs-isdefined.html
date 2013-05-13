@@ -1,0 +1,11 @@
+---
+layout: post
+title: StructKeyExists() vs isDefined()
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>There was a thread on CF-talk the other week titled the same as this little entry, where the the difference between these two functions was asked and what the benefits, performance considerations were when using either option. I was going to write up something about this thread, but Sean Corfield has already done it and superbly summarised it. <a href="http://www.corfield.org/blog/past/2004_07.html#000510" title="isDefined() vs structKeyExists()">Go check it out</a> as it really explains how these two functions work [i.e. how they determine whether or not that variable in question exists]. For a full discussion of the thread have a <a href="http://www.houseoffusion.com/cf_lists/messages.cfm/threadid=33841&forumid=4" title="StructKeyExists() vs IsDefined() - house of fusion thread">look here</a>.</p>
+<p>The upshot? If you are using CFMX all vars are held as structures, so you'll get the best out of using StructKeyExists().</p>

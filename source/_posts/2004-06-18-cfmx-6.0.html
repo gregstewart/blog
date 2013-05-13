@@ -1,0 +1,15 @@
+---
+layout: post
+title: CFMX 6.0
+tags: []
+status: draft
+type: post
+published: false
+meta: {}
+---
+<p>I really should have known better than to develop using CFMX 6.1 and then run it on CFMX 6.0. There were a few things that came back to bite me. I was building an small app that was going to use JSRS to do calls to the database and display results to the template without having to reload the page. I used the scripts provided by Grant Szabo in his article: <a href="http://www.sys-con.com/story/?storyid=43998" title="JavaScript Remote Scripting with ColdFusion MX">JavaScript Remote Scripting with ColdFusion MX</a>. The scripts work fine in 6.1, however 6.0 takes exception to a few things.</p>
+<ol>
+	<li>Firstly you can't reference the request scope from within a CFC. Which frankly is a good thing, as from what I have read over recent months it's a good idea to encapsulate your code and pass information in. So I can't help but wonder why the behaviour appears to be correct in CFMX 6.0 (i.e. you can't reference it) and not so in CFMX 6.1 (i.e. yes you can).</li>
+	<li>Secondly the script relied on having the result of the queries being written to the template and then onLoad executing a JavaScript function. Again in CFMX 6.1 no problem doing that from within the component, but not so in CFMX 6.0</li>
+</ol>
+<p>I have modified the components to take these things into consideration and also changed the some of the scripts. All data is now passed into the component explicitly and in the case of the output to template, the result is passed back to the calling template and then output. And now it works for both versions, while adhering to some CFC development recommendations.</p>

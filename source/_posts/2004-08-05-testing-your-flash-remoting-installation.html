@@ -1,0 +1,24 @@
+---
+layout: post
+title: Testing your Flash remoting installation
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+On CF-talk someone was wondering where and how CFMX configures the Flash Remoting gateway. When you create your connection you usually do something like this:
+
+[code]var gatewayUrl = "http://servname:port/flashservices/gateway";
+NetServices.setDefaultGatewayUrl(gatewayUrl);[/code]
+
+So the best way to test whether this is configured properly is to simply point your browser to that URL. If you get a blank page then everything is OK, if on the other hand you get a page not found then something is amiss. One of the causes I have encountered is specific to running CFMX as a J2EE application in which case JRun installs it's own Flash Remoting service which will clash with the CFMX one. Simply delete this ear from the admin console and you should be good to go.
+
+If you try and locate this folder (/flashservices/gateway) in your CFMX installation you'll be out of luck as this is a servlet mapping configured in the instance specific WEB-INF/web.xml file, so that all request for that URL are re-directed to FlashGateway servlet. Here are the lines you need to look for:
+
+[code]<servlet-mapping id="macromedia_mapping_1">
+<servlet-name>FlashGateway</servlet-name>
+<url-pattern>/flashservices/*</url-pattern>
+</servlet-mapping>[/code]
+
+You can find the servlet file in {Install Path}\JRun4\servers\{instance Name}\cfusion-ear\cfusion-war\WEB-INF\cfusion\lib\ and is called <strong>FlashGateway.jar</strong>. Note this path is based on a set up using cfmx instances, not stand alone edition, though you should be able to also find the <em>WEB-INF</em> folder in your install directory.

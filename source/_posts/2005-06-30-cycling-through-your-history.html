@@ -1,0 +1,28 @@
+---
+layout: post
+title: Cycling through your history
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+I quite often find myself cycling through the history of commands I have typed in the console window and there can be quite a few commands stored there. John, part time philosopher and all round good bloke and extraordinary at all things computing related, stopped me from monkeying around on the keyboard and showed me the following command that stopped me from having kittens when it came to finding that all important and elusive command:
+
+<code>[code]history | grep "pattern"[/code]</code>
+
+For example while re-building qmail I was looking for the last make statement:
+
+<code>[code]host:/tmp/qmail/maildrop-1.6.3# history | grep "make"
+511  make man &amp;&amp; make setup check
+514  make man &amp;&amp; make setup check
+517  make cert
+520  make &amp;&amp; make setup check
+528  make &amp;&amp; make install
+536  make &amp;&amp; make install-strip
+541  make &amp;&amp; make install-strip &amp;&amp; make install-man
+547  history | grep "make"[/code]</code>
+
+Then you can do <strong>!541</strong> ("!" is pronounced bang) and this will execute: "make &amp;&amp; make install-strip &amp;&amp; make install-man". Sometimes working with *nix systems is just so handy and it's another feather in my cap!
+
+Oh and John see I managed to get kittens, monkeys and hats into a post!

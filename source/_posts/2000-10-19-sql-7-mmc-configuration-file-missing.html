@@ -1,0 +1,10 @@
+---
+layout: post
+title: SQL 7 MMC configuration file missing
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Recently our SQL box crashed and after a reboot, all the services were working fine, apart from the Microsoft Management Console for SQL (Enterprise Manager). You could however still administrate the server remotely through the MMC on a workstation. The error message we got was that hte MMC file could not be found. On inspection it turned out that the file entitled <strong>SQL Server Enterprise Manager.MSC</strong> was gone. Why this happened I do not know and if anybody can shed some light on this I would be grateful. A search through Technet, did little to shed any more light on this. So what we did is copy a version of the aforementioned <strong>.MSC</strong> file that was residing on aforementioned NT workstation into <strong>&lt;drive letter&gt;:MSSQL7BINN</strong> on the server and that appears to have fixed the problem.</p>

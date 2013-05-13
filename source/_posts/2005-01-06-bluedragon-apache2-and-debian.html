@@ -1,0 +1,41 @@
+---
+layout: post
+title: BlueDragon, Apache2 and Debian
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Here's an an update on how to configure Debian (sarge) with apache 2.0.52 (installed using apt-get). The symbolic links that need to be created differ a little from the ones that you needed to apply if you were using Woody with Apache 1.3.29 (<a href="http://gregs.teacupinastorm.com/wp-admin/?http://gregs.teacupinastorm.com/bluedragon/bluedragon_on_debian.cfm?" title="?BlueDragon">see my previous post</a>):
+
+[code]
+ugg:/etc# mkdir -p /usr/local/apache
+ugg:/etc# ln -s /etc/apache2 /usr/local/apache/conf
+ugg:/etc# ln -s /var/www/apache2-default/ /usr/local/apache/htdocs
+ugg:/etc# ln -s /usr/lib/apache2/modules/ /usr/local/apache/libexec
+ugg:/etc# ln -s /usr/lib/apache2/modules/ /usr/local/apache/modules
+ugg:/etc# mkdir -p /usr/local/apache/bin
+ugg:/etc# ln -s /usr/sbin/apache2 /usr/local/apache/bin/httpd
+[/code]
+
+Now you should be able to simply run the install script for BlueDragon, however I experienced a slight hiccup. When restarting Apache (using: using /usr/sbin/apache2 -k graceful), I received the following error message:
+
+[code]
+Invalid command 'ServletExecInstances', perhaps mis-spelled or defined by a module not included in the server configuration
+[/code]
+
+I realised I had forgotten to start to BlueDragon, but that wasn't the cause of that error. So I removed the web server adapter using BD admin, restarted apache gracefully to make sure everything was still OK. The re-installed the web server adapter and re-started apache once more, still one problem though:
+
+[code]
+Syntax error on line 6 of /etc/apache2/httpd.conf:
+Cannot load /etc/apache2/modules/mod_servletexec2.so into server: /etc/apache2/modules/mod_servletexec2.so: cannot open shared object file: No such file or directory
+[/code]
+
+So simply copy over mod_servletexec2.so from {your BD install path}/NewAtlanta/BlueDragon_Server_62/bin/apache/ to your apache modules folder and since my installation of Apache was looking in /etc/apache2/modules I created another symbolic link:
+
+[code]
+ugg:/etc/apache2# ln -s /usr/lib/apache2/modules /etc/apache2/modules
+[/code]
+
+And after a quick graceful restart for Apache, it was all running smoothly!

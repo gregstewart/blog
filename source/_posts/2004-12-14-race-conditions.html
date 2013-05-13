@@ -1,0 +1,40 @@
+---
+layout: post
+title: Race conditions
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Again an enlightening thread, this time on the BD mailing list discussing race conditions or put more simply when to lock. Spike put up an example of how a race condition might occur:
+
+[code]
+<cfparam name="application.initialised" type="boolean" default="false"/>
+<cfif NOT StructKeyExists(application,"initialised")>
+<!--- do some initialisation here --->
+<cfset application.initialised="true"/>
+</cfif>
+[/code]
+
+While on say the first request the &lt;cfset&gt; is taking place another request might come in checking if application.initialised is true before the set has completed thus leading the second request to believe that it's not initialised and hence needs to be. This is known as a race condition. To circumvent this you would &lt;cflock&gt; (with a type exclusive) the &lt;cfset&gt;, effectively locking access completely to application.initialised until it's completed the request.
+
+[code]
+<cfparam name="application.initialised" type="boolean" default="false"/>
+<!--- Check if we are already initialised --->
+<cfif NOT StructKeyExists(application,"initialised")>
+<!--- Put an exclusive lock inside the first if block to ensure that
+we only make the request single threaded if the application is not yet
+initialised --->
+<cflock type="exclusive" scope="application" timeout="10">
+<!--- If a second request got past the initialisation check before
+the first had finished initialising this will stop it from running the
+initializing code again --->
+<cfif NOT StructKeyExists(application,"initialised")>
+<!--- do some initialisation here --->
+<cfset application.initialised="true"/>
+</cfif>
+</cflock>
+</cfif>[/code]
+
+Thanks Spike!

@@ -1,0 +1,122 @@
+---
+layout: post
+title: CFMX and jTidy
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+While writing the comment code I was hoping to make use of <a href="http://sourceforge.net/projects/jtidy" title="Project: JTidy">jTidy</a> to parse the comment passed in and have it tidied up so that any HTML provided would be valid. It was also a test for integration into the CMS for this site and it passed with flying colours on CFMX but sadly with the FREE version of BD (which this site runs on) you can't deploy additional jar files [UPDATE: have a <a href="http://gregs.teacupinastorm.com/BlueDragon/free_version_and_loading_jar_files.php" title="Blue Dragon free version and loading jar files">read of this entry</a> and you'll find out how to load java files on the fly]. So you'll need to deploy <strong>Tidy.jar</strong> to your {installPath}WEB_INF/lib/ (CFMX) or {installPath}/BlueDragon_Server_61/lib/ (BD) folder and re-start your server.
+
+The approach I adopted I find far from ideal, but maybe somebody out there with more experience in using jTidy and java can provide a few hints, but here's prinicipally how it works. I created a method (<strong>makexHTMLValid()</strong>) that expects three arguments: <em>strToParse</em>, <em>thisUrl</em>, <em>tmpPath</em>. The first is the string to be cleaned, the second the URL from which a while will be read in with the string to be cleaned is held and a finally a physical path where the aforementioned template is generated and held for the duration of the parsing.
+
+It does seem very laborious and it is. To further clarify the string is written to a file that jTidy then reads in by making an http connection and reads the file in. jTidy itself then writes a while out with the cleaned string and the function finishes by reading in the file and cleaning up all the temp files before returning the cleaned String. The only implementation examples I could find dealt with reading in StringBuffers using the above outline. I'd be delighted to hear of examples on converting a String variable into a StringBuffer and then back again.
+
+<em>pathToTempFile = "/relativePath/toYourFile";
+cleanedString = makeXHTMLValid(yourStringToParse, "http://"&amp;cgi.SERVER_NAME&amp;"/"&amp;pathToTempFile, ExpandPath(pathToTempFile));</em>
+
+The function is as follows
+
+<em>&lt;cffunction name="makexHTMLValid" displayname="Tidy parser" hint="Takes a string and url as a arguments and returns parsed and valid xHTML" output="true"&gt;
+&lt;cfargument name="strToParse" required="true" type="string" default="" /&gt;
+&lt;cfargument name="thisUrl" required="true" type="string" default="" /&gt;
+&lt;cfargument name="tmpPath" required="true" type="string" default="" /&gt;
+&lt;cfscript&gt;
+/**
+* This function reads in a string, checks and corrects any invalid HTML. It creates two
+* temporary files, because as far as I can tell jTidy relies on files for parsing
+* By Greg Stewart
+*
+* @param strToParse 	 		The string to parse (will be written to file).
+* @param thisUrl 					The Url to parse
+* @param tmpPath					The location where the tmp files we be written to, must be
+*													accessible from the web browser
+* @return returnPart
+* @author Greg Stewart (gregs(at)tcias.co.uk)
+* @version 1, August 22, 2004
+*/</em>
+
+<em>		var fileReadIn = ""; // xHTML output
+var returnPart = ""; // return variable
+var pageIn = "tmpIn."&amp;CreateUUID()&amp;".html";
+var pageOut = tmpPath&amp;"tmpOut."&amp;CreateUUID()&amp;".html";</em>
+
+<em>		var filename = tmpPath&amp;pageIn;
+var writeData = "";</em>
+
+<em>		// create the file stream
+jFile = createobject("java", "java.io.File");
+jFile.init(filename);
+// the file doesn't exist so use the file stream to create it
+jFile.createNewFile();
+//
+// writeFile = filename;
+writeData = toString(trim(arguments.strToParse));</em>
+
+<em>		jStream = createobject("java","java.io.FileOutputStream").init(jFile);
+// create the UTF-8 file writer and write the file contents
+jWriter = createobject("java", "java.io.OutputStreamWriter");
+jWriter.init(jStream);
+jWriter.write(writeData);
+// flush the output, clean up and close
+jWriter.flush();
+jWriter.close();
+jStream.close();</em>
+
+<em>		// jTidy part
+jTidy = createObject("java","org.w3c.tidy.Tidy");
+jTidy.setQuiet(false);
+jTidy.setIndentContent(true);
+jTidy.setSmartIndent(true);
+jTidy.setIndentAttributes(true);
+jTidy.setWraplen(1024);
+jTidy.setXHTML(true);</em>
+
+<em>		// build the Url to parse
+theUrl = arguments.thisUrl &amp; pageIn;
+// create the in and out streams for jTidy
+u = createObject("java","java.net.URL").init(theUrl);
+inP = createObject("java","java.io.BufferedInputStream").init(u.openStream());
+outx = createObject("java","java.io.FileOutputStream").init(pageOut);
+// do the parsing
+jTidy.parse(inP,outx);
+// close the stream
+outx.close();</em>
+
+<em>		// read in the validated file
+if (fileExists(pageOut)) {
+fileReader = createObject("java", "java.io.FileReader");
+fileReader = fileReader.init(pageOut);</em>
+
+<em>			if (isObject(fileReader)) {
+lineCount = 0;
+lineReader = createObject("java","java.io.LineNumberReader");
+lineReader = lineReader.init(fileReader);
+line = lineReader.readLine(); //Read first line, if any into variable line
+while (isDefined("line")) {
+lineCount = lineCount + 1;</em>
+
+<em>					//Process the variable line
+fileReadIn = fileReadIn &amp; line;
+line = lineReader.readLine(); //Read the next line, if any
+}
+}
+}
+// close the connection
+fileReader.close();</em>
+
+<em>		// ok now strip all the header/body stuff
+startPos = REFind("&lt;body&gt;", fileReadIn)+6;
+endPos = REFind("&lt;/body&gt;", fileReadIn);
+returnPart = Mid(fileReadIn, startPos, endPos-startPos);</em>
+
+<em>		// delete the temp files
+jFile.init(filename);
+jFile.delete();</em>
+
+<em>		jFile.init(pageOut);
+jFile.delete();
+&lt;/cfscript&gt;
+&lt;cfreturn returnPart /&gt;
+&lt;/cffunction&gt;</em>

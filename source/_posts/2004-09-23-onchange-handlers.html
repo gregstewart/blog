@@ -1,0 +1,21 @@
+---
+layout: post
+title: onChange handlers
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+A slight annoyance, to me at least, is the way certain bits and bobs of functionality have changed since the upgrade from Flash MX to Flash MX2004. Being able to set an onChange event handler used to be a dodle really, but it took me a while to figure out how to do this with MX 2004. Despite finding the code that would do this, I somehow completely missed that I had to associate the action script with the combo box I wanted the event to be triggered from. Just to spell this out, click on the combo box and in the action window type:
+
+[as]on (change) {
+trace("here");
+}[/as]
+
+Simple when you know how. Now the alternative to the above is to create a listener. I placed mine in an init() function and when an onChange event occurred it calls a simple function called <em>whatValue()</em> which takes the comboBox as it's argument and in this example simply traces the selected items value. You can also display and the label (by changing selectedItem.data to <em>selectedItem.label</em>)
+
+[as]function whatValue(obj):Void {
+  trace(obj.target.selectedItem.data);
+}
+cb_myComboBox.addEventListener("change", whatValue);[/as]

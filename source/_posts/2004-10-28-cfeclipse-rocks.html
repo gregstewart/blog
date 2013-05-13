@@ -1,0 +1,22 @@
+---
+layout: post
+title: cfeclipse rocks
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+The more I play with cfeclipse the more I like it. One of the things I was missing were keyboard shortcuts for common actions such as inserting paragraph tags or a &lt;cfquery&gt; tag block. <a href="http://coldflush.blogspot.com/" title="ColdFlush">Neil</a> put me onto snippets and though they are not strictly speaking the same, they are a pretty good substitute. <a href="http://www.spike.org.uk/cfeclipse/space/Snippets" title="Snippets">Spike</a> has put together some good instructions on setting them up. Now with the help of some trigger text and CTRL+j, I can quickly carry out common tasks.
+
+What would be really nice though would the ability to highlight content and be able to surround it with your snippet. On the plus side you can configure them to prompt you to provide values for attributes.
+
+The snippets themselves are held in folders under <em>{eclipse install}/plugins/snips/</em> and if like me you mistakenly create snip packages under the wrong folders or packages, use a file manager to access aforementioned folder and copy the xml files to appropriate location. You'll also need to edit the <em>keyCombos.properties</em>, so re point the trigger text to the right xml file location. For example I had mistakenly created a cfml package under the css one, after moving the folder to the top level of snips I made the following change:
+
+[code]cffu=/css/coldfusion/cffunction.xml[/code]
+
+To
+
+[code]cffu=/coldfusion/cffunction.xml[/code]
+
+The scribble pad is another just awesome feature, because the ability to quickly test some code is such a massive plus. It really is well worth configuring. Again refer to Spike's site for more information on <a href="http://www.spike.org.uk/cfeclipse/space/Scribble+pad" title="Scribble pad">configuring this feature</a>.

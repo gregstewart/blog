@@ -1,0 +1,14 @@
+---
+layout: post
+title: Flash URL trimming
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+This was slightly annoying: I was finishing up an Oracle portal application that was making use of a little flash client to pull data from a few sources. If the data was not comprehensive enough we also provided a Single Sign On links to the applications in question so that user could dig deeper. For one reason or another the URLs for the Portal server had been changed which meant I had to go round and re-compile the various flash movies with the updated URLs. So we went from "http://short:7777/pls/portal/" to "http://yourreallylong.domainname.com/pls/portal/". This is turn meant that the SSO query strings became even longer after the server side re-direct, see below:
+
+<code>[code]http://yourreallylong.domainname.com/pls/orasso/ORASSO.wwsso_app_admin.fapp_process_login?p_app_id=A9EA58560B278E1CE1C3B5CD64C6D9E[/code]</code>
+
+And all of a sudden the SSO links no longer worked. What was happening was that "p_app_id" was being trimmed by 2 characters (so instead of passing 129 chars to the browser only 127 were) by the Flash client. Thankfully we didn't need the fully qualified domain name so as a quick work around I could simply drop "domainname.com" and it all worked again. After this I did a quick google search and <a href="http://www.macromedia.com/cfusion/knowledgebase/index.cfm?id=tn_15598" title="URL links limited to 127 characters">here is the Technote on the topic</a> and a suggested work around.

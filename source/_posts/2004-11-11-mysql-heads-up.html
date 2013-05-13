@@ -1,0 +1,14 @@
+---
+layout: post
+title: MySql heads up
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Here are a few bits and pieces that I have gleaned over the last few months. To add foreign language character support to MySQL for CMFX or BD, you'll need to add the following to your DSN connection string:
+
+[code]useUnicode=true&amp;characterEncoding=ISO8859_1[/code]
+
+I have wondered but never bothered to find out what the differences were between MyISAM and InnoDB is. Well if you need transaction or foreign key support then InnoDB is the way to go. If not and speed is of the essence the MyISAM should be the way to go. You should know that InnoDB is by no means slow though.

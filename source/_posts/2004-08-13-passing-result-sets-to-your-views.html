@@ -1,0 +1,23 @@
+---
+layout: post
+title: passing result sets to your views
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+So you have managed to execute a query, but how on earth do you get them to be passed through the framework to your view. The trick is to set a <strong>resultKey</strong> for the result to be stored in, as shown below:
+
+[code]<event-handler event="someEvent" access="public">
+<notify listener="myListener" method="getMyQueryResults" resultKey="request.myResults" />
+<view-page name="myView" />
+</event-handler>[/code]
+
+In your view you can then reference the result doing something like this:
+
+[code]
+<cfloop query="request.myResults">
+<!--- loop over your result set --->
+</cfloop>
+[/code]

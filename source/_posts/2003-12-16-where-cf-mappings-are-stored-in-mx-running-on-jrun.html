@@ -1,0 +1,30 @@
+---
+layout: post
+title: Where CF mappings are stored in MX running on JRUN
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Ever wondered were CF MX stores all it's mapping information? Well we were and Simon Horwith of the CFDJ list was kind enough to point it out for us. As with most things these days the information is captured in an XML file called <em>neo-runtime.xml</em> and resides in <em>{root_drive}\JRun4\servers\{server_name}\cfusion-ear\cfusion-war\WEB-INF\cfusion\lib</em>. He also indicated that the information was actually captured in a WDDX packet.</p>
+<p>So I went and took a peak at the file and it actually stores a lot of the cfadmin information, such  as the servers settings (missing template, site wide template, Timeout Requests and Enable HTTP status), cache settings (trusted cache, Template cache size, save class files), memory variables (session and application), mappings, logging settings (slow Request Time Limit), mail settings (mail char settings) and custom tag paths.</p>
+<p>Using a WDDX packet as the store for such information opens up the options to use it programmatically and Simon Horwith was again kind enough to provide a sample script:</p>
+<p><em>&lt;cfscript&gt;<br />
+   foo="myMappingName";<br />
+   bar = "myMappingValue";<br />
+   factory = createObject("java","coldfusion.server.ServiceFactory");<br />
+   runtime = variables.factory.getRuntimeService();<br />
+   maps = variables.runtime.mappings;<br />
+   maps[variables.foo] = variables.bar;<br />
+ &lt;/cfscript&gt;</em></p>
+<p>As it's WDDX the data is returned or added programmatically in the shape of structures, which as he suggest allows possibly for the use of StructDelete() to remove mappings programmatically as well. But he did also point out that this is something you'd do at your own risk.</p>
+<p>While I was in the aforementioned folder I decided to take a closer look at some of the XML files in there:</p>
+<ol>
+	<li><em>neo-security.xml</em>: This file contains references to security information held in the cfadmin under security. There are three Boolean settings here, one for enabling a password for cfadmin, another for RDS and yet another for sandbox security. There is also a reference to <em>context</em>, but I am not sure what this is for.</li>
+	<li><em>neo-query.xml</em>: Holds a lot of database related information. Specifically for query caching in the cache settings of cfadmin there is an entry. I also saw a bunch of information relating to SQL statements, though not entirely sure what it is used for. And finally there is a lot of what looks like database driver information.</li>
+	<li><em>neo-mail.xml</em>: This WDDX packet stores all of the mail settings found in cfadmin.</li>
+	<li><em>neo-logging.xml</em>: expands on the logging information already captured in <em>neo-runtime.xml</em>. It also contains information that is not accessible in cfadmin, such as the log pattern.</li>
+	<li><em>neo-cron.xml</em>: This one stores all the scheduled tasks set up in cfadmin.</li>
+	<li><em>neo-debug.xml</em>: as the name indicates this stores the setting for debugging, both for debugging and debugging IP addresses in cfadmin.</li>
+</ol>

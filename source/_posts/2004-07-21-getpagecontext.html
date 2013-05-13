@@ -1,0 +1,29 @@
+---
+layout: post
+title: getPageContext
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I have been meaning to try this out for ages. Rather than hack a &lt;cflocation&gt; and &lt;cfinclude&gt; function together to use within &lt;cfscript&gt;, I decided to give getPageContext a go to carry out these tasks. I read about
+this ages ago (I think it may have even been an article by Charlie Arehart over at <abbr title="ColdFusion Developer Journal">CFDJ</abbr>) and it struck me as a neat way to handle &lt;cflocation&gt; and &lt;cfinclude&gt;.</p>
+
+<h5>Include</h5>
+<p><em>&lt;cfscript&gt;<br />
+	getPageContext().include("pathto/yourfile");<br />
+&lt;/cfscript&gt;</em></p>
+
+<p>The flipside, this literally includes the template, so say you have a text file that you wish to include, then this will be spat out to the screen at this point. And you can't save it in a variable so it can't act as a
+&lt;cfsavecontent&gt; substitute. It acts exactly like a &lt;cfinclude&gt;.</p>
+
+<h5>Re-direct</h5>
+<p><em>&lt;cfscript&gt;<br />
+	getPageContext().forward("/pathto/template");<br />
+&lt;/cfscript&gt;</em></p>
+
+<p>This acts as a server re-direct, which means that it requires one less trip to the browser. &lt;cflocation&gt; simply informs the browser that it needs to load another page, which the browse dutifully requests. However the <acronym title="Unified Resource Locator">URL</acronym>
+doesn't change and I haven't managed to forward to a full qualified domain (i.e. no http://gregs.teacupinastorm.com/someFolder/).</p>
+
+<p>If you do a &lt;cfdump var="#getPageContext()#" /&gt;, you can see all the other methods provided and delve deeper by exploring the other methods using for example: &lt;cfdump  var="#getPageContext().getServletContext().getServletNames()#" /&gt;</p>

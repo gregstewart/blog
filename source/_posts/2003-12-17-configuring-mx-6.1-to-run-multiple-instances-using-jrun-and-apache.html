@@ -1,0 +1,53 @@
+---
+layout: post
+title: Configuring MX 6.1 to run multiple instances using JRun and Apache
+tags: []
+status: draft
+type: post
+published: false
+meta: {}
+---
+<p>This item is based on the excellent article by Brandon Purcell (<a href="http://www.bpurcell.org/macromedia/coldfusion/multiple_instances.cfm" title="ColdFusion MX 6.1 Step-by-Step Creating and Configuring Multiple Instances">ColdFusion MX 6.1 Step-by-Step Creating and Configuring Multiple Instances</a>). The point of difference here, is that I am using Apache instead of IIS and i just wanted to keep track of anything I needed to do that was different.</p>
+<p>When I started I had apache already running and hence configured my CFMX installation to use this directly, but in the end things got very muddled since the Apache configuration already had CF related configuration entries and I wasn't able to distinguish between what was being handled by Jrun/CFMX or indeed by Apache. So as best practice follow what the man Purcell tells you in his article.</p>
+<p>Before you start you'll need the following:</p>
+<ul>
+	<li>CFMX 6.1</li>
+	<li>Apache</li>
+</ul>
+<ol>
+	<li>Install everything as per points 1 through to 5. This should get you through installing CFMX 6.1 on your machine.</li>
+	<li>Once the install has been completed you'll be prompted to fire up your browser and continue the configuration (the url is something like this one: http://127.0.0.1:8300/CFIDE/administrator/index.cfm). Now at this point I ran in to different problems.</li>
+		<ul>
+			<li>When the CFM page sreturned complete and utter rubbish. This happened when I already had Apache running and configured Jrun/CFMX to use the Apache server directly. A re-boot fixed this and I was able to access the administrator no problem an continue the configuration</li>
+			<li>The second time I ran through this process, the server wasn't responding. The solution, yep you guessed it a re-boot. The pages came up slowly again initially, but after the configuration it was all fine.</li>
+		</ul>
+	<!--- , however one point of difference was that in point 2 I selected option 2, chose add and selected Apache as my server. So Select Apache from the drop down after selcting <strong>Add</strong>, and point to the conf folder (usually under <em>c:\Program Files\Apache Group\Apache2\conf</em>) and also to the apache executable (<em>c:\Program Files\Apache Group\Apache2\bin\apache.exe</em>). Click OK and the resume the installation as per the instructions. --->
+	<li>Stop the coldfusion (CF) service from within services (labelled: "Macromedia JRun CFusion Server"). And then go to <em>C:\JRun4\servers\cfusion\cfusion-ear\</em> and copy that folder over to a directory of your choosing. I like the idea that Purcell introduces here, notably that of a template for all future server installations (he copies it over to "C:\working\cfusion-template"). Once done restart the CF service.</li>
+	<li>By having chosen to use Apache at the installation time we can skip steap 9-12.</li>
+	<li>I am not sure about this, but in my installation in the cfusion-ear file there was no index.cfm in the cfide/administrator folder. So I copied the entire default CFIDE folder (which at installation time was installed by default into <em>c:\Program Files\Apache Group\Apache2\htdocs\CFIDE\</em>) into the template location.</li>
+	<li>Now to the jiucy bit configuring a new instance.</li>
+	<li>Go to JRun admin @ http://localhost:8000/, login and select "<strong>create new server</strong>" from the top menu bar.</li>
+	<li>leave the Hostname as <strong>localhost</strong>, and specify a new server name (eg: "<em>cfusion2</em>"), the server directory is now automatically populated (eg: "<em>{jrun.home}/servers/cfusion2</em>")</li>
+	<li>What is JNDI [Java Naming and Directory Interface] Provider URL? - JNDI is a service that listens on a port</li>
+	<li>What is web server Port number</li>
+	<li>What is Web Connector Proxy Port Number?</li>
+	<li>Regardless thereof, I left just as he did the settings to their defaults and selected finish.</li>
+	<li>The new server is now in the listing and is stopped by default. Purcell then goes to talk about setting the new site up as a service. Follow his instructions, however thing to note is that when you type in the command be sure to match the case of your server name . Windows may not be case sensitive but Java certainly is. So switch to "<em>C:\JRun4\bin></em>" and type the following command in:</li>
+		<ol>
+			<li><em>jrunsvc -install cfusion2 "Macromedia JRun CFusion2 Server" "Macromedia JRun CFusion2 Server"</em></li>
+			<li>or if you selected CFusion2 instead of say cfusion2: ><em>jrunsvc -install CFusion2 "Macromedia JRun CFusion2 Server" "Macromedia JRun CFusion2 Server"</em></li>
+		</ol>
+		<li>If all went well this is the message you should see: <em>Service "Macromedia JRun CFusion2 Server" installed with display name "Macromedia JRun CFusion2 Server"</em></li>
+		<li>Now we want to deploy CF onto this server instance, so copy over the template ear file we created earlier into <em>C:\JRun4\servers\cfusion2\cfusion-ear</em> and delete the <em>default-ear</em> folder (apparently they sahre the same context root [what is that?] and that will stop the server from starting).</li>
+		<li>OK, now create a folder in your webroot, or whereever you keep your websites for this new site</li>
+		<li>Since I am using Apache, I also edited the httpd.conf file of my server to create a virtual host for this new site. The entry should look something like this:</li>
+		<ol>
+			<li>&lt;VIRTUALHOST your.ip.address.here&gt; <br />
+			ServerName cfusion2<br />
+ 			ServerAlias www.cfusion2.dev<br />
+ 			DocumentRoot "c:/path/to/your/sites/folder/"<br />
+			&lt;/VIRTUALHOST&gt;<br /></li>
+		</ol>
+		<li>restart your Apache server for the changes to take effect.</li>
+		<li>Ok start the new server, using either services, command line or the management console. This could take a while as it needs to deploy the enterprise application file.</li>
+</ol>

@@ -1,0 +1,27 @@
+---
+layout: post
+title: Datagrid headers
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Still playing around with Flash Remoting and I stumbled a cross <a href="http://philflash.inway.fr/dgheader/index.html" title="DataGrid Column Header">an entry</a> that described how to change the header style of a data grid. After having applied that I looked into changing the column names. These were being passed back by my CFC and they relied on database columns, which weren't the nicest to read. For example I wanted to change companyName into company. The following little action script snippet allows you to achieve this:
+
+[as]import mx.controls.gridclasses.DataGridColumn;
+yourDataGridInstanceName.columnNames = ["contactName", "companyName", "contactPhone", "summary"];
+//customize column headers
+var contactCol:DataGridColumn = yourDataGridInstanceName.getColumnAt(0);
+contactCol.headerText = "Contact";
+//
+var companyCol:DataGridColumn = yourDataGridInstanceName.getColumnAt(1);
+companyCol.headerText = "Company";
+//
+var activityCol:DataGridColumn = yourDataGridInstanceName.getColumnAt(2);
+phoneCol.headerText = "Phone";
+//
+var summaryCol:DataGridColumn = yourDataGridInstanceName.getColumnAt(3);
+summaryCol.headerText = "Summary";[/as]
+
+Then simply save this as an external ActionScript file and include it in frame 1 of your movie, hey presto customised headers.

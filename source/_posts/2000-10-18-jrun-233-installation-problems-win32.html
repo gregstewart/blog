@@ -1,0 +1,20 @@
+---
+layout: post
+title: JRun 2.3.3 installation problems (Win32)
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>JRun 2.3.3 installation problems (Win32)</h3>
+<p class="1">One of our projects here at <a href="http://www.nemas.com/">Nemas</a> required the use of <i>servlets</i>. In order to have a play with <i>servlets</i> before the project got under way in earnest, I decided to install JRun. Once the installation was completed I tested the installation and to my joy everything was working, or so I thought. For once I tried to execute a <i>.cfm</i> template I got an error. As it turned out all the mappings for <i>.cfm</i> has been re-mapped away from the Cold Fusion Application Server and mapped to the JRun server. Very annoying.</p>
+<p class="1">This document is now going to talk you through fixing this problem. First off you need to locate the <i>rules.properties</i> file, which is usually located in the<i> &lt;drive letter&gt;:JRunjsm-defaultservicespropetiescfanywhere</i> directory. Open this file up in your text editor of choice.</p>
+<p class="1">Now all you need to do is remove the following line:</p>
+<p class="1"><font size="-2"><i>*.cfm=com.livesoftware/cfanywhere.CFServlet</i></font></p>
+<p class="1">Save the file. In order for these changes to take effect you will need to stop and restart certain services. Go to the <b>Control Panel</b> and choose services. First stop the following services, then after all have been stopped, re-start them.</p>
+<p class="1"><li>All Cold Fusion services
+<li>JRun service
+<li>IIS service (if you are running IIS else stop the web server service that you run on your box)
+</p>
+<p class="1">It is important that you stop the services through the <b>Services</b> icon. Stopping IIS through the MMC will not bring about the necessary changes.</p>

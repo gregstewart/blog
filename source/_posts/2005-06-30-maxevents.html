@@ -1,0 +1,12 @@
+---
+layout: post
+title: maxEvents
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+maxEvents is used in the mach-ii framework primarily to help you not get into an infinite loop. Of course limiting the number of events can also land you in trouble as some request may require more events than currently set. Determining this number is something that you will need to figure out yourself. Ben Edwards suggests that 50 or more events is fine, however he did recommend against disabling it.
+
+For the record you can disable the maxEvents by assigning it a negative number.

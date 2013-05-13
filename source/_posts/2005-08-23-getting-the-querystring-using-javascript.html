@@ -1,0 +1,22 @@
+---
+layout: post
+title: Getting the QueryString using JavaScript
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Here is a little script that parses the query strings of your URL so that you can use them in your JavaScript code:
+
+[js]// gvs - 19/7/2005 - retrieve values from URL to be appended to the link
+var hasQueryString = document.URL.indexOf('?');
+var additionalQueryString = "";
+var targetUrl = "http://www.someURL.com/?with=queryString";
+if (hasQueryString != -1) {
+// Create variable from ? in the url to the end of the string
+additionalQueryString = document.URL.substring(hasQueryString+1, document.URL.length);
+targetUrl = targetUrl + "&amp;" + additionalQueryString;
+}[/js]
+
+In case you are wondering what I used this for: to help debug some our AJAX UIs. Every single time a request is sent to the server, we use JavaScript to create a clickable link for us that mimics the remoting call that we can use to view the XML that is sent back to the browser (or any other problems that might occur).

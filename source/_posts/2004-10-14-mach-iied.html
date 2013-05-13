@@ -1,0 +1,32 @@
+---
+layout: post
+title: mach-iied
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+It's done a few hours ago I switched my old PHP site over to <a href="http://www.mach-ii.com/" title="Go to the Mach-ii web site">Mach-II</a>/<acronym title="ColdFusion Markup Language">cfml</acronym> (<a href="http://www.newatlanta.com/products/bluedragon/" title="Go to the NewAtlanta web site to find out more about BlueDragon">BlueDragon</a>) driven site. It may not be obvious from looking at the URLs, but that's because I have plugin parsing the requests (which have been re-written with mod_rewrite and rules in the .htaccess file).
+<ol>
+	<li>7 listeners</li>
+	<li>2 filters</li>
+	<li>14 events</li>
+	<li>2 plugins</li>
+	<li>11 custom views, 7 shared views</li>
+</ol>
+All in all it's been a very enjoyable experience. Sure there was some head scratching at times (and more on that a little later), but overall I really enjoyed the fact that the framework made me think, sometimes hard, about how I designed and implemented my application. And yes, there were a few moments where things seemed to be the long way round, but when it came to extending and modifying the logic part of the code, the use of getters and setters really paid off.
+
+And now for a little aside. The whole lot was coded using <a href="http://www.eclipse.com/" title="Go to the Eclipse website">Eclipse</a>, initially using <a href="http://www.richpalette.com/" title="He3: website">He3</a> and then <a href="http://cfeclipse.tigris.com/" title="CFEclipse project page">CFEclipse</a>. I started off with He3 because it had the Mach-ii plugin, which was pretty useful initially, but once I'd added a few plugins to my regular Eclipse (and they are as follows: CFEclipse, <a href="http://xmlbuddy.com/" title="Go to the XMLbuddy homepage">XMLBuddy</a>, <a href="http://quantum.sourceforge.net/" title="Quantum database SourceForge page">Quantum database</a>, <a href="http://brosinski.com/stephan/archives/000028.php" title="RegEx Tester">Brosinski's RegEx</a>, <a href="http://graysky.sourceforge.net/" title="Tail log viewer">Grayski LogWatcher</a>, <a href="http://sourceforge.net/projects/vssplugin/" title="VSS plugin SourceForge page">VSS plugin</a>), I kind of never looked back. The main appeal of He3 was the config file viewer, but with XMLbuddy I was able to gain an equally useful insight into my config file, which furthermore seemed more natural to me. Don't get me wrong, I'll be definetly check out the next beta release of He3, but for the time being it's CFEclipse all the way.
+
+OK that's the details side of things covered, what follows now are a few notes that I jotted down on while coding my Mach-ii application on this BlueDragon/Debian server set up, as code that ran seamlessly on CFMX had a few issues. One thing that didn't help me were the error messages that BD was returning. So here's a list of errors and the workarounds that worked for me.
+
+<strong>Unknown return type:</strong> One thing that got me initially was setting the return content type of your model CFCs. I had omitted the full path (say: main.content should have been model.main.content). Thanks to Phil's excellent mach-ii.info site I found the answer to that one.
+
+<strong>Could not locate resource:</strong> Next casing got me. The files were properly cased, but the calls to the CFCs were mainly set to lower case. I worked through all of the CFCs and changed both the invoke path and return types to the proper casing just for consistency.
+
+<strong>No such function exists - geteventmapping:</strong> this error had made me stumped for quite a while. The problem lay in the return type of my object. Again capitalisation was to blame as was setting the return type to the object and I had inadvertently set it to <strong>O</strong>bject instead of <strong>o</strong>bject.
+
+I encountered the error above on another occasion, but this time I wasn't dealing with objects, so casing wasn't the problem. Instead there was a type error that CFMX somehow was letting slip past, but BD caught. For my search I was passing in a parameter out of the event into another object. The expected type was numeric, however an empty string was being passed in. What had happened was that I was simply setting a var using arguments.event.getArg("someVar"), without checking if it existed. If it doesn't then it returns an empty string instead of throwing an exception. Well that taught me once again not to be sloppy about checking for the existence of variables. The only annoyance was the obscure error message that this caused.
+
+Finally I'd really appreciate any feedback on how it runs (especially the rdf feed using a feed reader [if you are reading this using one, hooray it works!]) or any errors that you may encounter.

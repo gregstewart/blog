@@ -1,0 +1,17 @@
+---
+layout: post
+title: Rendering text as HTML
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+When populating text fields (Text tool/Dynamic text/instanceName) based on the results from a query you normally
+
+[as]_root.instanceName.text = yourResult;[/as]
+
+However one recent scenario asked for the field to be a mailto link and here's how you set the field in question to display as HTML rather than straight text.
+
+[as]_root.instanceName.html = true;
+_root.instanceName.htmlText = '<a href="mailto:%20%27+yourResult+%27">' + yourResult + '</a>';[/as]

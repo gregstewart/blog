@@ -1,0 +1,43 @@
+---
+layout: post
+title: ! 'More SQL trickery : dateparts dateadd and casting'
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Recently I needed to updated all date fields from whatever value they were to have a date format like this: <em>dd/mm/yyyy 23:59:00</em></p>
+
+<p>Now the dates were stored like such: 12/10/2003 12:23:06 and many more variants on that theme.</p>
+
+<p>The first step that was needed was to get just the date part and ditch the existing time stamp. I did this by writing a select statement like this one to test my theory:</p>
+
+<p><em>select top 10 cast(cast(datePart(dd,theDateColumn) as nvarchar)+ '/'+ cast(datePart(mm,theDateColumn) as nvarchar)+ '/'+ cast(datePart(yyyy,theDateColumn) as nvarchar) AS smalldatetime) <br />
+from yourTable</em></p>
+
+<p>So first I grabbed the date part I was interested in, say the year: <strong>datePart(yyyy,theDateColumn)</strong>. And of course for the other ingredients of a date: months and days as well. Next I wanted to create a new date without the timestamp, so I needed to create a date string. Hence in the query above you see that each date part is wrapped around a <strong>cast()</strong> function. The value for year for example was cast to varchar, like such: <strong>cast(datePart(dd,theDateColumn)</strong> as nvarchar).</p>
+
+<p>Next in that step I concatenated the entire date parts and casts into a string that took the format dd/mm/yyy and finally cat it back to small date time giving me a format similar to this: <em>dd/mm/yyyy 00:00:00</em></p>
+
+<p>OK now I wanted to have that date but with the time part showing one minute to midnight. So the thought process here was take the date in the database increase it by 1 day and take a minute off it (I could do this because I had the exact date at the midnight after the first select process). So first let's increase the day by 1 and you do this using <strong>dateadd(datepart,number,column)</strong>. In our case the date part if this function needs to update the day, which is annotated using 'dd'. So back to the theory and let's write a select statement again:</p>
+
+<p><em>select top 10 dateAdd(dd,1,theDateColumn)<br />
+from yourTable</em></p>
+
+<p>So now we can build this up to take a minute of that created time using dateadd() again, this time taking off a minute (number = -1 and datepart is 'n'), the combination of the two would take the column advanced it by a day and take a minute off:</p>
+
+<p><em>select top 10 dateadd(n,-1,dateAdd(dd,1,theDateColumn))<br />
+yourTable</em></p>
+
+<p>Now the moment of truth, let's combine the first query and the last one we build up, so that we get the time stamp of 00:00:00 and then the date advanced by day followed by subtracting a minute, like such:</p>
+
+<p><em>select top 10 dateadd(n,-1,dateAdd(dd,1,cast(cast(datePart(dd,theDateColumn) as nvarchar)+ '/'+ cast(datePart(mm,theDateColumn) as nvarchar)+ '/'+ cast(datePart(yyyy,theDateColumn) as nvarchar) AS smalldatetime)))<br />
+from yourTable</em></p>
+
+<p>If you are satisfied with the transformation then you can happily write the update.</p>
+
+<p><em>UPDATE yourTable<br />
+SET theDateColumn = dateadd(n,-1,dateAdd(dd,1,cast(cast(datePart(dd,theDateColumn) as nvarchar)+ '/'+ cast(datePart(mm,theDateColumn) as nvarchar)+ '/'+ cast(datePart(yyyy,theDateColumn) as nvarchar) AS smalldatetime)))</em></p>
+
+<p>Easy as... once you know how...</p>

@@ -1,0 +1,16 @@
+---
+layout: post
+title: How to configure a Home share under the User Manager for Domains
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>How to configure a Home share under the User Manager for Domains</h3>
+<p class="1">I came across this little trick while studying for my MCP Windows NT Workstation exam. This will allow you to create a home share from within the User Manager for domains for new users that you add to the domain.</p>
+<p class="1">Step 1 involves creating a directory called "Home" on one of your partitions (make sure it's in the root of your partitions, i.e. <drive letter>:Home). Once you have done this, you need to share this folder (right click and select share from the drop down menu). From the ensuing dialogue box choose all the default options and click OK. The folder should now have a little hand holding it.</p>
+<p class="1">Now you can go to the User Manager for Domains and create a new user. Once you have entered all the users details, i.e. Username, Password and Groups, click on the Profile button. At the bottom of the dialogue you should see a Home Directory box. Check the Radio button next to Connect and select a drive letter that will be associated with the users networked home directory (for simplicities sake, choose H:). In the To box enter the following UNC path:</p>
+<p class="1">&lt;YourServerName&gt;Home%username%</p>
+<p class="1"> By using the UNC path in combination with the %username% statement, you ensure that when you add the user to the SAM, it creates a directory in the Home share for that user, using his username as the directory name. Neat? I thought so!</p>
+<p class="1"><b>Note:</b> If you are using Windows NT workstation this will also automatically create a mapping on your system when you log on. However if you use Win9x, you will have to write a login script.</p>

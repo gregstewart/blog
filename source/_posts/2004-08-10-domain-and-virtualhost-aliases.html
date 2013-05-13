@@ -1,0 +1,26 @@
+---
+layout: post
+title: Domain and virtualhost aliases
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Learned two new things about apache today. The first was how to add a domain
+alias to your virtual host configuration. Where you see a ServerName entry
+just beneath it add:
+
+[code]ServerName www.yourDomain.com
+ServerAlias yourDomain.com[/code]
+
+This example will allow http://yourDomain.com to resolve to that virtual host (www.yourDomain.com).
+
+The other was how to add aliases for virtual hosts. This one is a no brainer really, simply add the same Alias directive you would to your httpd.conf for a global alias, but this time for the virtual host specific entry. For example:
+
+[code]<virtualHost 111.22.33.55>
+DocumentRoot /www/yourDomain
+ServerName www.yourDomain.com
+ServerAlias yourDomain.com
+Alias someMapping/ /www/yourDomain/someFolderToMapTo
+</virtualHost>[/code]

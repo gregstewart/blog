@@ -1,0 +1,12 @@
+---
+layout: post
+title: File uploading via CFC
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+I have stumbled over this in the past as well and since there was a thread on this topic on CFCDev, I thought I'd detail the work around here. A good solution comes courtesy of Todd's site: rather than passing in the data stream you pass in a reference (a string like "form.fileField") to the form field that is doing the upload. By using the hash signs around the form field argument in the <em>fileField</em> attribute of &lt;cffile&gt; you force the tag to evaluate the reference to the form scope.
+
+Todd has a detailed <a href="http://www.web-rat.com/index.cfm?mode=View&amp;entry=D1E6CAA2-D09C-B9C5-BA747868B7CE3DDE" title="CFFILE Upload in a CFC">explanation about what goes on and how to make it work</a>. However as a few people pointed out the &lt;cffile&gt; is still referencing the form scope directly, which then breaks encapsulation (again just a warning if encapsulation is important to your approach).

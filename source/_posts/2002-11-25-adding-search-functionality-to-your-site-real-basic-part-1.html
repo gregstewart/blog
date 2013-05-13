@@ -1,0 +1,61 @@
+---
+layout: post
+title: ! 'Adding search functionality to your site: real basic (part 1)'
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>If you were to compare visiting a web site to visiting a store, you generally adopt to approaches to finding what you are after in the real world. The first is to browse the store until you find what you are after, going through all the aisles. Alternatively you could simply ask somebody. Visiting a web site isn't unlike entering a store, generally you can adopt those two approaches as well. Browsing the site, by following the navigational links provided until you find what you are after. Or you could ask somebody... Well not really, but the search option found on most web sites, I guess is the on-line equivalent. The merits of many search engines and the results they return is questionable. Having said that have you been to K-mart recently and asked someone there for help? They are more likely to send you on an entire tour of the store without ever finding what you are after or even more annoying just blink in your direction with a puzzled look... But I digress...</p>
+<p>Building an intelligent search engine is a complex undertaking and one that isn't taken on lightly. So in the following series of articles I shall endeavour to figure out what makes up a good search engine, starting with a real basic search functionality and then gradually trying to improve on it. This will research will not only focus on the technical and coding  aspects, but also focus on the presentation or usability side of things. So let's get cracking. Some prerequisites, well the search will be built using PHP and MySQL, so make sure you have these running and a set of tables with content in them to run your search queries against.</p>
+<p>In the first instance you'll need to submit some information to a search engine and hence you'll need a form. Keep this form as simple as possible, you don't want to baffle your user with options so generally an input field with a search button is good enough, however if you really feel that allowing the user to narrow down his search from the outset is a good thing by say selecting a \n option from a drop down menu (for say a book) then try and lay it out so that it forms a sentence (i.e. 'search _____ for ________' or using our book example: 'search <em>books</em> for <em>Dostoevski</em>'). And below is a sample form:</p>
+<p><em>&lt;form method="post" action="search/" name="frm_search" id="frm_search" enctype="application/x-www-form-urlencoded"&gt;<br />
+    &lt;span id="elField0" class="alert"&gt;&lt;/span&gt;&lt;img src="images/s.gif" width="15" height="1" alt="spacer" border="0" /&gt;&lt;br /&gt;<br />
+    &lt;input type="Text" name="r_search" id="r_search" value="" size="15" class="body" /&gt;<br />
+    &lt;input type="Submit" name="btn_submit" id="btn_submit" value="search" class="headeru" /&gt;<br />
+    &lt;/form&gt;</em>
+</p>
+<p>This form will submit a form field labelled <em><strong>r_search</strong></em> to the index page in the search folder on your web server. I would recommend that you validate the user input before submitting the form by using a javascript, just so to stop empty form submissions for example.</p>
+<p>Now onto the interesting part, the script that gets executed searches for the requested information and displays the result. The idea here is that we are submitting a string to a database filled to the brim with useful content and we want to retrieve the content that contains the submitted string. What we will be doing in the following is making use of the SQL operator <strong>LIKE</strong> to find out content.</p>
+<p>The Code:<br />
+<em>&lt;?php<br />
+ /* include your own database connection info here /*<br />
+ if (isset($r_search) && ($r_search &lt;&gt; "")) {<br />
+ &nbsp;&nbsp;$sql2 = "SELECT content_id, teaser, title, content from article where title like '%".$r_search."%' OR teaser like '%".$r_search."%' OR content like '%".$r_search."%'";<br />
+ <br />
+ &nbsp;&nbsp;$result2 = mysql_query($sql2);<br />
+ &nbsp;&nbsp;if (!$result2)<br />
+ &nbsp;&nbsp;&nbsp;&nbsp;$msg .= "Query: ".$sql2." failed";<br />
+ <br />
+ &nbsp;&nbsp;$total2 = mysql_numrows($result2);<br />
+ <br />
+ &nbsp;&nbsp;$page_content .= "&lt;p class=\"bodyb\"&gt;Your search for \"&lt;span class=\"header\"&gt;".$r_search."&lt;/span&gt;\" returned ".$total2." results.&lt;hr class=\"body\" /&gt;&lt;/p&gt;";<br />
+ <br />
+ &nbsp;&nbsp;if ($total2 <> 0) {<br />
+ &nbsp;&nbsp;&nbsp;&nbsp;$counter = 1;<br />
+ &nbsp;&nbsp;&nbsp;&nbsp;while($r2 = mysql_fetch_array($result2)) {<br />
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$page_content .= "&lt;div&gt;&lt;span class=\"bodyb\"&gt;".$counter.".&lt;/span&gt;&lt;img src=\"".$http."images/s.gif\" width=\"10\" height=\"1\" alt=\"spacer\" border=\"0\" /&gt;&lt;a href=\"".$http."article/article.php?id=".$r2[0]."\" class=\"normb_s\"&gt;".stripslashes($r2[2])."&lt;/a&gt;&lt;br /&gt;".stripslashes($r2[1])."&lt;br /&gt;&lt;img src=\"".$http."images/s.gif\" width=\"1\" height=\"15\" alt=\"spacer\" border=\"0\" /&gt;&lt;/div&gt;";<br />
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$counter++;<br />
+ &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+ &nbsp;&nbsp;} else {<br />
+ &nbsp;&nbsp;&nbsp;&nbsp;$page_content .= "&lt;div&gt;&t;span class=\"header\"&gt;Sorry&lt;/span&gt;&lt;br /&gt;Sorry your search for ".$r_search." returned 0 results.&lt;/div&gt;";<br />
+ &nbsp;&nbsp;}<br />
+  } else {<br />
+  &nbsp;&nbsp$page_content .= "&lt;div&gt;&t;span class=\"header\"&gt;Sorry&lt;/span&gt;&lt;br /&gt;Sorry before searching for information please make sure that the search field has been completed.&lt;/div&gt;";<br />
+  }<br />
+?&gt;
+</em>
+</p>
+<p>So what's going on here? Well for starters we check to see if <strong>$r_search</strong> has been submitted and that it doesn't contain a blank value. Ideally you should have validated the input before being submitted to the server, but if users have javascript disabled then your client side validation counts for nothing and hence you should also validate server side.</p>
+<p>Next I build up my query using the <strong>LIKE</strong> operator. I decided to search three fields in my database where relevant information may be stored, these are the content title, teaser and body. Then the query gets executed. If the results are greater than 0 (<strong>$total2</strong>) then I build up a result list. For informational purposes I instruct the user of the number of results his search has generated and then proceed to loop over the result set to generate a list with a link to the content that returned a result. The result may well look something like this:</p>
+<p><em><p class="bodyb">Your search for "<span class="header">the</span>" returned 58 results.<hr class="body" /></p><div>
+<span class="bodyb">1.</span><img src="http://www.tcias.shed/gregs/html/images/s.gif" width="10" height="1" alt="spacer" border="0" /><a href="http://www.tcias.shed/gregs/html/article/article.php?id=19EA2C41-1E34-4628-82DC5BB240E87578" class="normb_s">JavaScript: Automatic submit using <i>onChange</i></a>
+<br />Ever wanted to know how to submit a form after changing a drop down field? Read on...<br />
+<img src="http://www.tcias.shed/gregs/html/images/s.gif" width="1" height="15" alt="spacer" border="0" />
+</div><div>
+<span class="bodyb">2.</span><img src="http://www.tcias.shed/gregs/html/images/s.gif" width="10" height="1" alt="spacer" border="0" /><a href="http://www.tcias.shed/gregs/html/article/article.php?id=661B5C48-A6A7-485E-95EDEF7055FA8EEF" class="normb_s">Configuring Cold Fusion and MySQL</a>
+<br />Some helpful hints on configuring CF 4.5.1 to use MySQL as the dB server...<br />
+<img src="http://www.tcias.shed/gregs/html/images/s.gif" width="1" height="15" alt="spacer" border="0" />
+</div><div>...</div></em></p>
+<p>And that concludes my first installment on searching. This isn't a very intelligent search mechanism and only does the most basic searching and even that is limited. For example the search I used in my example above was for the word "the" and it returned only 58 results. Now I am pretty sure that there are more than 58 instances of the word "the" stored in my database. And do we really want to allow searches for words like "the, and, to, etc...". Regardless of these search options, certain searches may well return 1000 of instances, do we really want to display them all on one page? So just to wet your appetite in the next installment we shall be looking at making a previous, next functionality to step through large result sets easily. Once we have that under our belt we'll look at improving the searching of the database.</p>

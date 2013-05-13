@@ -1,0 +1,28 @@
+---
+layout: post
+title: Tentatively back to BlueDragon
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+I have reverted back to BlueDragon (and it's been ticking over for the last week or so), this time running the latest beta. Furthermore I compiled Apache 2 from source and I am glad to report that so far even though new threads are still being created, this time they do seem to get killed again.
+
+The only problem I encountered when migrating the code base was with the ExpandPath() function. For some strange reason it didn't like variables so while this is being resolved I specified the full path to the mach-ii application config folder and removed the ExpandPath function.
+
+UPDATE
+
+After a little digging and with some help from people on the mailing list I ran the following test code:
+
+[code]Request.apppath=<cfoutput>#request.appPath#</cfoutput>
+ExpandPath("#request.appPath#")=<cfoutput>#ExpandPath("#request.appPath#")#</cfoutput>
+ExpandPath("#request.appPath#config/mach-ii.xml")=<cfoutput>#ExpandPath("#request.appPath#config/mach-ii.xml")#</cfoutput>[/code]
+
+Which returned:
+
+[code]Request.apppath=../../webapps/gregs/
+ExpandPath("#request.appPath#")=[per-dir %s] initial URL equal rewritten URL: %s [IGNORING REWRITE]/
+ExpandPath("#request.appPath#config/mach-ii.xml")=ï¿½ï¿½ï¿½)aï¿½9%/mach-ii.xml[/code]
+
+Looks like there are some mod_rewrite shenanigans going on. Once I know more I'll be sure to post it. Charlie Arehart <a href="http://www.newatlanta.com/c/products/bluedragon/self_help/archiveSearch/detail?page=1&amp;messageId=77253" title="RE: [BlueDragon] ExpandPath and Linux">did also confirm</a> that there was something curious going on here as he ran a number of test cases against both cfmx and BD (6.1 and 6.2).

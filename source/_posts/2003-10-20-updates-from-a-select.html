@@ -1,0 +1,21 @@
+---
+layout: post
+title: Updates from a select
+tags:
+- MS SQL
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+I have been doing a lot more database based work recently and have learned one or two pretty useful techniques. Here is an extremely useful one: Running an update based on a select statement.
+
+In the past whenever I could have wanted to do a bulk update on a table based on certain criteria, I would have run a select statement to retrieve a bunch of columns first and then programmatically looped over the result set and updated the values. But there is a much, much easier and way more efficient way of doing this. Just take a quick look at the statement below.
+
+[code]UPDATE someUsersTable
+SET someUsersTable.EmailPrivate = someOtherJoinTable.PublicEmail
+FROM someUsersTable INNER JOIN someOtherJoinTable ON someUsersTable.userID = someOtherJoinTable.userID
+WHERE (tbl_Users.userEmailPrivate = '')[/code]
+
+It was constructed very much the way I would have normally approached the problem. First I wrote the select statement in Query Analyzer, i.e. <em>SELECT * FROM FROM someUsersTable INNER JOIN someOtherJoinTable ON someUsersTable.userID = someOtherJoinTable.userID WHERE (tbl_Users.userEmailPrivate = '')</em>. This gave me the result set I wanted to work with. Next I quite simply removed the SELECT statement replaced it with a corresponding UPDATE statement. So easy when you know how and the performance should be way better than before hand, because rather than making multiple trips back and forth to the database server from the web application it's all handled by the database server in one swoop!

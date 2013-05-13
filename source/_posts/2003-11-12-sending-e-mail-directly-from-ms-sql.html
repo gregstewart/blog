@@ -1,0 +1,40 @@
+---
+layout: post
+title: Sending e-mail directly from MS SQL
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>And look ma, no Outlook!!! I had been writing a whole bunch of reports recently, essentially just a bunch of queries and having them e-mailed out to me every night. To accomplish this I was using the ColdFusion and it's scheduling capabilities, however in the recesses of my mind I remembered something about using <acronym title="Microsoft">MS</acronym> <acronym title="Structured Query Language">SQL</acronym> server to that job, which in this case made a hell of a lot of sense. So off I went in search of this vague memory and a way to capture and apply it.</p>
+
+<p>Sure enough a simple search on Google reveals plenty of information about using MS SQL to send e-mail. <a href="http://www.sqlmag.com/Forums/messageview.cfm?catid=3&amp;threadid=19212" title="SQL MAIL">This is a good starting point</a>. However, it wasn't long before the first hurdle was thrown my way. Whereas previous versions of MS SQL quite happily supported sending e-mails, <acronym title="Microsoft">MS</acronym> <acronym title="Structured Query Language">SQL</acronym> 2000 actually requires a copy of MS Outlook to send messages (why? <a href="http://support.microsoft.com/default.aspx?scid=kb;EN-US;281293" title="FIX: SQL Mail 2000 Needs Microsoft Outlook 2000 Client">Have a read here</a>). And what did we use? <acronym title="Microsoft">MS</acronym> <acronym title="Structured Query Language">SQL</acronym> 2000. Of course being tight, there was no way that the company was going to splash out on another copy of <acronym title="Microsoft">MS</acronym> Outlook 2000, so back to square one.</p>
+
+<p>Back to Google, another search this time a solution please without using Outlook. <a href="http://oldlook.experts-exchange.com/Databases/Microsoft_SQL_Server/Q_20766215.html" title="Send Mail without installing Outlook">The solution</a> presented itself on the ever excellent Experts-Exchange.</p>
+
+<p>The trick, well <a href="http://www.sqldev.net/xp/xpsmtp.htm" title="XPSMTP.DLL - SQL Server SMTP Mail XP">go to this site here</a>. Here you'll find detailed instructions and the relevant files to download. A 54k download later, I had copied the relevant file [for 2000 use this one: <strong>xpsmtp80.dll</strong>] to the '<em>&lt;your drive letter&gt;:\Program Files\Microsoft SQL Server\Binn</em>' folder and opened up my query analyzer.</p>
+
+<p>In order to use this <acronym title="Dynamic Link Library">DLL</acronym> and the stored procedures associated it with it, you'll need to first register it and then assign it the right execute permissions. Below are the steps required as found on the aforementioned web site.</p>
+
+<p><em>-- SQL Server 2000 install<br />
+exec sp_addextendedproc 'xp_smtp_sendmail', 'xpsmtp80.dll'<br />
+-- give execute permissions<br />
+grant execute on xp_smtp_sendmail to public</em></p>
+
+<p>Well nearly ready to go if all this worked, however I recommend you change the execute permissions to a user more suited to this task. So here is how I tested that it was all working by running the following code through the query analyzer again:</p>
+
+<p><em>-- ************************************************************************<br />
+-- greg's minimum number of parameters<br />
+-- ************************************************************************<br />
+declare @rc int<br />
+exec @rc = master.dbo.xp_smtp_sendmail<br />
+    @FROM   = N'from@yourdomain.com',<br />
+    @TO     = N'to@yourdomain.com',<br />
+    @subject    = N'Hello SQL Server SMTP Mail',<br />
+    @message    = N'Goodbye MAPI, goodbye Outlook',<br />
+    @server     = N'mail.yourdomain.com'<br />
+select RC = @rc<br />
+go</em></p>
+
+<p>Easy enough. As indicated have a good read through the site where this information originally came from as it contains a lot of information on the different options at your disposal.</p>

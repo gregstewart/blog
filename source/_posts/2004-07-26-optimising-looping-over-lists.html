@@ -1,0 +1,52 @@
+---
+layout: post
+title: Optimising looping over lists
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>There is a always lot of talk about optimisation, shaving off those precious milliseconds, in some cases manifesting itself as an almost a obsessive compulsive behaviour. I am not saying to that optimisation is not important or indeed relevant. It definitely has it's place, but I believe only, when things are going wrong, most commonly running slowly. So why did I decide to blog about optimising loops, well personally I wanted to document a little best practice, something to add to my tool set and use from the outset.</p>
+
+<p>About a month ago, a question arose on the CF-talk list about looping over a list in cfscript, as in: </p>
+
+<p><em>&lt;cfset theList = "apples, oranges, pears" /&gt;<br />
+<br />
+&lt;cfloop index = "theIndex" list = "#theList#" delimiters = ","&gt;<br />
+	&lt;cfoutput&gt;#theIndex#&lt;/cfoutput&gt;&lt;br /&gt;<br />
+&lt;/cfloop&gt;</em></p>
+
+<p>One response suggested the following:</p>
+
+<p><em>&lt;cfset list="apple,orange,pear" /&gt;<br />
+<br />
+&lt;cfscript&gt;<br />
+for (i = 1; i lte listLen(list); i = i + 1) {<br />
+ element = listGetAt(list, i);<br />
+ writeOutput(element);<br />
+}<br />
+&lt;/cfscript&gt;</em></p>
+
+<p>Which works, however there are one or two things that you could optimise here. The first is irrelevant if you are using CFMX, but in older versions by setting your list within the cfscript tag you can save yourself a call to the CFML parser. Also this code snippet evaluates (as was pointed out) for each iteration of the loop how long the list is. Since in this case the length does not change this is completely unnecessary. So you can save yourself some processing by moving the length evaluation outside the loop. Hence we now have:</p>
+
+<p><em>&lt;cfscript&gt;<br />
+list="apple,orange,pear";<br />
+theLength = listLen(list);<br />
+for (i = 1; i lte theLength; i = i + 1) {<br />
+ writeOutput(listGetAt(list, i)&"&lt;br /&gt;");<br />
+}<br />
+&lt;/cfscript&gt;</em></p>
+
+<p>And now the final small optimisation trick. Barney pointed out that Array access is much faster than list access. So converting your list to an Array can again help shave off a few cycles, by avoiding a call to ListGetAt() and of course benefiting from the faster access to arrays.</p>
+
+<p><em>&lt;cfscript&gt;<br />
+list="apple,orange,pear";<br />
+myArray = ListToArray(list);<br />
+theLength = arrayLen(myArray);<br />
+for (i = 1; i lte theLength; i = i + 1) {<br />
+ writeOutput(myArray[i]&"&lt;br /&gt;");<br />
+}<br />
+&lt;/cfscript&gt;</em></p>
+
+<p>Now having said all this, consider the following: to really optimise your loops, consider if you really need to use them in the first place!</p>

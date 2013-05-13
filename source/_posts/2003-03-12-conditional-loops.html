@@ -1,0 +1,34 @@
+---
+layout: post
+title: Conditional loops
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I learned something new a couple of days back! :) I had read about this in the Cold Fusion documentation on CFLOOP previously but never really come across a situation where I really needed to use the attribute CONDITION and subsequently never really thought about it. However yesterday I needed to create a do-while loop that on every loop re-evaluated the length of a list. One option was to use CFSCRIPT but I was having some difficulty getting that value to be evaluated properly at each loop, but then I stumbled across CFLOOP and it's condition attribute. Here is the loop in all it's glory.</p>
+
+<p><em>
+&lt;cfset local.selected_items = "" /&gt;<br />
+&lt;cfloop condition="#ListLen(local.selected_items)# LTE 2"&gt;<br />
+ &lt;cfset local.random_seed = RandRange(1, 4) /&gt;<br />
+ &lt;cfif (ListValueCount(local.selected_items, local.random_seed) lt 2)&gt;<br />
+   &lt;cfset local.selected_items = ListAppend(local.selected_items, local.random_seed) /&gt;<br />
+ &lt;/cfif&gt;<br />
+&lt;/cfloop&gt;</em></p>
+
+<p>What I needed to do what was evaluate a list of items and make sure it's length was less than a specified value. If the condition was true then make sure that no values in the list were triplicated (duplicated was acceptable) and add the random value to the aforementioned list if this was true. Then the loop should continue and re-evaluate the length of the list. For some reason I couldn't get this to work in CFSCRIPT. So making use of CFLOOP to perform a do-while loop and dynamically evaluate a condition is a good alternative.</p>
+
+<p>Funny how sometimes you are just not satisfied with one solution and so I revisited the do-while CFSCRIPT solution I was working on a few days later. Now CFLOOP with the condition attribute properly evaluates the condition at each loop, so why wouldn't CFSCRIPT? Well as it turns out the solution is very simple: use the evaluate function around the condition you are checking against. This will force the dynamic variable in the condition to be re-evaluated for each loop and now the solution:</p>
+
+<p><em>&lt;cfscript&gt;<br />
+ local.selected_items = "";<br />
+ do {<br />
+  local.random_seed = RandRange(1, 4);<br />
+  if (ListValueCount(local.selected_items, local.random_seed) lt 2) {<br />
+   local.selected_items = ListAppend(local.selected_items, local.random_seed);<br />
+  }<br />
+ } while (evaluate(ListLen(local.selected_items)) lte 2);<br />
+ writeoutput(local.selected_items);<br />
+&lt;/cfscript&gt;</em></p>

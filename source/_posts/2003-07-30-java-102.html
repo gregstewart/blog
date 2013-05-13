@@ -1,0 +1,152 @@
+---
+layout: post
+title: Java 102
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>The second part of my Java learning extravaganza. This time looking at variables, operators, expressions and statements. As ever all mistakes are mine...</p>
+<h2>Variables</h2>
+
+<p>Variables allow the storage of an object's state. A name and a type must be explicitly provided, it takes this form:</p>
+
+<p><em>"type name"</em></p>
+
+<p>A type helps define what values the variables can store and the type of operations that can be carried out. For example you can carry mathematical operations on variables of the type integer. These are the different types that are at your disposal:</p>
+
+<p><strong>(integers)</strong><br />
+byte ==	Byte-length integer ==	8-bit two's complement<br />
+short == Short integer == 16-bit two's complement<br />
+int == Integer == 32-bit two's complement<br />
+long == Long integer == 64-bit two's complement</p>
+
+<p><strong>(real numbers)</strong><br />
+float == Single-precision floating point == 32-bit IEEE 754<br />
+double == Double-precision floating point == 64-bit IEEE 754</p>
+
+<p><strong>(other types)</strong><br />
+char == A single character == 16-bit Unicode character<br />
+boolean == A boolean value (true or false) == true or false</p>
+
+<p>Since Java also specifies the format and size of these types, you do not have to worry about system dependencies, which is another great abstraction feature for code running on different systems. There is an additional <em>reference</em> type, which consists of arrays, classes and interfaces. These types don't actual contain values, but rather reference addresses in memory where the values are kept.</p>
+
+<p>The following naming convention is suggested:</p>
+
+<blockquote>"Variable names begin with a lowercase letter, and class names begin with an uppercase letter. If a variable name consists of more than one word, the words are joined together, and each word after the first begins with an uppercase letter, like this: isVisible. The underscore character (_) is acceptable anywhere in a name, but by convention is used only to separate words in constants (because constants are all caps by convention and thus cannot be case-delimited)."</blockquote>
+
+<p>In addition to this a variable is scoped. This scope depends on where the variable is declared, i.e. in relation to other code elements. There are four categories into which they can fall:</p>
+
+<p>A member variable is declared outside of any method or constructor (what is a constructor) and belongs to a class and hence can be accessible from the outside. You usually find them after the declaration of the class and before the first method is defined.</p>
+
+<p><em>public class YourClassName extends Applet {<br />
+		int memberNumber = 1;<br />
+}</em></p>
+
+<p>Local variables a declared within a block of code and are only accessible by that method (for example you can define local variables in your main variable).</p>
+
+<p><em>public static void main(String[] args) {<br />
+	int localNumber = 1;<br />
+}</em></p>
+
+<p>This variable is no accessible right to the closing curly bracket of the main method.</p>
+
+<p>Method parameters are values that are passed to methods and constructors. These can be values that the method needs to operate on and it's scope is the entire method. <em>args</em> is an example of a method parameter.</p>
+
+<p>Exception-handler parameters sit between the curly brackets after a catch statement. Rather than being values passed to a method they are arguments.</p>
+
+<p><strong>Final variables</strong></p>
+<p>These are variables that are declared once and whose values never change once assigned. Changing the value of a final variable will result in a compile error. You can declare them like such: "final int aFinalVar = 0;". Alternativaly you can declare them ("final int aFinalVar;") and then assign them a value later. But once assigned a value has been assigned that's it no more changes.</p>
+
+<h2>Operators</h2>
+
+<p>There are three different types of operators: unary ("++" as in i++;), binary ("=" as x=y;) and tertiary ("?:" as in 0 ? 1 : false). <em>unary</em> allows for postfix and prefix notation. Postfix means that the operator appears after the variable (or as it's also known the operand) and hence this means that the value is read before incrementing/decrementing. Prefix simply means that the operator appears before the operand and this means that values are incremented/decremented before being read. Their role is to perform and operation on a value and as a result return a value. Furthermore operators can be categorised as follows:</p>
+
+<p>Arithmetic Operators: +,-,*,/,% [computes the remainder of a division on two operands]. Generally speaking these carry out operations on two operands [binary]. However +.- have unary function as well. <em>+</em> promotes an operand from byte, short or char to int. <em>-</em> negates a value (i.e. -1).</p>
+
+<p>Relational and Conditional Operators: &gt;, &gt;=, &lt;, &lt;=, ==, !=. These compare two values to determine the relationship [usually true or false]. There more such operators however: &amp;&amp; [eg (a&gt;c) and (b&lt;c) are true], || [or], ![false], &amp; [for bolean values: if a&amp;b are true. For numbers it does a bitwise operation], |, ^.</p>
+
+<p>Shift and Logical Operators [bitwise operators]: &gt;&gt; [x &gt;&gt; z, shift x right by z], &lt;&lt; [x &lt;&lt; z, shift x left by z], &gt;&gt;&gt; [x &gt;&gt;&gt; z, shift x right by z (unsigned)], &amp; [and], | [inclusive or], ^ [xor], ~ [bitwise complement].</p>
+
+<p>Bitwise <em>and</em> operations result in 1 being returned when operand 1 and  2 are set to 1, else it returns 0. If a 1 is in either operand 1 or two then bitwise "<em>inclusive or</em>" returns 1. The only time it returns 0 is when operand 1 and 2 are set to 0. "<em>exclusive or</em>" return1 1 whenever operand 1 and 0 are not equal. For example if op1 = 1 and op2 = 0 or op1 = 0 and op2 = 1, then the result is 1. if op1 = 1 and op2 = 1, or even op1 = 0 and op2 = 0 then the result would be 1. Complement operators simply revert the outcome. So if operand bit is 1, then the result is 0</p>
+
+<p>When do you use them? Useful for setting for many Boolean flags.</p>
+
+<p>unsigned?? Not sure yet watch this space...</p>
+
+<p>Assignment Operators: =. These operators basically assign 1 value to another. The other ones are shorthand annotations also assigning one value to another: += [op1 += op2 equal to: op1 = op1 + op2], -= [op1 -= op2 equal to: op1 = op1 - op2], *=, /=, %=, &=, %=, |=, ^=, &lt;&lt;=, &gt;&gt;=, &gt;&gt;&gt;=.</p>
+
+<p><strong>Other Operators</strong></p>
+<ul>
+	<li><strong>?:</strong> = Shortcut if-else statement</li>
+	<li><strong>[]</strong> = Used to declare arrays, create arrays, and access array elements</li>
+	<li><strong>.</strong>  = Used to form qualified names</li>
+	<li><strong>( params )</strong> = Delimits a comma-separated list of parameters</li>
+	<li><strong>( type )</strong> = Casts (converts) a value to the specified type</li>
+	<li><strong>new</strong> = Creates a new object or a new array</li>
+	<li><strong>instanceof</strong> = Determines whether its first operand is an instance of its second operand</li>
+</ul>
+
+<h2>Expressions, statements and blocks</h2>
+
+<p>Variables and operators from the building blocks of the above entitled section. What is an expression? An expression is a segment of code that carries out computations and returns values. A statement is made of one or several expressions and are grouped together into complete units of execution. Zero or Several statements that are grouped together are known as chunks of code and separated by "<em>{}</em>".</p>
+
+<p><strong>Expressions</strong>: carry out the work of the program. On top of execution they control the flow of the program. 1 rule is that the values of each part of the expression must have the same matching data type. The order of execution is important and in your coding you should make your expressions as unambiguous as possible (this helps you read your code in the long term as well). You can explicitly indicate the order of execution by using "<em>()</em>". If you don't this is determined by precedence. Here is the order of precedence:</p>
+<ul>
+	<li><strong>postfix operators</strong>	[] . (params) expr++ expr--</li>
+	<li><strong>unary operators</strong>		++expr --expr +expr -expr ~ !</li>
+	<li><strong>creation or cast</strong>	new (type)expr</li>
+	<li><strong>multiplicative</strong>		* / %</li>
+	<li><strong>additive</strong>		+ -</li>
+	<li><strong>shift</strong>			&lt;&lt; &gt;&gt; &gt;&gt;&gt;</li>
+	<li><strong>relational</strong>		&lt; &gt; &lt;= &gt;= instanceof</li>
+	<li><strong>equality</strong>		== !=</li>
+	<li><strong>bitwise AND</strong>		&amp;</li>
+	<li><strong>bitwise exclusive OR</strong>	^</li>
+	<li><strong>bitwise inclusive OR</strong>	|</li>
+	<li><strong>logical AND</strong>		&amp;&amp;</li>
+	<li><strong>logical OR</strong>		||</li>
+	<li><strong>conditional</strong>		? :</li>
+	<li><strong>assignment</strong>		= += -= *= /= %= &amp;= ^= |= &lt;&lt;= &gt;&gt;= &gt;&gt;&gt;=</li>
+</ul>
+
+<p>If operators are of equal precedence, they are evaluated based on the following rules. Binary operators (other than assignment ones) are executed from left to right. Assignment ones on the other hand are evaluated from right to left.</p>
+
+<p><strong>Statements</strong>: Equate roughly to sentences and logically forms a complete unit of execution. There are four groups of statements: assignment (x=1), increment (x++), method call (System.out.println(x)) and object creation (int integerObject = new Integer(4)). However you also have declaration statements (x=1) and control flow statements (if else).</p>
+
+<p>What's the diff between assignment and declaration? Again watch this space</p>
+
+<p><strong>Blocks</strong>: As stated 0 or more statements that are grouped together by curly braces, eg:</p>
+
+<p><em>if (this is true) {<br />
+	do something<br />
+} else {<br />
+	do something else<br />
+}</em></p>
+
+<h2>Control flow statements</h2>
+
+<p>The above code is also an example of a Control Flow Statement. Without control flow statements the interpreter executes the code line by line, reading from left to right. Control flow is used to selectively execute statements or repeatedly execute them. There are four types of control flow statements: looping (for, while, do-while), decision making (if/else, switch/case), exception handling(try/catch/finally/throw), branching (break, continue, label:, return). Please note that <em>goto</em> is a reserved word but not used by Java.</p>
+
+<p>What is an interpreter? Yet another question to haven't seen the answer yet</p>
+
+<ul>
+	<li>"<em>While</em>" executes the statement if the condition is true</li>
+	<li>"<em>Do-While</em>" executes the statement first, then evaluates the condition (the opposite of "while")</li>
+	<li>"<em>for</em>" is a loop and the evaluation is carried out at the start of each loop.</li>
+	<li>"<em>if</em>" used to selectively execute the program. Breaks out of the flow once one condition has been met, which could be Boolean or integer based.</li>
+	<li>"<em>switch</em>", another flow control statement that can only evaluate integer values. Note that the value of each case statement must bee unique and also each statement is ran through even if a condition is met. The only way to break out of a "case" is by placing a "break;" statement for when the conditions is met.</li>
+	<li>"<em>try/catch</em>" used for exception handling and helps to gracefully resolve an error. The "try" part is for the statement where an error might occur. The "catch" is associated with the "try" and has a statement that attempts to resolve the error if an exception is encountered in the try block.</li>
+</ul>
+<h2>Branching statements</h2>
+
+<p>There are three types of such statements: break, continue and return. The first two can be used with or without a label.</p>
+
+<p><strong>break</strong>: This allows the application to break out of a loop and return to the normal flow of the application, i.e. after the loop or switch statement (also known as the innermost switch/for/do-while/while). The labelled approach terminates an outer statement. If can be used for nested loops to terminate both the inner and outer loops to return to the application flow.</p>
+
+<p><strong>continue</strong>: is slightly different in that it can allow the control flow to skip to the next iteration. Unlabeled this statement also affects the innermost loop. When labelled it can be used to skip to the next outer iteration of the loop.</p>
+
+<p><strong>return</strong>: is used to exit the current method. It can or cannot return a variable/result of the method. Note that if a method is declared as void use just "return" as no value is expected to be returned from such a method. Also note that a value returned from a method must match the type specified by the method's declared return type.</p>
+
+<p>And thus ends another review of what I have digested this week. Next time, heaps more on objects!!</p>

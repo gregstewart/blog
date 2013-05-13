@@ -1,0 +1,73 @@
+---
+layout: post
+title: Javascript objects
+tags:
+- JavaScript
+- javascript
+status: draft
+type: post
+published: false
+meta:
+  _edit_last: '2'
+---
+<p><strong>Object creation:</strong></p>
+
+<pre><code>function wibble(x) {
+    this.x = x
+    this.foo = function () {
+        return this.x;
+    }
+}
+</code></pre>
+
+<p>If you instantiate he function with the new keyword, we tell JS to treat the function like a constructor.</p>
+
+<pre><code>var wobble = new wibble(10);
+console.log(wobble.foo()); // outputs 10;
+</code></pre>
+
+<p><strong>Prototype</strong>
+While each new object has a foo() method it's not very OO, as it's redefined for each new object. However you can use the prototype property of the function to extend the original object.</p>
+
+<pre><code>function wibble(x) {
+    this.x = x
+}
+
+wibble.prototype.foo = function() {
+    return this.x;    
+};
+
+var wobble = new wibble(15);
+console.log(wobble.foo()); // outputs 15
+</code></pre>
+
+<p>Object literal:</p>
+
+<pre><code>var myObj = {
+    tmp: 1,
+    foo: function (x) {
+        console.log(x+(++this.tmp));
+    }
+};
+
+myObj.tmp; // outputs 1
+myObj.foo(3); //outputs 5
+myObj.foo(3); //outputs 6
+</code></pre>
+
+<p>No need for the new keyword.</p>
+
+<p>Closure:</p>
+
+<pre><code>function wibble() {
+    var tmp = 1;
+    foo = function (x) {
+        console.log(x+(++tmp));
+    }
+    return foo;
+}
+
+bar = wibble();
+bar(3); // outputs 5
+bar(3); // outputs 6
+</code></pre>

@@ -1,0 +1,57 @@
+---
+layout: post
+title: Stored procedures
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>As indicated previously, I have been doing a lot more database based stuff in recent months and hence I have learned a number of new things. In the following I'll be attempting to share my newly found knowledge on <strong>stored procedures</strong> and SQL <strong>case</strong> statements.</p>
+<h2>Stored procedures</h2>
+<p>Let's start off by looking at some code:</p>
+<p><em>CREATE PROCEDURE [dbo].[qGetBannerAd] (<br />
+	@adBannerType int = NULL,<br />
+	@ad_amsSectionID varchar(30) = NULL,<br />
+	@adPageLocation int = NULL,<br />
+	@NumOf int = 1<br />
+)<br />
+AS<br />
+<br />
+DECLARE<br />
+	@BaseSQL varchar(1000),<br />
+	@SQLStatement varchar(8000)<br />
+<br />
+/* <br />
+ initialise the base SQL <br />
+ if banner type is valueCLick get code<br />
+ else get display name, filename, width and height<br />
+*/<br />
+IF @adBannerType = 0<br />
+	SET @BaseSQL = 'SELECT TOP ' + cast(@NumOf as varchar(100)) + 'AD.adAdvertsID, AD.adCodeSnippet, AD.adRanking'<br />
+ELSE<br />
+	SET @BaseSQL = 'SELECT TOP ' + cast(@NumOf as varchar(100)) + 'AD.adAdvertsID, AD.adDisplayName, AD.adBannerType, AD.adBannerLink, AD.adMaximumDisplays, AD.adRanking, AD.adHeight, AD.adWidth, AD.adFileName'<br />
+<br />
+SET @BaseSQL = @BaseSQL + '<br />
+	FROM tbl_Adverts_Details AD <br />
+	WHERE getDate() BETWEEN AD.adStartDateTime AND AD.adEndDateTime<br />
+	AND AD.adPublish = 1<br />
+	AND AD.adIsDeleted = 0'<br />
+<br />
+/* if an internal make sure it's not passed it's max display span */<br />
+IF @adBannerType = 1<br />
+	SET @BaseSQL = @BaseSQL + ' AND  AD.adTimesDisplayed < CASE AD.adMaximumDisplays WHEN - 1 THEN 200000000000000 ELSE  AD.adMaximumDisplays END'<br />
+<br />
+SET @SQLStatement = ' AND AD.adBannerType = ' + cast(@adBannerType as varchar(100)) + ' AND AD.ad_amsSectionID = ' + cast(@ad_amsSectionID as varchar(100)) + ' AND AD.adPageLocation = ' + cast(@adPageLocation as varchar(100))<br />
+<br />
+/* Append the order by clause */<br />
+SET @SQLStatement = @BaseSQL + @SQLStatement + ' ORDER BY NewID()'<br />
+<br />
+/* Exceute the SQL */<br />
+EXEC(@SQLStatement)<br />
+GO</em></p>
+<p>This stored procedure was created to retrieve a set of Banner ads for an application we had developed. In the first instance we create the stored procedure (<em>SP</em>) and declare the parameters that it expects to take (these are prefixed by the'@' symbol). Next I declared a set of variables that I as to use to build up the SQL to be executed. As you can see after the declaration based on one of the parameters passed (<em>@adBannerType</em>) I determine which select statement to run and set it to <em>@BaseSQL</em> which I declared previously.</p>
+<p>The rest of the SP follows the same kind of tack, only know I use the parameters passed to determine what kind of where clauses to run. Some things that may make you ponder at this stage are the <em>CASE</em> statement and <em>ORDER BY NewID()</em>, fear not I'll be covering these shortly.</p>
+<p>Now we have our SP how do we test it? Simply open your Query Analyzer and using the above example the statement to execute would be:</p>
+<p><em>exec qGetBannerAd 1,2,2,3</em></p>
+<p>the comma delimited values are the parameters that the SP expects and these are provided in the sequence they are specified. If you fail to do that the SP will more than likely fail.</p>

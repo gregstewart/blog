@@ -1,0 +1,29 @@
+---
+layout: post
+title: Upsizing Access 97 to SQL server 6.5 Part IV
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>Upsizing Access 97 to SQL server 6.5 Part IV</h3>
+<p class="1">I have come across another problem when upsizing my database to SQL from Access. This one pertains to a select statement. This is the code I used to extract the last record in a table.</p>
+<p class="1">Code:<br />
+<pre>
+&lt;cfquery datasource="DataSourceName" name="QueryName"&gt;
+SELECT LAST(TableName.FieldName) AS LastOfFieldName FROM TableName
+&lt;/cfquery&gt;
+</pre>
+</p>
+<p class="1">As you can see I used the Last function and this works fine in Access, but SQL server doesn't recognise this statement and returns an error. So I had to use a slightly more convoluted way to get the last record.</p>
+<p class="1">Code:<br />
+<pre>
+&lt;cfquery datasource="DataSourceName" name="QueryName" maxrows="1"&gt;
+Select Tablename.FieldName From TableName
+Order by TableName.FieldName DESC
+&lt;/cfquery&gt;
+</pre>
+</p>
+<p class="1">
+This query selects all the fields and orders them in descending order. You then use the <i>maxrows=</i> statement to limit the output to the first field it retrieves.</p>

@@ -1,0 +1,16 @@
+---
+layout: post
+title: BD IIS 6 install problems
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+I have not seen anyone else post this yet, so here are some resources for working around a known issue with BlueDragon installs on Win2k3 (bugs <a href="http://www.newatlanta.com/c/auth/support/bluedragon/bugtracking/detail?bugId=1356" title="BD does not detect IIS on windows 2003">1356</a> and <a href="http://www.newatlanta.com/c/auth/support/bluedragon/bugtracking/detail?bugId=1357" title="BD does not offer IIS adapter in BD Administration Console">1357</a> [you'll need an account to view these]). What can happen is that either the installer or the admin console do not find the IIS installation.
+
+If the installer cannot find the installation then in most cases you can configure the IIS connector by using the admin console option: web server adapter.
+
+If the admin console cannot find the IIS installation then the root cause of this problem is there is no default site configured for IIS. Simply create one and attempt using the admin console to create the connection. Charlie Arehart posted the <a href="http://www.newatlanta.com/c/products/bluedragon/self_help/archiveSearch/detail?page=1&amp;messageId=71810" title="RE: [BlueDragon] IIS 2003 Web Adapter">following information</a> detailing what settings the installer/admin consoles attempts to configure.
+
+Please note that these issues will be fixed in a soon to be released patch.

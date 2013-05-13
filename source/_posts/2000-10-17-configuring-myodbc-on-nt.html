@@ -1,0 +1,29 @@
+---
+layout: post
+title: Configuring MyODBC on NT
+tags:
+- MySQL
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+This is effectively part II of configuring MySQL for NT. With the help of this document you will be able to access your MySQL database server from other Windows applications (e.g. Cold Fusion). Right so let's get started. We shall begin with installing MyODBC (a copy of which can be obtained from here <a href="http://www.mysql.com/downloads/api-myodbc.html">http://www.mysql.com/downloads/api-myodbc.html</a>).
+
+Installing MyODBC is straightforward. Unzip the downloaded file and click on the <strong>setup.exe</strong> file and simply follow the installation prompts. For starters just keep accepting the default settings if you are unsure of any options.
+
+OK, now we are ready to add a <strong>MySQL</strong> datasource. You have to do this through <em>ODBC datasources</em> in the <strong>Control Panel</strong>. Please note: if you were planning on using the Cold Fusion Administrator, you can't. You have to go through the <strong>Control Panel</strong> to initially configure the datasource. Once setup you can modify your <strong>MySQL</strong> datasources through the Cold Fusion Administrator. So go ahead and fire up your ODBC manager.
+
+Once open, go to the the <strong>system DNS</strong> tab and select <em>Add...</em>. From the list of available drivers select <strong>MySQL</strong> and click <em>Finish</em>. This should fire up a dialogue with a whole bunch of fields. Listed below is a sample entry:
+
+[code]Windows DNS name: mydsn
+MySQL host (name or ip): 127.0.0.1
+MySQL database name: mydatabase
+User: myusername
+Password: mypassword
+[/code]
+
+Things to bear in mind are: from my personal experience, I found that it's best to keep windows DSN and database name in lower case. Specifying the IP address works, I have had problems using the host name setting. As for the username and password, make sure that you use those properties that you set to the database you created. I.e. if you don't require a logon to connect to that database, then leave the fields blank. Else enter the username and password assigned to that database (the default <strong>root</strong> account will work well, but is contentious for security reasons).
+
+Well we are done you should know have configured your system to connect to a MySQL database via ODBC.

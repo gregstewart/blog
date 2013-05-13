@@ -1,0 +1,34 @@
+---
+layout: post
+title: ! 'SVN : authentication with a windows domain'
+tags:
+- apache
+- svn
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+Finally got round to implementing this for work. As a starting point I followed <a title="Apache Based Server" href="http://tortoisesvn.net/docs/release/TortoiseSVN_en/tsvn-serversetup-apache.html#tsvn-serversetup-apache-5">the instructions found here</a>.
+
+The config looked fine, but after restarting the service, I still wasn't getting prompted for a log in. After re-jigging the order to what you see below and restarting the apache service (we are using 2.0.59), it all worked. Maybe this will help someone else along the way.
+
+[code]
+<Location /svn>
+DAV svn
+# any "/svn/foo" URL will map to a repository /usr/local/svn/foo
+SVNParentPath {drive letter}:/path/to/SVN/epositories/
+
+AuthName "SVN"
+AuthType SSPI
+SSPIAuth On
+SSPIAuthoritative On
+SSPIOfferBasic On
+SSPIOmitDomain on
+SSPIDomain &lt;domain controller&gt;
+SSPIBasicPreferred On
+Require valid-user
+</Location>
+[/code]

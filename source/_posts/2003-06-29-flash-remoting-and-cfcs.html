@@ -1,0 +1,158 @@
+---
+layout: post
+title: Flash remoting and CFCs
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>For the last day or so I have been trying to wrap my head around two of Macromedia's product features: ColdFusion MX's <acronym title="ColdFusion Components">CFCs</acronym> and Flash remoting. And what does this mean? Well you can write a ColdFusion Component(CFC) and get Flash to call it then in turn work on the result returned from said CFC. It took me a while to get into it, mainly because of my lack of familiarity with the Flash MX. So we are going to start off this series by looking at some of the pre-requisite, then create a CFC and return a result. Next we'll build a simple Flash form that submits it's input to the CFC using Flash remoting and in turn displays the result from the CFC.</p>
+<h2>Pre-requisits</h2>
+<p>Ok to get started you'll need the following:</p>
+<ul>
+	<li>ColdFusion MX</li>
+	<li>Flash MX</li>
+	<li>Flash remoting</li>
+	<li>Dreamweaver MX (or whatever your favourite editor is)</li>
+</ul>
+<p>All of these are available for trial downloads, if you don't already have them.</p>
+<h2>ColdFusion Components (CFCs)</h2>
+<p>In the most simple terms a CFC is a logical group of functions or single function housed in a component. And this is how one might look:</p>
+<p><em>
+	&lt;cfcomponent&gt;<br />
+		&lt;cffunction name="thisFunction" access="public" returntype="string" hint="this function when invoked takes an argument and returns a string"&gt;<br />
+			&lt;cfargument name="nameField" required="true" type="string" hint="submitted string to be worked on" /&gt;<br />
+
+			&lt;cfset thisResult = "Hello " &amp; nameField /&gt;<br />
+			&lt;cfreturn thisResult /&gt;<br />
+		&lt;/cffunction&gt;<br />
+	&lt;/cfcomponent&gt;<br />
+</em></p>
+<p>So we have our opening and closing <strong>cfcomponent</strong> tags and it's name is determined by the file name you give it. So in this case we are returning a string so let's call the component <em>returnString</em>, which means that it's file name will be returnString.cfc.</p>
+<p>Next we have the <strong>cffuntion</strong> tags, which is where you define the function name or method that is called, set it's access type, the return type that will be sent back to the calling application and finally you can give it a hint. Giving it a hint is a very useful feature as it allows you auto-document your components and functions. To view the documentation of a CFC, simply call it in your browser, eg: <em>http://localhost:8500/returnString.cfc</em> (this assumes that you saved the component in the root of you web server).</p>
+<p>The <strong>cfargument</strong> tag defines a parameter submitted to the function. Think of it as the <strong>cfparam</strong> of CFCs. You can specify whether it is required, what it's expected type is, give it a hint and few other attributes. Again the auto-documenting aspect is nice, but more importantly it allows you tighter control over the inputs by validating the type of variable submitted.</p>
+<p>Once these attributes have been set you can get to invoking the component. In this example we are simply concatenating the submitted value with another string and then setting this combination to a variable called <em>thisResult</em>.</p>
+<p><strong>cfreturn</strong> is used to return the variable to the calling application.</p>
+<h2>Invoking CFCs</h2>
+<p>So you now have a rough idea of what a CFC is, but what do you do with? That is how do you put it to good use? Even better how do you use it? Well you will have to call it, or more precisely invoke it. Below is the code for invoking our previously created component.</p>
+<p><em>
+	&lt;cfinvoke component="returnString" method="thisFunction" returnvariable="thisResult"&gt;<br />
+		&lt;cfinvokeargument name="nameField" value="you" /&gt;<br />
+	&lt;/cfinvoke&gt;<br />
+	&lt;cfoutput&gt;#thisResult#&lt;/cfoutput&gt;<br />
+</em></p>
+<p>If you were to include this code snipped in page called <strong>callFunction.cfm</strong> and requested in your browser (http://localhost:8500/callFunction.cfm) the result should be: <em>Hello you</em>. So what exactly happens:</p>
+<ol>
+	<li>the browser calls the page</li>
+	<li>the <strong>cfinvoke</strong> tag calls a component <em>returnString</em></li>
+	<li>looks for and executes the function/method called <em>thisFunction</em></li>
+	<li>The function takes the parameter <em>nameField</em> and does it's bit and returns a string called <em>thisResult</em></li>
+	<li>finally we move to the output onto the page: <em>Hello you</em></li>
+</ol>
+<p>Note paths to components are relative. For example if you store your components in a sub folder to your webroot, called say <em>components</em>, then value for the attribute component in <strong>cfinvoke</strong> would be: <em>component="component\returnString"</em>.</p>
+<p>Well that's that pretty much. You can now have a play with this little function, why not trying to get it to accepts a dynamic value, say based on a form submission??</p>
+<h2>The Flash form</h2>
+<p>I love the idea of using Flash and despite it's accessibility issues, I do believe that it can offer a lot of benefits in terms of cross browser experience and in terms of feature richness of the interface. However every single time I open the Flash or Flash MX editor, I get the hibby jibbies and it takes me a while to re-orientate myself and cut and paste a lot of code until I get things figured out again. So posterity my mini form tutorial, because if I write it down I might actually remember it for once.</p>
+<p>Once you have fired up Flash and opened a new <em>.fla</em> file. Start off with creating 4 layers and give them these names.</p>
+<ol>
+	<li>Labels</li>
+	<li>All actions</li>
+	<li>Frame actions</li>
+	<li>UI components</li>
+</ol>
+<p>This movie will be comprised of two actions, the first will contain the form and the second will be a response page. So in the label layer, insert a key frame in the 6th frame and then another after the 10th. In frame one of this layer edit in the properties tab enter in <em>frame label</em> box: <strong>form</strong> and in frame 6 do the same again, but this time give it a label: <strong>response</strong>.</p>
+<p>Next move to layer 4 or the one you labelled: <strong>UI components</strong> and insert another key frame in frame 6. Move back to the first frame and select the text tool. First we'll create a label for our form field. Draw a small text box and type: <strong>your name:</strong>. Make sure that in the properties tab the text type is set to: solid text. Now draw another box along side it. This time however in the properties we'll set the text type to: input text. Also make sure that the <em>Show Border Around Text</em> option has been selected in the properties tab. And finally give it an instance name so that we can latter reference it: <em>nameField</em></p>
+<p>Next we'll add a button to this frame. Go to the Components tab and ensure that Flash UI Components is selected. From the options select <em>Push button</em> and drag it into the scene and place it under the two text boxes. Now select it using the Arrow Tool and edit the properties. Set the instance name to <strong>pb_submit</strong>, set the label to <strong>Press me</strong> and finally enter the value <strong>onClick</strong> in the click handler field.</p>
+<p>Next move to frame 6 and delete any of the previous components may appear here (this happened to me when I inserted the key frame after adding the form elements). Draw another text box and enter the following text into it: Form submitted.</p>
+<p>Now move up to the layer labelled: <strong>All actions</strong>. This layer will contain all the action script code for this movie. First make sure that this layer extends to the 10th frame (you can do this by inserting a key frame in frame 11 and then subsequently removing it). For the button we created previously, we gave the click handler a value of <em>onClick</em>. This is a function that the movie will call when the button is pressed. So you will need to create this function, go to the <strong>Actions</strong> tab (make sure that the you are in expert mode) and enter the following ActionScript in frame 1:</p>
+<p><em>function onClick(btn) {<br />
+	trace("onClick " + btn._name);<br />
+	gotoAndStop("response");<br />
+}</em></p>
+<p>This function takes the parameter <em>btn</em>, which is instance name we set previously (<em>pb_submit</em>). The first line of the function outputs a trace to your debug window, so that you can check that the function was called. the output should be: <em>onClick pb_submit</em>. Then we send the user to another frame, the one we labelled <em>frame</em>.</p>
+<p>Next go to the layer called: Frame actions. Create the frame split we have done for the previous layers. Go to frame 1 and type: <em>stop();</em> in the <strong>Actions</strong> tab. Do the same thing again for Frame 6. When run the movie this will stop the movie from moving through all the frames, instead it will halt and only continue when the button is pressed. Pressing <strong>CTRL+Enter</strong> to run the movie. Simply enter your name and click the button and you should be taken to a page that displays: <strong>Form submitted</strong>.</p>
+<p>In your output window you'll see the message: <em>onClick pb_submit </em>. This appear thanks to the <strong>trace</strong> call we added in the <em>onClick</em> function.</p>
+<h2>Creating an object in Flash</h2>
+<p>Next we'll be creating an object that will capture the form input, so that we can easily pass the value to a CFC. In order to this we'll need to first create an object using ActionScript. So head back to your Flash editor and look at the ActionScript in frame 1 of the "Frame actions" layer. In the action window you should only have <em>stop();</em>. Add the following function call before the <em>stop()</em> function, <em>initData();</em>. This is the function we'll use to initialise the object where we will capture our form input. The entire code for Frame 1 should look like this:</p>
+<p><em>initData();<br />
+stop();</em></p>
+<p>The <em>initData</em> function we will add to Frame 1 of our "All actions" layer and add the following code:</p>
+<p><em>function initData()<br />
+{<br />
+	// make sure we only call initData once<br />
+	if ( inited )<br />
+		return;<br />
+	inited = true;<br />
+<br />
+	// modeling the form choices with data<br />
+<br />
+	// set initial values<br />
+	userData = new Object();<br />
+	userData.nameField = "";<br />
+	trace ("object created");
+}</em></p>
+<p>In the first instance we check whether we have previously created the object. If yes just skip ahead and don't do anything else. If on the other hand we haven't then let's create the object and set the default value to empty (""). Please note that we are creating an object called <strong>userData</strong> and adding a key <strong>nameField</strong> to it. In my mind this looks exactly like a structure in ColdFusion and hence if you had other elements you wanted to capture you could add another key and store an additionally submitted value in it. The trace at the end is just there to re-assure us that the function was called and that the object was created.</p>
+<p>The next step is to capture the submitted information in the object as so far we have only created it. OK head to frame 1 of the "All actions" layer and you will need to add the following function call: <em>getSubmittedData();</em> to the previously created <em>onClick()</em> function. It should end up looking something like this:</p>
+<p><em>function onClick(btn) {<br />
+	trace("onClick " + btn._name);<br />
+	getSubmittedData();<br />
+	gotoAndStop("response");<br />
+}</em></p>
+<p>The function will simply add the value submitted to the object we have previously initialised. So staying in the "All actions" layer in frame 1 and insert the following code between the two existing functions:</p>
+<p><em>// get the data from the ui elements on page 1
+function getSubmittedData()<br />
+{<br />
+	userData.nameField = name_txt.text;<br />
+	trace ("The value of the submitted field is:" + userData.nameField);<br />
+}</em></p>
+<p>The trace will allow us to make sure that the submitted value has been stored into our object, that we can now pass to a CFC page.</p>
+<h2>Flash remoting...</h2>
+<p>Now the plan is to take said form input, i.e. your name and pass it to a component, which will do some stuff and return a result to the flash movie. Now the stuff I mentioned just a second ago, is actually the component appending your name to a string, which will be passed back to the end page, where a brief: "hello &lt;your name&gt;" will be displayed. Pretty clever... :) Anyway as you can imagine, you can get it to do all sorts of stuff and then in turn have the receiving ActionScript do something altogether different based on the result sent back.</p>
+<p>So what we need to do know is take the object we previously created and pass it to the component. To this end we need to create a connection to the server and then once connected we will pass the object and wait for a result. So go back to the "Frame actions" layer and select frame 6. After the <em>stop()</em> function call, add a call to <em>submitDetails()</em>. And then back on over to the "All actions" layer and frame 1. There we will enter the <em>submitDetails()</em> function.</p>
+<p><em>function submitDetails()<br />
+{<br />
+	// Include the Required NetService class files<br />
+	#include "NetDebug.as"<br />
+	#include "NetServices.as"<br />
+	#include "DataGlue.as"<br />
+<br />
+	// connect to the Flash Remoting service provider<br />
+	if (isGatewayOpen == null) {<br />
+		// do this code only once<br />
+		isGatewayOpen = true;<br />
+		// Make the Gateway connection<br />
+		NetServices.setDefaultGatewayUrl("http://localhost:8500/flashservices/gateway");<br />
+		gatewayConnnection = NetServices.createGatewayConnection();<br />
+		submitForm= gatewayConnnection.getService("your.path.submitForm", this);<br />
+		trace("Connected");<br />
+		// CALL Web service: return the user input<br />
+		submitForm.thisFunction(userData);<br />
+		trace("sent request");<br />
+	}<br />
+}</em></p>
+<p>A lot of the work is done for us by including the <em>NetServices.as</em> and <em>DataGlue.as</em> action scripts (<em>NetDebug.as</em> is used for debugging). Based on some code I found over at <a href="http://www.macromedia.com/" title="Macromedia">Macromedia</a>, I learned that the best way was to first check for a connection (check for the existence of a variable <strong>isGatewayOpen</strong>), if not then initiate the connection. These two lines do that for us:</p>
+<p><em>NetServices.setDefaultGatewayUrl("http://localhost:8500/flashservices/gateway");<br />
+gatewayConnnection = NetServices.createGatewayConnection();</em></p>
+<p>Initiate the connection. The next line: <em>submitForm = gatewayConnnection.getService("your.path.submitForm", this);</em>, is the one of interest. Here we create a connection to our CFC. The one thing of note is the path to your CFC. In my example: <strong>your.path.submitForm</strong>, would be represented by the following directory structure: <strong>&lt;your webroot&gt;\your\path\submitForm.cfc</strong>. So it is important that you map the location of your CFC in relation to your web server properly. Otherwise nothing will happen.</p>
+<p>At this stage you may wonder how will I know? Well i have included a few trace statements, but that really won't tell you anything other than success or failure. Success is good, but with just a message saying failure you are not going to get very far. Thankfully within Flash MX under <em>Window &gt; NetConnection debuger</em>, you will find a tool that will give you some relevant feedback when it comes to figuring out why your connection failed or indeed how it succeeded.</p>
+<p>Now you are ready to run the movie, submit a value via the form to your component. Both the output debugger window should display the following:</p>
+<p><em>object created and populated<br />
+onClick pb_submit<br />
+your name<br />
+The value of the submitted field is: Greg<br />
+Connected<br />
+sent request</em></p>
+<p>In your net debugger you should be able to find a line <strong>Result - Hello &lt;your submitted value&gt;</strong> [second from bottom if all executed well]. Problems that may occur are down to the flash file and the CFC not being in the same directory or the reference to the CFC being wrong in your connection call. Another reason I encountered was that the submitted value wasn't found. Initially I thought that the value passed would be the object, i.e. <strong>userData</strong>. In actual fact though it is the field submitted that needs to be referenced in the function, hence use nameField.</p>
+<p>This is all well and good, but the proof lies in the pudding so let's output that result back into our closing page, where currently you only see <strong>form submitted</strong> once you launch the movie. To do this we'll start by having to add the following code to the "All actions" layer in frame 1.</p>
+<p><em>// :::: DEFAULT RESPONDERS ::::<br />
+<br />
+function thisFunction_Result(thisResult) {<br />
+	trace("server responded: The result is " + thisResult);<br />
+	<br />
+	trace("setting the field");<br />
+	// This function will be invoked by the server when it has finished processing<br />
+	myResult.text = "The CFC replied with: " + thisResult;<br />
+}</em></p>
+<p>The above code is a default Flash remoting reponse function. You invoke it by creating a function of the format <strong>invokedFunction_Result(return variable)</strong>. All I do here is set a trace to output a debug message with the resulting value and then display the result in text field. What text field? The one we will create now on frame 6 of the "UI components" layer. Select the frame and select the text tool. Draw a box and in the properties tab select Dynamic Text from the drop down menu. In the instance name field, specify <strong>myResult</strong>.  There you go all done, launch the movie, submit a value and see the result on the next frame.</p>
+<p>For convenience and possibly troubleshooting, <a href="/downloads/flashRemoting.zip" title="Download the complete source">here is a zipped archive with the completed code and flash movie</a>. Most of the information I gleaned from numerous articles in the <a href="http://www.macromedia.com/devnet/mx/flashremoting/" title="Flash Remoting Devlopment Center">Flash Remoting Devlopment Center</a> which are damn useful if you have the time to work through them.</p>

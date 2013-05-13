@@ -1,0 +1,17 @@
+---
+layout: post
+title: Virtual host configuration error
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I was faced with an issue in getting a second site up and running using virtual hosts, and this was down to a mistake in my httpd.conf file. If you encounter the following error in your log files:</p>
+
+<p><em>[Thu May 27 12:44:54 2004] [warn] _default_ VirtualHost overlap on port 80, the first has precedence</em></p>
+
+<p>You can resolve it by un commenting the following line in your httpd.conf line:</p>
+<p><em>NameVirtualHost *</em></p>
+
+<p>And then setting host directive to: <virtualHost *>, instead of specifying a server name. Courtesy of: <a href="http://httpd.apache.org/docs/vhosts/name-based.html" title="Name-based Virtual Host Support">Name-based Virtual Host Support</a>.</p>

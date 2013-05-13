@@ -1,0 +1,39 @@
+---
+layout: post
+title: How-to retrieve a random record
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>
+One of the features on our web site is the quote of the day. This quote is selected at random from the quote database. In order to be able to do this you have to use the RandRange function, which selects a random integer between two values. The first value is one as it represents the first record in the table and the second is the integer generated using the Count() function on the quote table. That way I make sure that no value is generated which is greater than the actual number of records stored. <strong>BTW this assumes that you don't delete any records</strong></p>
+<p>
+Code:<br />
+<em>&lt;cfquery datasource="MyDatasource" name="CountQuoteID"&gt;<br />
+Select Count(Quote_ID) as Total<br />
+From Quote<br />
+&lt;/cfquery&gt;</em>
+</p>
+<p>Next I stored that result in a variable called TotalCount.</p>
+<p>Code:<br />
+<em>&lt;cfoutput query="CountQuoteID"&gt;<br />
+&lt;cfset TotalCount=#Total#&gt;<br />
+&lt;/cfoutput&gt;</em>
+</p>
+<p>Then I could proceed and create the RandRange function based on 1 and TotalCount, which is stored as RandFinal.</p>
+<p>Code:<br />
+<em>&lt;cfset RandFinal=RandRAnge(1, #TotalCount#)&gt;</em></p>
+<p>This variable I use in my conditional query which retrives the actual quote where the unique identifier = RandFinal.</p>
+<p>Code:<br />
+<em>&lt;cfquery datasource="MyDatasource" name="GetRandomQuote"&gt;<br />
+Select Quote_Text <br />
+From Quote<br />
+Where quote_id = #RandFinal#<br />
+&lt;/cfquery&gt;</em></p>
+<p>Next all you need to do is Output the result in your page and format the output accordingly.</p>
+<p>Code:<br />
+<em>&lt;cfoutput query="GetRandomQuote"&gt;<br />
+#Quote_Text#<br />
+&lt;/cfoutput&gt;</em></p>

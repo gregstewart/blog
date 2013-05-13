@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="cleartype" content="on">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="shortcut icon" href="../images/base/favicon.ico">
+    <title></title>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.1/modernizr.min.js"></script>
+</head>
+<body>
+    <header role="banner">
+        <h1>lastminute.com</h1>
+    </header>
+
+    <section role="main" class="hotels-near-me-form">
+         <form>
+             <button>Show hotels near me</button>
+         </form>
+    </section>
+    <footer role="contentinfo"><a href="#terms">Terms</a></footer>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            if (Modernizr.geolocation) {
+                $('.hotels-near-me-form > form > button').on('click', function(e) {
+                    e.preventDefault();
+                    getLocation();
+                });
+            } else {
+                $('.hotels-near-me-form').append('<div>Geo location not supported in device</div>');
+            }
+
+            function getLocation() {
+                navigator.geolocation.getCurrentPosition(redirect, error);
+            }
+
+            function redirect (position) {
+                window.location = '../hotel/?location=&latitude=' + position.coords.latitude + '&longitude=' + position.coords.longitude;
+            }
+
+            function error(PositionError) {
+                console.log(PositionError);
+                var message = '';
+                switch(PositionError.code) {
+                    case 1:
+                        //permission
+                        message = 'permission denied by user';
+                        break;
+                    case 2:
+                        //position_unavailable
+                        message = 'can\'t determine location';
+                        break;
+                    case 3:
+                        //timeout
+                        message = 'timeout occurred trying to determine location';
+                        break;
+                }
+
+                $('.hotels-near-me-form').append('<div>' + message + '</div>');
+            }
+
+        });
+    </script>
+</body>
+</html>

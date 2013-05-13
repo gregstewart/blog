@@ -1,0 +1,31 @@
+---
+layout: post
+title: Using aliases
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>Using aliases</h3>
+<p class="1">This document will introduce you to the <i>aliases</i> file. You can use this file to create mailing lists, reference old user accounts to new ones, or even point departed employee accounts to a manager's account to make sure that no e-mail message gets lost. Before we begin please make sure that you have either superuser access rights or are logged in as root. Also you will have to be familiar with Vi editing (see <a href="http://www.armagossa.com/content.cfm?content_ID=20">Basic Vi editing</a> for an introduction). Also in the examples don't type the information in brackets, unless othewise specified, as it's only their for comment purposes.</p>
+<p class="1"><b>Creating alternative user names</b><br />
+To set up an alias you need to edit the file <i>aliases</i> located in <i>/etc</i>. To alias alternative user names to an actual account follow this example using our John Smith:</p>
+<p class="1"><i>vi /etc/aliases<br />
+(Scroll down the alias file until you get to #USER LIST, immedialtely after it add an entry for John Smith using the following syntax)<br />
+#jsmith	John Smith	Sales<br />
+(Next you can create your own alias lists of alternative names, insert the following lines)<br />
+#Groups at your company<br />
+#Alternative user names<br />
+johns:	jsmith<br />
+(Save and exit the file and type the following command to inform sendmail of the update)<br />
+sendmail -bi</i></p>
+<p class="1"><b>Creating a mailing list</b>
+The same technique is applied to creating a mailing list. Here you simply create an alias and add all the account names that the messages sent to alias are to be delivered to. To clarify this point just imagine you want to create a sales team mailing list with the following address <i>sales@yourdomain.com</i>. Here the alias will be <i>sales</i> and all members of the sales team have tobe added to that alias.</p>
+<p class="1"><i>vi /etc/aliases<br />
+(Scroll to the of the alias file, i.e. after the last entry made and insert the following assuming that you two user called jsmith and jdough)<br />
+#Sales at your company<br />
+sales:	jsmith,jdough<br />
+(Save and exit the file and type the following command to inform sendmail of the update)<br />
+sendmail -bi</i></p>
+<p class="1">There is one thing you should bear in mind when editing the <i>aliases</i> file. Make sure that you never leave more than 1 blank line at the end of the file. If you leave 2 empty lines when it comes to running the <i>sendmail -bi</i> command, you'll get an error message and the system won't be updated. Please note it's also good practice to add a reference to the user list (#USER LIST) every single time you add a new user to the system. Chances are he'll have to be added to a mailing group anyway. Right's that's all...</p>

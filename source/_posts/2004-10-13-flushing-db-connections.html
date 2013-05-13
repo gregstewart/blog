@@ -1,0 +1,24 @@
+---
+layout: post
+title: Flushing db connections
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+In CF4.5 there used to be a useful function for terminating database connections (which I used most frequently in connection with MS Access databases): cfusion_dbconnections_flush()
+
+However in CFMX 6 this (un-documented) function disappeared. Someone on the CFDJlist asked how you could now achieve the same result. Simon Horwith pointed to the service factory and it was Ray Thompson who kindly provided an example:
+
+[code]
+<cflock name="serviceFactory" type="exclusive" timeout="10">
+<cfscript>
+factory = CreateObject("java", "coldfusion.server.ServiceFactory");
+ds_service = factory.datasourceservice;
+dsources = ds_service.datasources;
+dsources["yourDSN"]["disable"] = "Yes";
+ds_service.restart();
+</cfscript>
+</cflock>
+[/code]

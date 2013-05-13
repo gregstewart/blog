@@ -1,0 +1,22 @@
+---
+layout: post
+title: ! 'Apache: Setting the default document'
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Here's how to set your default web documents that the web server will load should you not specify a specific file (e.g. default.html or index.html). By default Apache sets <strong><em>index.html</em></strong> as your default document, but since I used Cold Fusion as well I wanted Apache to automatically load up <strong><em>index.cfm</em></strong> as well when a directory was called. TO his end locate your <strong>conf</strong> directory, usually found under <em>c:program filesApache GroupApacheconf</em> and look for the file <em>httpd.conf</em>. About halfway down you should see a set of lines similar to this:</p>
+<p><em>#<br />
+# DirectoryIndex: Name of the file or files to use as a pre-written HTML<br />
+# directory index.  Separate multiple entries with spaces.<br />
+#<br />
+DirectoryIndex index.html</em></p>
+<p>Now simply append index.cfm, making sure that there is a space between the two file names. This should look as such now:</p>
+<p><em>#<br />
+# DirectoryIndex: Name of the file or files to use as a pre-written HTML<br />
+# directory index.  Separate multiple entries with spaces.<br />
+#<br />
+DirectoryIndex index.html index.cfm</em></p>
+<p>All you need to do now is stop and restart your web server for the changes to take effect. There you go the server will now first look for <em>index.html</em> and then <em>index.cfm</em>. Your web server should now be less likely to show a directory listing! </p>

@@ -1,0 +1,14 @@
+---
+layout: post
+title: cflogin and the session scope
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Just wanted to make a note of this since it was brought up on the CFCDev list. By default the CFLogin tag is not tied into the session scope and hence it was logins were timing out at different times to the session scope. One solution was to do the following</p>
+<p><em>&lt;cfapplication sessiontimeout="#createtimespan(0,0,30,0)#"...&gt;<br />
+&lt;cflogin idletimeout="#createtimespan(0,0,30,0)#"&gt;</em></p>
+<p>However far more elegant a solution was to do this:</p>
+<p><em>&lt;cfapplication sessiontimeout="#createtimespan(0,0,30,0)#" loginstorage="session" ...&gt;</em></p>

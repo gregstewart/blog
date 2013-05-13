@@ -1,0 +1,14 @@
+---
+layout: post
+title: Compressing files in Linux
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Following on from a little piece way back when (<a href="http://gregs.teacupinastorm.com/html/article/article.php?id=6F1BCAD6-B75B-4550-BAEE72C1A160B02B">De-compressing files in Linux
+</a>) here is it's opposite how to compress files from the command line on a Linux/Unix system. As with decompressing this process can involve two steps. The first is to <strong>Tar</strong> the file and then for further compression <strong>gzip</strong> it.</p>
+<p>The basic syntax for using tar is: <em>tar cvf filename.tar list_of_files_or_directories</em>. The <strong>tar</strong> command is followed by a sequence of switches. <strong>c</strong> stands for <em>creating a newr archive</em>, <strong>v</strong> for <em>verbosely list files processed</em> and <strong>f</strong> for <em>use archive device</em>. So if I wanted to archive an entire web site directory called <strong>somesite</strong> in a file <strong>somesite.tar</strong> I would type the following command: <strong>tar cvf somesite.tar somesite/</strong>. Please note that you can also type the following: <strong>tar -cvf somesite.tar somesite/</strong>. You can look up the full set of switches and options by typing: <em>man tar</em>.</p>
+<p>The next step involves using the gzip command. This is a very simple step where all you need to is specify the file you wish to further compress, i.e. <strong>gzip filename</strong>. And using our example above you would type: <strong>gzip somesite.tar</strong>, giving you <em>somesite.tar.gz</em>.</p>
+<p>And now for the bonus, deleting all those pesky sub directories in my <strong>somesite/</strong> example, in one foul swoop. Be careful as to where you are in relation to the folder and also what you are deleting. There is no recourse once this commands executes and you can easily (with the right permissions) delete a lot more then you ever intended to. OK that's the warning and now the command: <strong>rm -rf directory_name/</strong>. The switch <strong>r</strong> stands for recursive and means that it will remove the contents recursively, i.e. it will go into the sub directories and remove their contents. <strong>f</strong> forces the command to ignore nonexistent files and to never prompt. Incidently if you want to verify the deletion, i.e. be prompted as to which file is being deleted, then leave the <strong>f</strong> switch of. So back to the example this is what you would type to remove all the contents of the <strong>somesite/</strong> directory: <strong>rm -rf somesite/</strong>.</p>

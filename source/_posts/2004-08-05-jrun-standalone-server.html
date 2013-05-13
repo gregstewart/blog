@@ -1,0 +1,62 @@
+---
+layout: post
+title: JRun standalone server
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Along similar lines to the Flas Remoting set up you can find information on the setup of the built-in webserver that is used by JRun here: {Install Path}\JRun4\servers\{instance Name}\SERVER-INF\jrun.xml. The section to look out for will look something like this:</p>
+
+<p><em>&lt;!-- ========================================================= --&gt;<br />
+&lt;!-- This is the built-in JRun Web Server                               --&gt;<br />
+&lt;!-- ========================================================= --&gt;<br />
+&lt;service class="jrun.servlet.http.WebService" name="WebService"&gt;<br />
+	&lt;attribute name="activeHandlerThreads"&gt;25&lt;/attribute&gt;<br />
+	&lt;attribute name="backlog"&gt;500&lt;/attribute&gt;<br />
+	&lt;attribute name="interface"&gt;*&lt;/attribute&gt;<br />
+	&lt;attribute name="keepAlive"&gt;false&lt;/attribute&gt;<br />
+	&lt;attribute name="maxHandlerThreads"&gt;1000&lt;/attribute&gt;<br />
+	&lt;attribute name="minHandlerThreads"&gt;1&lt;/attribute&gt;<br />
+	&lt;attribute name="port"&gt;8101&lt;/attribute&gt;<br />
+	&lt;attribute name="threadWaitTimeout"&gt;20&lt;/attribute&gt;<br />
+	&lt;attribute name="timeout"&gt;300&lt;/attribute&gt;<br />
+&lt;/service&gt;<br />
+&lt;!-- Uncomment this service to use SSL with the JRun Web Server<br />
+		 Note that you MUST create your own keystore before using this service<br />
+&lt;service class="jrun.servlet.http.SSLService" name="SSLService"&gt;<br />
+	&lt;attribute name="port"&gt;9100&lt;/attribute&gt;<br />
+	&lt;attribute name="keyStore"&gt;{jrun.rootdir}/lib/keystore&lt;/attribute&gt;<br />
+	&lt;attribute name="keyStorePassword"&gt;changeit&lt;/attribute&gt;<br />
+	&lt;attribute name="trustStore"&gt;{jrun.rootdir}/lib/trustStore&lt;/attribute&gt;<br />
+	&lt;attribute name="socketFactoryName"&gt;jrun.servlet.http.JRunSSLServerSocketFactory&lt;/attribute&gt;<br />
+&lt;/service&gt;<br />
+ --&gt;</em></p>
+
+<p>Information on the external web server configuration can also be found in this file and looks something like this:</p>
+
+<p><em>&lt;!-- ========================================================= --&gt;<br />
+&lt;!-- This service is for communicating with a native (IIS, Apache, Netscape)   --&gt;<br />
+&lt;!-- web server.                                                               --&gt;<br />
+&lt;!-- To run this service in a secure mode via SSL, set the keyStore,           --&gt;<br />
+&lt;!-- keyStorePassWord, trustStore and socketFactoryName attributes.            --&gt;<br />
+&lt;!-- ========================================================= --&gt;<br />
+&lt;service class="jrun.servlet.jrpp.JRunProxyService" name="ProxyService"&gt;<br />
+	&lt;attribute name="activeHandlerThreads"&gt;25&lt;/attribute&gt;<br />
+	&lt;attribute name="backlog"&gt;500&lt;/attribute&gt;<br />
+	&lt;attribute name="deactivated"&gt;false&lt;/attribute&gt;<br />
+	&lt;attribute name="interface"&gt;*&lt;/attribute&gt;<br />
+	&lt;attribute name="maxHandlerThreads"&gt;1000&lt;/attribute&gt;<br />
+	&lt;attribute name="minHandlerThreads"&gt;1&lt;/attribute&gt;<br />
+	&lt;attribute name="port"&gt;51003&lt;/attribute&gt;<br />
+	&lt;attribute name="threadWaitTimeout"&gt;20&lt;/attribute&gt;<br />
+	&lt;attribute name="timeout"&gt;300&lt;/attribute&gt;<br />
+	&lt;!--<br />
+	&lt;attribute name="keyStore"&gt;{jrun.rootdir}/lib/keystore&lt;/attribute&gt;<br />
+	&lt;attribute name="keyStorePassword"&gt;changeit&lt;/attribute&gt;<br />
+	&lt;attribute name="trustStore"&gt;{jrun.rootdir}/lib/trustStore&lt;/attribute&gt;<br />
+	&lt;attribute name="socketFactoryName"&gt;jrun.servlet.jrpp.JRunProxySSLServerSocketFactory&lt;/attribute&gt;<br />
+	--&gt;<br />
+	&lt;attribute name="mapCheck"&gt;0&lt;/attribute&gt;<br />
+&lt;/service&gt;</em></p>

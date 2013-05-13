@@ -1,0 +1,22 @@
+---
+layout: post
+title: Trapping the enter key
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+A requirement arose whereby I needed to trap the user hitting the enter key to submit a form. Courtesy of the <a href="http://www.flash-lists.com/" title="Flash Developer Mailing List archives">Flash List</a> here is the code in question, just remember to place it in your init() statement:
+
+[as]// special listener to trap to enter key
+myReturnKey = new Object();
+myReturnKey.onKeyDown = function (){
+  var _$key = Key.getCode();
+
+  //   now check for when ENTER is pressed
+  if (_$key == 13) {
+    // enter key was pressed go do something
+  }
+}
+Key.addListener(myReturnKey);[/as]

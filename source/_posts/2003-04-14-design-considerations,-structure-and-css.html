@@ -1,0 +1,58 @@
+---
+layout: post
+title: Design considerations, structure and CSS
+tags: []
+status: draft
+type: post
+published: false
+meta: {}
+---
+<p>When putting together a  color scheme, note it down in the style sheet or oin the style guide for future reference like such:</p>
+<p><em>/*<br />
+<br />
+Base color scheme for Client X:<br />
+<br />
+Core blue: #xxxxxx<br />
+<br />
+Table header: #xxxxxx<br />
+<br />
+Table row: #xxxxxx<br />
+<br />
+Table row alternate: #xxxxxx<br />
+<br />
+Complementary orange link: #xxxxxx<br />
+<br />
+Faded orange (visited link): #xxxxxx<br />
+<br />
+Strong orange header: #xxxxxx<br />
+<br />
+*/</em></p>
+<p>Who is your audience? Determine who it is to limit the design options and deliver a solution targeted at these so that they can reap the greatest benefit from visiting the site. In the same way it helps to know who isn't part of your audience</p>
+
+<p>Content: Make this a priority. Always mention it in the project on-line as experience has shown that acquiring content form the client can be a slow and somtimes painful process.</p>
+
+<p>importing external css files</p>
+
+<p><em>@import url("real.css");<br />
+<br />
+/*<br />
+funny how that needs the ; to work when it's alone<br />
+*/<br />
+<br />
+/*<br />
+the dodge through here prevents Flash Of Unstyled Content in ie6pc<br />
+*/<br />
+<br />
+/*<br />
+import with quotes and brackets hides css from:<br />
+<br />
+Netscape 4.x<br />
+Win IE 3<br />
+Win IE 4<br />
+Mac IE 4.01<br />
+Mac IE 4.5<br />
+Konqueror 2.1.2<br />
+Win Amaya 5.1<br />
+<br />
+isn't that nice to know?<br />
+*/</em></p>

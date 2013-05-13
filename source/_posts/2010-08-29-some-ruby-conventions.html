@@ -1,0 +1,34 @@
+---
+layout: post
+title: Some ruby conventions
+tags:
+- ruby
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+  _wp_old_slug: ''
+---
+<strong>Variable names</strong>
+
+Local variables, method paramaters and method names: start with a lower case letter and don't follow the camel case convention instead, eg. my_var, my_method_name(withMyParameter). Also method names can end in ?,! and =
+
+Global variables start with a $, eg. $my_global_variable
+
+Instance variables start with an @, eg. @instance_variable. Whereas previous variables "could" follow camel case convention, instance variables do not. So you would not see @instanceVariable.
+
+Class variables start with a @@, eg. @@my_class_variable
+
+With regards to @ and @@,  normally pretty much any character can follow @, with the exception of digits.
+
+Class names, module names and constants should start with an upper case letter, eg. MySuperDuperClassName (I prefer constants to be all UPPER CASE)
+
+<strong>Arrays and Hashes</strong>
+
+Arrays are accessed by a numeric key (and use [...]), hashes support an object as accessor as well (and use {...}).
+
+They grow dynamically. Array elements are more efficient, but hashes are more flexible. To access a hash index you still use [], eg. hash[key]
+
+Accessing a hash by a missing key (or you can say indexed by a missing key) returns nil.

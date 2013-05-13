@@ -1,0 +1,14 @@
+---
+layout: post
+title: Easy deployment
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Hmm guilty. Sean has brought <a href="http://www.corfield.org/blog/index.cfm?mode=entry&amp;entry=1DE9864F-B867-9A6A-DFFEBB47160124B9" title="Context Root and Port - A Rant!">something really useful</a> to my attention and I am sure a number of other people too. Using the ever useful getPageContext() call, you can determine the server port and the context root, which when set as variables can be used to dynamically set environment variables that would normally require the editing of config files.
+
+[code]<cfset name="requestObject" value="#getPageContext().getRequest()#" />
+<cfset name="port" value="#requestObject.getServerPort()#" />
+<cfset name="ctx" value="#requestObject.getContextPath()#" />[/code]

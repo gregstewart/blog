@@ -1,0 +1,50 @@
+---
+layout: post
+title: Forcing a page refresh
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Sometimes it is necesary for the developer to force the browser to refresh the page the user wants to access. In my case the situation arose because I inherited a Cold Fusion application that made extensive use of session variables that were set after the user had made a selection based on a search result. And if the user hit the back button in the browser and then selected another search result, most of the content would still belong to the previous search. I could have rewritten the lot, but decided to take the path of least resistence.</p>
+
+<p>To this end I added a code snippet that destroyed the session structure for that user, nut note this destruction only took place if the page was processed by the server. This however does not happen if the user hits the browser back button. In order to compensate for this scenario, it was necessary to refresh the whole page, not exactly graceful, but it works.</p>
+
+<p>Below is the code I found at <a href="http://www.btgi.net/ForceRefresh.cfm">http://www.btgi.net/ForceRefresh.cfm</a> that made use of Cold Fusion and forced the browser to refresh the page or in this case re-submit the query.</p>
+
+<p><pre>&lt;!--- Client side cache prevention ---&gt;
+&lt;meta http-equiv="Expires" content="0"&gt;
+
+&lt;!--- Setup our expire times for Netscape and Internet Explorer ---&gt;
+&lt;cfoutput&gt;
+  &lt;!--- Internet Explorer Date Formate: (Fri, 30 Oct 1998 14:19:41 GMT) ---&gt;
+  &lt;cfset MSIEtimestamp='#dateformat(now(),"DDD")#,#dateformat(now(),"DD")#
+#dateformat(now(),"Mmm")# #timeformat(now(),"HH:MM:SS")#'&gt;
+
+  &lt;!--- Netscape Date Formate: Netscape (Wednesday, Apr 26 2000 17:45:25 PM) ---&gt;
+  &lt;cfset NETSCAPEtimestamp='#dateformat(now(),"DDDD")#,#dateformat(now(),"MMM")#
+#dateformat(now(),"dd")# #dateformat(now(),"YYY")#
+#timeformat(now(),"HH:MM:SS tt")#'&gt;
+&lt;/cfoutput&gt;
+
+&lt;!--- Tell HTTP Header to force expire of page - nocache ---&gt;
+&lt;cfif HTTP_USER_AGENT contains "MSIE"&gt;
+  &lt;cfheader name="Expires" value="&lt;cfoutput&gt;#MSIEtimestamp#&lt;/cfoutput&gt;"&gt;
+  &lt;cfheader name="Pragma" value="no-cache"&gt;
+  &lt;cfheader name="cache-control" value="no-cache, no-store, must-revalidate"&gt;
+&lt;cfelse&gt;
+  &lt;cfheader name="Expires" value="&lt;cfoutput&gt;#NETSCAPEtimestamp#&lt;/cfoutput&gt;"&gt;
+  &lt;cfheader name="Pragma" value="no-cache"&gt;
+  &lt;cfheader name="cache-control" value="no-cache, no-store, must-revalidate"&gt;
+&lt;/cfif&gt;
+</pre>
+</p>
+
+<p>So what is actually happening here. The first couple of lines simply tell the browser not to cache the page. Next the application sets a time stamp both in the IE (<strong>MSIEtimestamp</strong>) and Netscape (<strong>NETSCAPEtimestamp</strong>) format. These timestamps are then passed to the browser as part of the header information. An if/else statement is used to make sure the porperly formatted header information is sent to the right browser. And there you go, hit back in your browser and you should see this message if you use IE:</p>
+
+<p><strong>Warning: Page has Expired</strong><br />The page you requested was created using information you submitted in a form. This page is no longer available. As a security precaution, Internet Explorer does not automatically resubmit your information for you.<br />
+<br />
+To resubmit your information and view this Web page, click the Refresh button.</p>
+
+<p>By refreshing the page you retrieve it from the server and thus in my case process the page again and clear the session structure. I tested this script on MSIE 5.0, NS 4.78 and NS 6.2.</p>

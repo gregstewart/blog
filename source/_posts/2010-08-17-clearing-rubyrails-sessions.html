@@ -1,0 +1,18 @@
+---
+layout: post
+title: Clearing ruby/rails sessions
+tags:
+- rails
+- rake
+- ruby
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+  _wp_old_slug: ''
+---
+Using ruby 1.2.6 and rails 2.x, if sessions are stored in the database and you want to clear/reload session objects, open up a terminal window, navigate to your rails application folder and simply type: 
+
+[code]rake db:sessions:clear[/code]

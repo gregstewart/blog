@@ -1,0 +1,26 @@
+---
+layout: post
+title: Applying directory security
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+My dad wanted to have basic Authentication applied to his blog, so here are the directives you'd need to add to a Virtualhost configuration:
+
+[code]
+<virtualhost>
+ServerAdmin info@somdomain.com
+DocumentRoot /home/user/public_html
+.....
+<directory>
+AuthType Basic
+AuthName "By Invitation Only"
+AuthUserFile {path to password file}/passwd/passwords
+Require user yourUsername
+</directory>
+</virtualhost>
+[/code]
+
+In order for this to fully function you'll need to create a password file. The <a href="http://httpd.apache.org/docs/howto/auth.html#basic" title="Basic authentication">instructions can be found here</a>. Of note if you are using Debian with the default Apache install (v. 1.3.x) is that htpasswd is located in <strong>/usr/bin</strong> and since it's a non standard install chances are you'll need to specify a different location for your password file than the one indicated in the above link. Since I have BD running I had created a whole bunch of directories and symbolic links to make BD believe that Apache was installed as per normal, so I just had to create a <strong>passwd</strong> folder in <strong>/usr/local/apache</strong>, but you may have to do more.

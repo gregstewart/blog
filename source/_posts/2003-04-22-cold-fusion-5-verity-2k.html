@@ -1,0 +1,96 @@
+---
+layout: post
+title: Cold fusion 5 - Verity 2K
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>As of CF5.0, the engine shipped with the application server is Verity 2K. By default this engine is not enabled and thus the application server still makes use of the VDK (Verity Developer Kit).</p>
+
+<p>To improve performance and take advantage of it?s ability to index more document types (such as PDFs) it is highly recommended to switch to Verity 2K mode. However this is services is not enabled and requires manual configuration and starting (read edit a .ini file and start the service).</p>
+
+<p>Some limitations of Verity are:</p>
+<ul>
+  <li>Enterprise level restricted to searching 250,000 documents, Pro has half that capacity.</li>
+  <li>Collections need to be manually specified in the .ini file.</li>
+  <li>Manual start of the server (whn not run as a service, still needs to be initialised manually though to run as a service)</li>
+  <li>Restricted to interact with only 1 K2server (need to upgrade to make use of the broker service)</li>
+</ul>
+
+<p>So step 1 is to find the k2server.ini file and edit it:</p>
+
+<p>Location of k2server.ini file = c:\cfusion\verity\<os>\bin\, even though the documentation would indicate that it's located in c:\cfusion\bin - this is not the case.</p>
+
+<p>It's default settings are:</p>
+
+<p><em>## portNo: TCP port number for client connections.<br />
+portNo=9901<br />
+<br />
+## Each Collection section controls each collection<br />
+## and search service configured for the server<br />
+##<br />
+## Collection Path Examples:<br />
+## Assume there is the collection called "myCollection"<br />
+## created by ColdFusion.<br />
+##<br />
+## The following [coll-0] and [coll-1] collection sections<br />
+## register the collections created by ColdFusion.<br />
+## <br />
+## The "collAlias" entry is the collection alias name<br />
+## which is the collection name used by CFSEARCH CFML tag.<br />
+## (i.e. "myCollection_file" and "myCollection_custom")<br />
+##<br />
+## Make sure that the CFSEARCH tag parameter "external" is set to "No"<br />
+## and that the collection alias name is unique and not the same<br />
+## as any existing collection names managed by ColdFusion.<br />
+##<br />
+<br />
+##[Coll-0]<br />
+##collPath=c:\cfusion\verity\collections\mycollection\file<br />
+##collAlias=myCollection_file<br />
+##topicSet=<br />
+##knowledgeBase=<br />
+##onLine=2<br />
+<br />
+##[Coll-1]<br />
+##collPath=c:\cfusion\verity\collections\mycollection\custom<br />
+##collAlias=myCollection_custom<br />
+##topicSet=<br />
+##knowledgeBase=<br />
+##onLine=2</em></p>
+
+<p>The only thing I changed for my local test was to create a collection. This was going to be aptly named: myCollection</p>
+
+<p><em>[Coll-0]<br />
+collPath=c:\cfusion\verity\collections\myCollection<br />
+collAlias=myCollection<br />
+topicSet=<br />
+knowledgeBase=<br />
+onLine=2</em></p>
+
+<p>Since there were no instructions on whether or not to create the folders I referenced here I didn't do it and proceeded to start the Verity 2k server. Again the documentation is slightly off for Windows as the executable for my installation was located in the same folder as my .ini file. So go to the command prompt and type in the following command:</p>
+
+<p><em>2kserver iniFile 2kserver.ini</em></p>
+
+<p>Now I am not too keen on manually starting processes, so I decided to make use of service configuration option.</p>
+
+<p><em>k2server -iniFile k2server.ini -ntService 1</em></p>
+
+<p>And this is the output to be displayed</p>
+
+<p><em>K2SERVER - Verity, Inc. Version 2.20pr6<br />
+<br />
+k2server Created<br />
+Starting k2server Now...<br />
+k2server Started</em></p>
+
+<p>Now of course it's easy to stop and start the service through your usual techniques from the command line the stop/start commands would look as follows:</p>
+
+<p><em>net stop "k2server"<br />
+net start "k2server"</em></p>
+
+<p>Now all we need to is tell the Cold Fusion Administrator that a 2kserver is running and you do that by logging on and specifying the server name and port number after selecting the "Verity server" option from the menu (it's under Data Sources). In my case it was localhost as it was my dev machine and 9901 for the port number (taken from the 2kserver.ini file).</p>
+
+<p>OK so far so good, the server is running, Cold Fusion knows about it's existence, next time we'll look into testing the installation.</p>

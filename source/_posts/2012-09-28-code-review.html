@@ -1,0 +1,33 @@
+---
+layout: post
+title: Code review
+tags: []
+status: draft
+type: post
+published: false
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+From
+
+
+
+<pre><code>isFullRoom:function() {
+    var isFull = false,
+        guests = this.model.get('numberOfAdults') + this.model.get('numberOfChildren');
+    if (guests &gt;= sabre_mobile.constants.values.MAX_NUMBER_OF_GUESTS) {
+       isFull=!isFull;
+    }
+    return isFull;
+}
+</code></pre>
+
+To
+
+
+
+<pre><code>isFullRoom:function() {
+    return this.model.get('numberOfAdults') + this.model.get('numberOfChildren') &gt;= sabre_mobile.constants.values.MAX_NUMBER_OF_GUESTS;
+}
+</code></pre>

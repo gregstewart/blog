@@ -1,0 +1,12 @@
+---
+layout: post
+title: Using NT Authentication
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Someone asked the question about using jrun.security.NTAuth and how you would log them out. I have only ever used it as an authentication method, i.e. rather than checking against say a database, I would check against the domain controller to verify the user's credentials. So in the context of logging into an application I would check for the existence of a session variable, if not found validate the user submitted credentials against NTAuth and if true I created a session object and that indicated that the user was logged in. To log out simply let the session expire or clear the session structure, pretty simple.
+
+Is this how you use it?

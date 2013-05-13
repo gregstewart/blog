@@ -1,0 +1,18 @@
+---
+layout: post
+title: find is your friend - dos2unix
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Here a few ways to remove those pesky windows carriage return characters from your scripts that you run into when migrating from a windows environment to a *nix. From the command line to recursively carry out this task you can type:
+
+<code>[code]find -type f <your> | xargs dos2unix[/code]</your></code>
+
+Where dos2unix is the utility that actually carries out the conversion. If you are using vi to edit a file then you can achieve this conversion as well by escaping and typing the following (note the square brackets and their contents represent keyboard strokes):
+
+<code>[code]:%s/[ctrl+v][return]//g[return][/code]</code>
+
+This is a regexp type command that tells vi to select the entire file (%) and search (s/) for carriage returns ([ctrl+v][return]) and do a global replace (/g) with non windows return code ([return]).

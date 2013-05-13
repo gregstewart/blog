@@ -1,0 +1,82 @@
+---
+layout: post
+title: What is a closure in JavaScript?
+tags:
+- closure
+- JavaScript
+- javascript
+status: publish
+type: post
+published: true
+meta:
+  _social_aggregation_log: a:10:{i:1356355809;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356357612;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356361204;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356365676;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356373828;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356389044;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356418738;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356462041;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356549361;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356723026;O:8:"stdClass":1:{s:6:"manual";b:0;}}
+  _social_aggregated_ids: a:2:{s:7:"twitter";a:0:{}s:8:"facebook";a:0:{}}
+  _edit_last: '2'
+---
+<p>If we turn to Google, invariably you are led to <a href="http://stackoverflow.com/questions/111102/how-do-javascript-closures-work">Stackoverflow</a>. There's a ton of information in that post, but I am going to try and put it into my on words so that the information sticks. A closure is a function with an inner function keyword AND you return that inner function. The inner function has access to the private member variables of the outer function. Here's an example</p>
+
+<pre><code> function foo(x) {
+   var tmp = 3;
+   return function (y) {
+     alert(x + y + (++tmp));
+   }
+ }
+ var bar = foo(2); // bar is now a closure.      
+ bar(10);
+</code></pre>
+
+<p>But what is happening here? For starters we are creating our closure by calling bar = foo(2). So bar holds a reference to our closure, i.e. we are assigning bar a reference to our inner function. Of note as well is that the inner function is being returned from the outer function before being executed.</p>
+
+<p>Now we invoke bar(10) which alerts 16, because bar() can see tmp and x. When you run bar(10) again and you get a slightly different result (i.e. 17) and that is because both x and tmp are still alive and well, and since tmp was incremented by 1 we know get 17 instead of 16. Also we have effectively we have closed over the internal variables, i.e. we can't access tmp.</p>
+
+<p>In this case our inner function here is an anonymous function, it could just as easily have been written as follows:</p>
+
+<pre><code> function foo(x) {
+   var tmp = 3;
+   alertSum = function (y) {
+     alert(x + y + (++tmp));
+   };       
+   return alertSum;
+ }
+ var bar = foo(2); // bar is now a closure.
+ bar(10);
+</code></pre>
+
+<p>A closure is a special kind of object that combines both a function and the environment <a href="https://developer.mozilla.org/en-US/docs/JavaScript/Guide/Closures">it was created in</a>. The 'environment' refers to the local variables that are in scope, when the closure was created. In the previous example from Stackoverflow, that would be tmp and x. When the closure was created the value of tmp was 3, but then you invoked bar(10) the first time it's value was incremented to 4. Now as described we invoked bar(10) again and got 17, because tmp now had a value of 5.</p>
+
+<p>This combination of data and function, resembled key Object Oriented design construct, where it differs, is that we only work with one method here, where in OO an object has data and one or more methods that interact with the objects data.</p>
+
+<p>Sometimes closures are also called function factories, because you can create new functions based on the initial value passed into the closure when you created it. Consider this example from the Mozilla article:</p>
+
+<pre><code> function makeAdder(x) {
+   return function(y) {
+     return x + y;
+   };
+ }
+
+ var add5 = makeAdder(5);
+ var add10 = makeAdder(10);
+
+ print(add5(2));  // 7
+ print(add10(2)); // 12
+</code></pre>
+
+<p>It's always helpful to come up with your own example, so how about using a closure to create a dice maker? If you have ever played Dungeon and Dragons, you need a bunch of different dice to play. Now we could use a closure as a function factory to create x number of sided dice and return a roll method that we could invoke on that die:</p>
+
+<pre><code> function dieMaker(x) {
+     var sides = x;
+
+     function getRandomInt(min, max) {
+       return Math.floor(Math.random() * (max - min + 1)) + min;
+     }
+
+     roll = function() {
+         return getRandomInt(1, sides);                        
+     }
+
+     return roll;
+ }​;
+
+ var sixSidedDie = dieMaker(6);
+ alert(sixSidedDie());
+</code></pre>

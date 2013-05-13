@@ -1,0 +1,27 @@
+---
+layout: post
+title: Merging PDFs
+tags:
+- ColdFusion
+- coldfusion
+- itext
+- merge
+- pdf
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+  aktt_notify_twitter: 'no'
+---
+I have just posted two small utility functions to merge PDF documents together for those working in CF. You can view them <a href="https://gist.github.com/866034">here</a> . Or inline below.
+
+The first function takes an array of PDF documents and merges them into one. This was handy when different pages for a report had different styling requirements (such a full background colouring bleeding across the margins)
+
+<script src="https://gist.github.com/866034.js?file=gistfile1.cfm"></script>
+
+The second function stamps a pdf document over another pdf document at certain position. I needed this for a document that had a table dynamically generated that spanned multiple pages and I wanted the footer to not overlap the table content (I could not figure out how to use a css based solution because of the margins).
+
+<script src="https://gist.github.com/866034.js?file=gistfile2.cfm"></script>
+
+Anyway maybe somebody else will find these handy.

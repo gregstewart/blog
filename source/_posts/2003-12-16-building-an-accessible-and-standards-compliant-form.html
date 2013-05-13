@@ -1,0 +1,118 @@
+---
+layout: post
+title: Building an accessible and standards compliant form
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>In recent weeks I have come across two articles, that have helped me massively along the way to create standards based and accessible websites. One of the things that was holding me back so to say was my inability to layout forms nicely without having to resort to tables. That was until I came across Mark Newhouse's <a href="http://alistapart.com/articles/practicalcss/" title="Practical CSS Layout Tips, Tricks, &amp; Techniques">practical CSS article</a>, which had the answers I was after. Having spent some time recently developing accessibility guidelines for my current employer's sites I wanted to put together a brief outline of how to combine accessibility and standards, combined with Patrick Griffith's recent article on <a href="http://www.htmldog.com/guides/htmladvanced/forms.php" title="Accessible Forms">Accessible Forms</a> I was fully equipped to merge the two into one and add a liberal sprinkling of my own knowledge.</p>
+<p>So let's start off with the code:</p>
+<pre>
+<code><em>&lt;style&gt;
+#form {
+	width: 230px;
+	padding: 5px;
+	margin: 0px auto;
+	font-family: verdana;
+	font-size: 0.8em;
+}
+div.row {
+  clear : both;
+  padding-top : 10px;
+}
+div.row span.label {
+  float : left;
+  width : 80px;
+  text-align : right;
+}
+
+div.row span.formw {
+  float : right;
+  width : 130px;
+  text-align : left;
+}
+
+legend {
+}
+
+fieldset {
+	margin : 0;
+	padding : 5px;
+}
+input {
+	border: 1px solid #000;
+	font-family: verdana;
+	font-size: 0.8em;
+}
+textarea {
+	border: 1px solid #000;
+	font-family: verdana;
+	font-size: 0.8em;
+}
+select {
+	border: 1px solid #000;
+	font-family: verdana;
+	font-size: 0.8em;
+}
+&lt;/style&gt;
+&lt;div id="form"&gt;
+	&lt;form action="index.cfm?fuseaction=loginUser" method="post" name="frm_test" id="frm_test"<br />enctype="application/x-www-form-urlencoded"&gt;
+	&lt;fieldset&gt;
+		&lt;legend&gt;Personal details&lt;/legend&gt;
+		&lt;div class="row"&gt;
+			&lt;label for="firstName"&gt;
+			  	&lt;span class="label"&gt;First name:&lt;/span&gt;
+			  	&lt;span class="formw"&gt;&lt;input type="text" size="12" name="firstName" id="firstName" <br />title="text input: first name" value="" tabindex="1" /&gt;&lt;/span&gt;
+		  	&lt;/label&gt;
+		&lt;/div&gt;
+		&lt;div class="row"&gt;
+		  	&lt;label for="surname"&gt;
+				&lt;span class="label"&gt;Surname:&lt;/span&gt;
+				&lt;span class="formw"&gt;&lt;input type="text" size="12" name="surname" id="surname"<br /> title="text input: surname" value="" tabindex="2" /&gt;&lt;/span&gt;
+		  	&lt;/label&gt;
+		&lt;/div&gt;
+ 	&lt;/fieldset&gt;
+	&lt;fieldset&gt;
+		&lt;legend&gt;Address&lt;/legend&gt;
+		&lt;div class="row"&gt;
+			&lt;label for="address"&gt;
+				&lt;span class="label"&gt;Your address:&lt;/span&gt;
+				&lt;span class="formw"&gt;&lt;textarea name="address" id="address"<br /> title="textarea input: address" rows="5" cols="16" tabindex="3"&gt;&lt;/textarea&gt;&lt;/span&gt;
+			&lt;/label&gt;
+		&lt;/div&gt;
+		&lt;div class="row"&gt;
+			&lt;label for="country"&gt;
+			&lt;span class="label"&gt;Country:&lt;/span&gt;
+				&lt;span class="formw"&gt;&lt;select name="country" id="country" title="select: country"<br /> tabindex="4"&gt;
+				&lt;optgroup label="Europe"&gt;
+					&lt;option value="uk"&gt;UK&lt;/option&gt;
+					&lt;option value="fr"&gt;France&lt;/option&gt;
+					&lt;option value="ger"&gt;Germany&lt;/option&gt;
+				&lt;/optgroup&gt;
+				&lt;optgroup label="Oceania"&gt;
+					&lt;option value="au"&gt;Australia&lt;/option&gt;
+					&lt;option value="nz"&gt;New Zealand&lt;/option&gt;
+				&lt;/optgroup&gt;
+				&lt;/select&gt;&lt;/span&gt;
+			&lt;/label&gt;
+		&lt;/div&gt;
+	&lt;/fieldset&gt;
+	&lt;div class="row" align="center"&gt;
+	  &lt;input type="submit" name="btn_submit" id="btn_submit" value="submit"/&gt;
+	&lt;/div&gt;
+	&lt;/form&gt;
+&lt;/div&gt;</em></code>
+</pre>
+<p>OK all clear? Nothing to explain then... Quite honestly most of it you'll glean from the article I mentioned previously, but I'll dwell on a few points.</p>
+<ol>
+	<li>The form layout: The controlling factor here is the initial style/width definition for the <code>&lt;div&gt;</code> with an id of <strong>form</strong>, which in this case is set to 230px. The columns that hold your form label and form field have also widths specified (in <em>span.label</em> and <em>span.formw</em>). Be careful that your combined totals for these two values do not exceed the overall width specified for <strong>form</strong>, if you don't you'll get an interesting wrap happening.</li>
+	<li><code>&lt;fieldset&gt;</code> allows you to group form controls together in a logical or semantic way, e.g. personal details would be one such grouping</li>
+	<li><code>&lt;legend&gt;</code> is another useful tag that allows you to specify a legend for a field set. Using the above example of a field set for personal details, you could assign this field set a legend of, you guessed it, <strong>personal details</strong>.</li>
+	<li>The <code>&lt;label&gt;</code> allows a form control to be explicitly associated with a label (no doubling up intended, i.e. username: &lt;input id="username" /&gt;) and you should always aim to associate these.</li>
+	<li>For all form controls such as <code>&lt;input&gt;</code> ones I like to include the attribute <strong>title</strong>. This attribute has the same effect as when used in <code>&lt;a&gt;</code> tag, i.e. when you hover the element a little call out box appears displaying the value captured in the attribute and is, as far as I know, usable by screen readers. I also use this chance to tell the user what type fo form controlled they are presented with, i.e. input, textarea, select, etc...</li>
+	<li>The attribute <strong>tabindex</strong> I like to use as well as it allows me to easily tab through the form. In most cases the sequence is straightforward, but sometimes you may wish to control the order. By numbering your form controls accordingly using <strong>tabindex</strong> you can control the order in which a user can navigate the form.</li>
+	<li>The <code>&lt;optgroup&gt;</code> tag allows us to group together the elements of <code>&lt;select&gt;</code> form control in a logical manner. This also results in a non-selectable pseudo header for the grouped items.</li>
+</ol>
+<p>And this concludes my contribution to building an accessible form, you can <a href="http://projects.teacupinastorm.com/samples/accessible_form.html" title="see the form in action">view a sample here</a>. Hope you found it useful.</p>

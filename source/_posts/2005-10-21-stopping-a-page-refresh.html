@@ -1,0 +1,30 @@
+---
+layout: post
+title: stopping a page refresh
+tags:
+- browser
+- JavaScript
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+I found myself having to trap a user attempting to refresh a page for one of our web apps. After a little bit of digging I stumbled across <a href="http://webreference.com/dhtml/diner/beforeunload/bunload4.html" title="The IE onBeforeUnload Event Handler">this solution</a>:
+
+[code]
+<script type="text/javascript"> 
+<!-- 
+window.onbeforeunload = unloadMess; 
+function unloadMess()
+{
+ 	mess = "You are about to refresh the screen and will loose all of your changes.nAre you sure you want to do so?" 	return mess; 
+} 
+//--> 
+</script>[/code]
+
+To use it simply embed or include it into your template
+
+Eventhough the article says this is a IE specific event/feature it also works in FireFox. You should be aware that whenever the user leaves the page, they will be prompted about their impeding data loss, which can get a little tedious while developing.
+
+Again this became a handy feature for our AJAX apps as most of the processing is done in the background without the page reload, a user could accidentally hit the back button and loose where they were at.

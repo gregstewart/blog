@@ -1,0 +1,68 @@
+---
+layout: post
+title: Simulating the enter button for form submission under NS and IE
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>This article deals with a controlling key strokes under Netscape and IE. This occurred while we were working on a project using ATG. We were trying to trap certain events when hitting specific keys, i.e. we wanted to trigger certain events. In the following I will highlight who you can trap pressing the <strong>Enter</strong> key and execute a function.</p>
+<p>The key to success here is the use of the <em>onkeypress</em> property in your form. Now you need to do is associate a function with this property. This function will look at which has been hit and if it was the <strong>Enter</strong> key, it'll do something. So now let's take a quick look at the script:</p>
+<p><em>function screenkey(e) {<br />
+&nbsp;&nbsp;&nbsp;var whichCode;<br />
+&nbsp;&nbsp;&nbsp;whichCode = (window.Event) ? e.which : e.keyCode;<br />
+&nbsp;&nbsp;&nbsp;if ( whichCode == "13" ) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;abort_submit = true;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichCode = null;<br />
+&nbsp;&nbsp;&nbsp;}<br />
+}</em></p>
+<p>OK here with a function screenkey, that sets a variable. The <em>whichCode</em> will actually store which key has been pressed (and that for both browsers). Next we set a condition that checks whether key code "13" has been pressed. The "13" corresponds to the <strong>Enter</strong> key. If this condition is true we set <em>abort_submit</em> to <strong>true</strong> and reset <em>whichCode</em> to null. To test if it works try inserting an <em><strong>alert</strong></em> after the if statement. Does it work?</p>
+<p>So what can you do with this? Well we wrote a small script that validates the content of the fields you are submitting. Look at the following script:</p>
+<p><em>function validate() {<br />
+&nbsp;&nbsp;&nbsp;if (document.&lt;your form name&gt;.&lt;field you are verifying&gt;.value == "") {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert('You have not specified an email address to log in. Please do so now.');<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;abort_submit = false;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return false;<br />
+&nbsp;&nbsp;&nbsp;}<br />
+}</em></p>
+<p>This function will check that a value has been submitted for a specific field. This is done in the conditional statement where we check the current document (<strong>document.</strong>) and it's form (<strong>&lt;your form name&gt;.</strong>) with a certain element (<strong>&lt;field you are verifying&gt;.</strong>) has a certain value, in this case null. If this condition is true, pop up an alert informing the user that the has to complete this field and stop submitting the form. This function has to reside within the first function after the <strong>if</strong> statement, like such:</p>
+<p><em>function screenkey(e) {<br />
+&nbsp;&nbsp;&nbsp;var whichCode;<br />
+&nbsp;&nbsp;&nbsp;whichCode = (window.Event) ? e.which : e.keyCode;<br />
+&nbsp;&nbsp;&nbsp;if ( whichCode == "13" ) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;function validate() {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (document.&lt;your form name&gt;.&lt;field you are verifying&gt;.value == "") {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert('You have not specified an email address to log in. Please do so now.');<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;abort_submit = false;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return false;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;abort_submit = true;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichCode = null;<br />
+&nbsp;&nbsp;&nbsp;}<br />
+}</em><p>
+
+<p>Finally we added a third function (called <em>promptme()</em>) that set the <strong>focus</strong> of the form field to be completed when the page was loaded (since this was an email address based login we only had one field to contend with). So here goes the last function:</p>
+<p><em>var str="";<br />
+function promptme() {<br />
+&nbsp;&nbsp;&nbsp;if ( str != "" ) alert(str);<br />
+&nbsp;&nbsp;&nbsp;if (document.&lt;your form name&gt;)<br />
+&nbsp;&nbsp;&nbsp;document.&lt;your form name&gt;.&lt;field you are verifying&gt;.focus();<br />
+}</em></p>
+<p>Now all we need to do is tie all this together in our web page:</p>
+<p><em>&lt;html&gt;<br />
+&lt;head&gt;&lt;title&gt;JavaScript: Simulating the enter button for form submission under Netscape&lt;/title&gt;<br />
+&lt;/head&gt;<br />
+&lt;script language="JavaScript"&gt;<br />
+&lt;Aforementioned scripts go here&gt;<br />
+&lt;/script&gt;<br />
+&lt;body onload="promptme();"&gt;<br />
+&lt;form name="your form name" method="post" onsubmit="return validate()"&gt;<br />
+Whatever&nbsp;&lt;input type="text" size="25" name="your field name" onkeypress="screenkey(event);"&gt;<br />
+&lt;input type="image" src="yourbutton.jpg" align="absmiddle" alt="Login" border="0"&gt;<br />
+&lt;/form&gt;<br />
+&lt;/body&gt;<br />
+&lt;/html&gt;<br />
+</em>
+</p>
+<p>Right there you go. Now you can execute a specific event based on a key stroke. Hope you found this useful.</p>

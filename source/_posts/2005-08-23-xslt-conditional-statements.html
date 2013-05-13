@@ -1,0 +1,32 @@
+---
+layout: post
+title: XSLT conditional statements
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+One of the other completely new aspects of my job has been working with xmlHTTPRequest and XML/XSL transformation. And here are a few things that I learned during my last project: you can use conditional statements. <a href="http://www.w3schools.com/xsl/xsl_if.asp" title="XSLT - The &lt;xsl:if&gt; Element">W3schools</a> proved very helpful in getting to grips with this.
+
+You can do <strong>if</strong> like statements:
+
+[xml]
+<xsl:if test="expression">
+Do something
+</xsl:if>[/xml]
+
+And <strong>if/else</strong> statements:
+
+[xml]
+<xsl:choose>
+<xsl:when test="expression">
+Do something
+</xsl:when>
+<xsl:otherwise>
+Do something else
+</xsl:otherwise>
+</xsl:choose>
+[/xml]
+
+The test expressions can be made up of: "=", "and", "&lt;", "&amp; amp;gt;" and probably a whole lot more, but I haven't come across any other ones yet.

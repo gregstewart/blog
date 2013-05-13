@@ -1,0 +1,46 @@
+---
+layout: post
+title: SOAP anyone??
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>A general collection of odds and sods. Some more ColdFusion framework discussions, some CSS, mobile blogging, some SOAP, PHP and a few interface design considerations.</p>
+<ol>
+ <li><p>There has been a lot of discussion of the CFDev mailing list over appropriate architectures for developing RIAs, of course all focused also on harnessing the power of CFCs. The bets solution pout forward was to move away form 3 tier applications and look to n-tier applications (items listed after the slash are for Mach-II and typical web applications using HTML templates for the presentation layer): </p>
+ 	<ol>
+		<li>client (web browser)</li>
+		<li>presentation tier (Flash UI) / presentation tier (ColdFusion .cfm pages)</li>
+		<li>business-presentation tier (Flash ActionScript controller) / business-presentation tier (Mach II &amp; listener CFCs)</li>
+		<li>business-facade tier (ColdFusion CFC / web service facade) / business-facade tier (ColdFusion CFC facade)</li>
+		<li>business-model tier (ColdFusion CFCs)</li>
+		<li>integration tier (ColdFusion CFCs &amp;Java)</li>
+		<li>data tier (Oracle 9i)</li>
+	</ol>
+	<p>Below are some link with articles that should provide further insight.<br /></p>
+	<ol>
+		<li><a href="http://www.15seconds.com/issue/011023.htm" title="Application Architecture: An N-Tier Approach - Part 1">http://www.15seconds.com/issue/011023.htm</a></li>
+		<li><a href="http://www.macromedia.com/devnet/mx/coldfusion/articles/ntier.html" title="Benefits of using N-tiered approach for web applications">http://www.macromedia.com/devnet/mx/coldfusion/articles/ntier.html</a></li>
+		<li><a href="http://www.macromedia.com/devnet/flex/articles/design_patterns02.html" title="Design Patterns into RIA">http://www.macromedia.com/devnet/flex/articles/design_patterns02.html</a></li>
+		<li><a href="http://www.macromedia.com/devnet/mx/flashcom/articles/scalable02.html" title="Developing Scalable Macromedia Flash Communication Server MX Applications">http://www.macromedia.com/devnet/mx/flashcom/articles/scalable02.html</a></li>
+	</ol>
+  </li>
+  <li>The <a href="http://www.alistapart.com/articles/slashdot2/" title="Retooling Slashdot with Web Standards Part II">two articles</a> were interesting for a number of reasons. One of course being a showcase of how standards implemented sites could benefit companies. That's one of the reasons I am jotting this one down, the other he has links to some mobile device emulators... Always come in handy these!</li>
+  <li><a href="http://www.alistapart.com/articles/customcorners/" title="CSS Design: Creating Custom Corners &amp; Borders">how to implement round corners</a>.</li>
+  <li>A little review on the benefits of <a href="http://www.notestips.com/80256B3A007F2692/1/TAIO-5TT34F" title="The benefits of a fixed width design">fixed width design</a>. Much has been said about the benefits of fluid designs, but little so far about fixed width. The bottom line fixed width delivers better readability as the length of the content area is fixed. Studies in the print world have shown that shorter lines are easier to read...</li>
+  <li>Ken Wistin relates his experiences and ideas for <a href="http://www.digital-web.com/features/feature_2003-12.shtml" title="Web Globalisation On A Local Budget ">developing global website</a>s for local markets without having necessarily the financial backing of a major organisation.</li>
+  <li>More for a friend of mine, but this resources contains all of the information relating to <a href="http://www.macromedia.com/devnet/mx/flash/video.html" title="Video Resources">integrating Flash and Video</a>.</li>
+  <li><a href="http://www.briankotek.com/index.cfm?fuseaction=coldfusion.main" title="Cold Fusion and Fusebox">Brian Kotek</a> provides a brief <a href="http://builder.com.com/5100-6386-5111975.html" title="Software Development: Introduction to the Mach-II application framework">overview of the Mach-ii framework for ColdFusion</a>. He also provides an links to an overview with examples of using <a href="http://builder.com.com/5100-6371-5087794.html" title="Write efficient code with the Composition object pattern and CFCs">CFCs and Composition</a> and an overview of the <a href="http://builder.com.com/5100-6386-1049862.html" title="MVC design pattern brings about better organization and code reuse">MVC design pattern</a>.</li>
+  <li>I put up the CFMX coding guidelines a while back,  but here are now the <a href="http://livedocs.macromedia.com/wtg/public/coding_standards/" title="Coding Guidelines">complete set of guidelines</a> from Macromedia for HTML, CFMX, mach-ii and accessibility.</li>
+  <li>One of the few <a href="http://www.ohsogooey.com/coldfusion/machii/machii.cfm" title="All mach-ii baby">mach-ii related blogs</a> and it also contains a bunch of filters and plug-ins for the framework.</li>
+  <li>A brief article form Sun giving an overview of the <a href="http://developers.sun.com/techtopics/mobility/midp/articles/blogging/" title="Introduction to mobile blogging">current state of play</a> on the mobile blogging front.</li>
+  <li>This <a href="http://www.moblogging.org/" title="moblogging.org">site</a>, in the shape of a blog, provides a review of software, hardware and news relating to mobile blogging</li>
+  <li>A <a href="http://www.webdevforager-london.co.uk/" title="The directory of web developers in greater london">directory listing</a> for web developers based in London.</li>
+  <li>As above, <a href="http://www.ukwebdevelopers.com/" title="UK web developers">another directory listing</a> for us web developers.</li>
+  <li>Hat tip to <a href="http://www.bpurcell.org/" title="Brandon Purcell's home page">Brandon Purcell</a> for this one. <a href="http://www.dslwebserver.com/" title="DSL/Cable Webserver">This site</a> contains a raft of information on setting up a web server on your home broadband connection even if you are using a dynamic IP address. Tones more info...</li>
+  <li>A neat little article highlighting the <a href="http://www.ms-studio.com/articlesarialsid.html" title="How to spot Arial">differences</a> between Arial type and Helvetica and Grotesque. Thanks to <a href="http://www.zeldman.com/" title="The daily report">Zeldman</a> for that one (incidentally he has re-designed).</li>
+  <li>I had a script running on this now for quite a while that gathers book info based on what section of the site you are in and then displays the book thumbnails. It works, but I have found it very intermittent. So I decided to dig a little deeper and see if I could fix this up a little. Check this site out for a <a href="http://www.chipdir.nl/amazon/" title="Jaap's Free Amazon PHP Scripts">few free scripts</a>.</li>
+  <li>This is <a href="http://dietrich.ganx4.com/nusoap/" title="NuSOAP">a PHP object</a> that allow developers to easily instantiate and consume SOAP requests. DevShed has a set of article on using it with the Amazon Web Service [read <a href="http://www.devshed.com/Server_Side/PHP/AmazonAPI/AmazonAPI1/page1.html" title="Using Amazon Web Services With PHP And SOAP (part 1)">part 1</a> and <a href="http://www.devshed.com/Server_Side/PHP/AmazonAPI/AmazonAPI2/page2.html" title="Using Amazon Web Services With PHP And SOAP (part 2)">part 2</a>]</li>
+</ol>

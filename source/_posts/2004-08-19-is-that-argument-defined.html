@@ -1,0 +1,10 @@
+---
+layout: post
+title: Is that argument defined
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+I am getting closer and closer to completing my first Mach-ii application and I just thought I'd note down one other thing I figured out, namely how to check whether an argument exists or not. Initially I tried using <strong>StructKeyExists()</strong> function with no success. So I decided to just &lt;cfdump&gt; request.event to see what other methods where available (other than getArg()) and sure enough you can do a <strong>event.isArgDefined()</strong> to check for the existence of an argument.

@@ -1,0 +1,19 @@
+---
+layout: post
+title: XML feed fixed up
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>So I finally got round to updating my rdf feed. Originally it used to be
+controlled by the CMS using a priority listing based on selection. But this
+turned out to be time consuming to manage, and so I opted to simply rely on
+pulling out the latest 20 items.</p>
+
+<p>I also changed the way it was generated. Originally it used to down by
+writing to a file. Again this seemed just too much and by simply outputting
+the content to a PHP template and using the following line preceding the
+output: <em>header("Content-type: text/xml");</em>, it works just as well
+and always serves fresh content.</p>

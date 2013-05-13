@@ -1,0 +1,45 @@
+---
+layout: post
+title: ! 'Apache: Configuring Tomcat'
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>In the following I shall talk you through configuring and installing Tomcat [at the time of writing the latest version was 3.2.1] (a JSP server) to run with your Apache server on your Windows box. Before we get started you will need to get the following files (and I am assuming that you have Apache installed and configured properly):</p>
+<p><ul>
+  <li><a href="http://jakarta.apache.org/builds/jakarta-tomcat/release/v3.2.1/">Tomcat source files</a></li>
+  <li><a href="http://jakarta.apache.org/builds/jakarta-tomcat/release/v3.2.1/bin/win32/i386/">JK_NT_service</a></li>
+  <li><a href="http://jakarta.apache.org/builds/jakarta-tomcat/release/v3.2.1/bin/win32/i386/">ApacheModuleJServ.dll</a></li>
+  <li><a href="http://java.sun.com/j2se/1.3/download-windows.html">JDK 1.3</a> [at the time of writing the lates version was 1.3.0_02]</li>
+</ul></p>
+<p>Once you have downloaded these files, start off with extracting the Tomcat source files and installing the JDK 1.3 files. For simplicities sake extract and install the files into the root of your drive. Once done you will need to edit the <strong>wrapper.properties</strong> file (usually located in: <em>&lt;drive letter&gt;:\jakarta-tomcat-3.2.1\conf</em>. You will need to specify both your tomcat home directory and your Java directory. Look for the following lines:</p>
+<p><em>#<br />
+# wrapper.tomcat_home should point to the location where you<br />
+# installed tomcat. This is where you have your conf, webapps and lib<br />
+# directories.<br />
+#<br />
+wrapper.tomcat_home=&lt;put your Tomcat home&gt;<br />
+<br />
+#<br />
+# wrapper.java_home should point to your Java installation. Normally<br />
+# you should have a bin and lib directories beneath it.<br />
+#<br /> wrapper.java_home=&lt;put your Java home&gt;<br /></em></p>
+<p>Modify that section to refelect your installation directories:</p>
+<p><em>#<br />
+# wrapper.tomcat_home should point to the location where you<br />
+# installed tomcat. This is where you have your conf, webapps and lib<br />
+# directories.<br />
+#<br />
+wrapper.tomcat_home=&lt;drive letter&gt;:\jakarta-tomcat-3.2.1\<br />
+<br />
+#<br />
+# wrapper.java_home should point to your Java installation. Normally<br />
+# you should have a bin and lib directories beneath it.<br />
+#<br />
+wrapper.java_home=&lt;drive letter&gt;:\JDK1.3.0_02\</em></p>
+<p>Save the file. Next extract the <strong>jk_nt_service</strong> file you downloaded into your tomcat home directory, open a command prompt window and change to that directory. Once there type the following command:</p>
+<p><em>jk_nt_service -i Tomcat &lt;Drive Letter&gt;:\jakarta-tomcat-3.2.1\conf\wrapper.properties</em></p>
+<p>Should your install directory include and spaces you will need to put your <strong>wrapper.properties</strong> path in quotation marks. OK, once done start the service by typing <em>net start Tomcat</em>. It should have started without any problems. Next locate the file called <strong>tomcat-apache</strong> (usually also located in <em>&lt;drive letter&gt;:\jakarta-tomcat-3.2.1\conf</em>) and open it. Copy and paste the content into your Apache <strong>http.conf</strong> (located in <em>&lt;drive letter&gt;:\Program Files\Apache Group\Apache\conf\</em>). Save the changes and stop your Apache server (<em>net stop apache</em>). The final step involves copying the <strong>ApacheModuleJServ.dll</strong> into the modules directory in your Apache install directory and restarting the Apache server.</p>
+<p>OK, ready to test your work? Open a web browser and enter the following URL http://localhost/examples/jsp/. You should be presented with a list of examples. Try them out. If you installed everything correctly they should be working. Welcome to the world of JSP.</p>

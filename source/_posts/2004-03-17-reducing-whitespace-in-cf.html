@@ -1,0 +1,11 @@
+---
+layout: post
+title: Reducing whitespace in CF
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p><a href="http://tech.badpen.com/?mode=entry&entry=17" title="Modifying page generated content">A neat post</a> showing how to use the underlying Java of COldFusion MX to supress the annoying whitespace that CF seems to generate. He also included this little tidbit of Code:</p>
+<p><em>&lt;!--- no output except cfoutput ---&gt; &lt;cfsetting enablecfoutputonly="yes"&gt; &lt;!--- all generation goes here ---&gt;&lt;cfoutput&gt;#repeatstring(chr(10),5)##createuuid()#&lt;/cfoutput&gt; &lt;!--- then we get all buffered output ---&gt; &lt;cfset variables.allout = getPageContext().getCFOutput().getString()&gt; &lt;!--- reset the content type and flush the buffer at the same time ---&gt; &lt;cfcontent type="text/html" reset="yes"&gt; &lt;!--- and output the trimmed version ---&gt; &lt;cfoutput&gt;#trim(variables.allout)#&lt;/cfoutput&gt;</em></p>

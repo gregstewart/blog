@@ -1,0 +1,33 @@
+---
+layout: post
+title: An alternative to loading JAR files
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Here is an option to loading JAR files. Rather than placing them into the ClassPath of the server.
+
+Phil Cruz posted to the BD mailing list about his experience trying to integrate Log4J with BD (and since he can't load it into the Classpath either I am assuming that he is using BD FREE as well). He came across <a href="http://www.spike.org.uk/blog/index.cfm?data=03/06/2004" title="Loading java class files from a relative path">a post</a> from Spike that shows how to load a java class from a relative path. However Phill encountered an error when using this method. The method relies on creating a Java array and adding a URL object to it. This URL object is the path to the Java file that should be loaded. In CFMX this technique works, but in BD it returns a "<strong>Argument is not an array</strong>" error. It has been logged as a bug.
+
+Andrwe Wu provided a simple work around to this problem (while the bug is being fixed). Instead of using a Java Array simply use a cfml one. So the code for loading log4J would be like follows:
+
+<em>&lt;cfset pathToLog4j = "C:\CFusionMX\lib\log4j.jar" /&gt;</em>
+
+<em>&lt;!--- Create an instance of java.net.URL for passing to the URLClassLoader ---&gt;
+&lt;cfset URLObject = createObject('java','java.net.URL') /&gt;
+&lt;!--- Initialize the object with the jar file ---&gt;
+&lt;cfset URLObject.init("file:" &amp; pathToLog4j) /&gt;</em>
+
+<em>&lt;!--- Create an Array and add our URLObject to it ---&gt;
+&lt;cfset arr[1] = urlobject /&gt;</em>
+
+<em>&lt;!--- Create and the URLClassLoader and pass it the array containing our path ---&gt;
+&lt;cfset loader = createObject('java','java.net.URLClassLoader') /&gt;
+&lt;cfset loader.init(arr) /&gt;</em>
+
+<em>&lt;!--- Use our new class loader to load the DOMConfigurator class ---&gt;
+&lt;cfset configurator = loader.loadClass("org.apache.log4j.xml.DOMConfigurator").newInstance() /&gt;</em>
+
+<em>&lt;cfdump var=#configurator# /&gt;</em>

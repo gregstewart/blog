@@ -1,0 +1,12 @@
+---
+layout: post
+title: Dynamic variable names
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I always thought you needed to use evaluate to build up dynamic variables, but nope that is not required you can simply do this:</p>
+<p><em>&lt;cfset "#arguments.str#.#key#" =  variables.holder["#key#"]&gt;</em></p>
+<p>And even better it saves a few CPU cycles and dispenses with the <strong>evaluate</strong> function.</p>

@@ -1,0 +1,18 @@
+---
+layout: post
+title: Swapping out Batik
+tags:
+- ColdFusion
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+A while back I was tinkering with converting SVG output to PNG using Batik, but I was not having much luck with it as it seemed that the Batik jar files that come with CFMX were out of date or plain missing some methods. I gave up, but a colleague of mine, Zac, picked up the baton and has come up with a solution. Now before you dive in and follow these steps, bare in mind that this is just our first day of using this, so even though Flash forms still appear to be working there may well be cases that we haven't stumbled across yet, where our changes have broken CF (and for the record we don't use Flash Forms, Charts or anything flex related). So in other words use this 'tip' with caution!!
+
+Still reading? Awesome, so here's what we came up with, first off the Batik version that ships with CFMX 7 is 1.5.1, so head over to the <a title="Apache Archive" href="http://archive.apache.org/dist/xml/batik/">Apache Archive</a> and download the 1.5.1 version from the archive. In essence we'll be replacing like for like. Once downloaded locate the the <em>cfforms\jars</em> folder in your CFMX installation (on windows standard you'll find it under C:\CFusionMX7\wwwroot\WEB-INF\cfform\jars).
+
+Before continuing make sure you back up all of the batik files located there (i.e. batik-awt-util.jar, batik-css.jar, batik-ext.jar, batik-transcoder.jar and batik-util.jar) and move them out of the CFMX install folder. Once done, just extract the lib and extensions folder as well as the batik-*.jar files into <em>cfform\jars</em> folder. Once done all you need to do is restart CFMX and the updated JAR files will load (you may want to consider to launch CFMX in debug mode to make sure nothing bad is happening).
+<h4>Update</h4>
+Barney Boisvert got in touch to let me know that he is done something similar, but used a newer version of Batik. <a title="Barney Blog" href="http://barneyb.com/barneyblog/index.php?s=batik&amp;searchsubmit=Go">Follow the link</a> to see his posts on the topic.

@@ -1,0 +1,41 @@
+---
+layout: post
+title: JMC tales
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>The JRun management console is intended to be a handy on-line tool for
+managing your JRun installation, however it has turned to be a nuisance on
+more than one occasion.</p>
+
+<p>For starters, and <a href="http://www.sys-con.com/story/?storyid=43994"
+title="Using JRun Instances for CFMX Deployment">I mentioned this in my
+article</a>, when ever I stopped an JRun instance using the <abbr title="JRun Management Console">JMC</abbr>, it would
+pretty much immediately start up. Great if the server had choked, but when
+it's my intention... not so good. The only solution was to stop (and then
+subsequently start)  the instance from the command line. Or installing it as
+a service, that worked too.</p>
+
+<p>A couple of months back, <a
+href="http://www.sys-con.com/story/?storyid=43997" title="Confronting JRun -
+Who's Afraid of J2EE?">Benjamin Blackwell</a>, who also published an article
+in that issue, came across another problem with the <abbr title="JRun Management Console">JMC</abbr>. He happened to try
+and add Verity and <abbr title="Component Object Model">COM</abbr> support for JRun using the <abbr title="JRun Management Console">JMC</abbr>. Having added the
+arguments to the <em>java.library.path</em>, he tried to restart the JRun
+server to have the changes take effect. And that's when JRun failed spitting
+out:</p>
+
+<p><em>Unrecognized option: -server<br />
+Could not create the Java Virtual Machine</em></p>
+
+<p>I turns out that somehow the <abbr title="JRun Management Console">JMC</abbr> had added this to the <abbr title="Java Virtual Machine">JVM</abbr> arguments:</p>
+
+<p><em># Arguments to VM<br />
+java.args=-Xmx512M
+<strong>-server</strong> -Dsun.io.useCanonCaches=false</em></p>
+
+<p>And there you go, another handy hint should run into a few issues with
+JRun. Thanks to Simon and Benjamin for sharing the info.</p>

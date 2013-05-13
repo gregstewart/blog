@@ -1,0 +1,14 @@
+---
+layout: post
+title: CFMX and the PowerBookPro
+tags:
+- ColdFusion
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+A wee while back the Mac PowerBookPros received a JVM update. This brings it up to  version 1.5.06, which is fabulous, but of course stops you from being able to run ColdFusion. Thankfully the JVM upgrade leaves the old versions on your system. The simple trick to get your CFMX installation to wok again after the upgrade is to run the start up script from the console with the path to the old JVM like such:
+
+[code]sudo /System/Library/Frameworks/JavaVM.framework/Versions/1.4.2/Commands/java -jar /Applications/JRun4/lib/jrun.jar -start cfusion &amp;[/code]

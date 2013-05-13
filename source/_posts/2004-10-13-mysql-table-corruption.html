@@ -1,0 +1,29 @@
+---
+layout: post
+title: MySQL table corruption
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+A slight case of panic this morning, The table that provides the content for this site, somehow got corrupted. Thankfully a back up was on hand if the worst came to the worst, but before dropping, re-creating and re-populating I decided to see if there was an easier way to fix up the following error message:
+
+[code]SQL desc `tableName` failed : Can't open file: 'tableName.MYD'. (errno: 145)[/code]
+
+A little googling told me that the table was corrupt and as a result I should attempt to repair it. So I ssh'd in to my server and from the console logged into mysql:
+
+[code]mysql -u dbUserName -p dbName;[/code]
+
+Then simply ran the following instruction:
+
+[code]repair table tableName;[/code]
+
+And hey presto the table was fixed again and the site was up and running! Panic over!
+
+Here are some background info links:
+<ul>
+	<li><a href="http://dev.mysql.com/doc/mysql/en/REPAIR_TABLE.html" title="REPAIR TABLE Syntax">REPAIR TABLE Syntax</a></li>
+	<li><a href="http://dev.mysql.com/doc/mysql/en/Corrupted_MyISAM_tables.html" title="Corrupted MyISAM Tables">Corrupted MyISAM Tables</a></li>
+	<li><a href="http://dev.mysql.com/doc/mysql/en/Repair.html" title="How to Repair Tables">How to Repair Tables</a></li>
+</ul>

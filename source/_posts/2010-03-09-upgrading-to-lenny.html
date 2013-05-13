@@ -1,0 +1,26 @@
+---
+layout: post
+title: Upgrading to Lenny
+tags:
+- ! '*nix'
+- apache
+- debian
+- linode
+- MySQL
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+It's been  while since I attended to my VPS, I decided to spend some time last night upgrading my distribution from Etch to Lenny. This is normally a moment where your heart sinks as quite a few things do tend to go belly up, but I am happy to report that I only came across some minor issues and these were resolved in minutes as opposed to hours.
+<ol>
+	<li>MySQL : failed to start, complaining about:[code]/etc/init.d/mysql: ERROR: Using expire_logs_days without log_bin crashes
+the server. See README.Debian.gz[/code]
+
+Commenting out the expire_logs_days in the my.cnf file allowed me to restart MySQL.</li>
+	<li>After the upgrade of Apache, my virtual hosts weren't working. A quick search via Google <a href="http://www.pc-freak.net/blog/solution-to-a-problem-with-virtualhosts-on-debian-lenny-default-virtualhost-opening-by-default-overwritting-the-rest-of-the-configured-virtualhosts/">pointed me to this post</a> - a quick edit of all of my host files and it was all working again.</li>
+	<li>the php-mysql connector somehow hadn't been upgraded/installed so a quick[code]apt-get install php5-mysql[/code]fixed that problem.</li>
+	<li>OpenBD : the only thing that remains broken was my tomcat5.5 Open BD install. Tomcat was working fine but Open BD refused to start up complaining about :[code]javax.servlet.ServletException: Open BlueDragon Engine Failed to initialise tags: java.awt.Color[/code]Since I am not really using it, it's not that important, but at some stage I'd like to get it working again. If you have any suggestions, please leave a comment.</li>
+</ol>

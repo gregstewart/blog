@@ -1,0 +1,33 @@
+---
+layout: post
+title: Dynamic text with action script
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Here's how you can quickly create one or more text fields using ActionScript for you flash applications. I start off by defining the style (lines 2-6 in the code at the end of this post), which will be applied to the text fields. On line 8 a new text field is defined. The arguments for this method are follows:
+
+[as]movieClip.createTextField(instanceName, depth, x, y, width, height)[/as]
+
+Of note is the depth argument, because if you want to add more than one text field you need to increment that value by one, else every additional field will overwrite the current one. Thankfully there is a method: getNextHighestDepth() that will return the next possible value for you. The arguments that follow the depth one, set the display position and the width and height of your text field. The next three lines allow me to a) use HTML for my text, b) set the text to display (a link in this case) and finally apply the previously defined style. And this is then repeated for the second text field to be displayed (lines 13-16), making sure that the display position doesn't overlap.
+
+<code>
+// now create the dynamic text buttons
+fmtEmphasis = new TextFormat();
+fmtEmphasis.bold = false;
+fmtEmphasis.size = 12;
+fmtEmphasis.color = "0x69889A";
+fmtEmphasis.font = "Verdana";</code>
+
+this.createTextField("tfNewfield1",this.getNextHighestDepth(),0,0,150,20);
+tfNewfield1.html = true;
+tfNewfield1.htmlText = "<a href="http://www.someurl.com/" target="_blank">[ Link 1 ]</a>";
+tfNewfield1.setTextFormat(fmtEmphasis);
+
+// now create the dynamic text buttons
+this.createTextField("tfNewfield2",this.getNextHighestDepth(),170,0,150,20);
+tfNewfield2.html = true;
+tfNewfield2.htmlText = "<a href="http://www.someotherurl.com/" target="_blank">[ Link 2 ]</a>";
+tfNewfield2.setTextFormat(fmtEmphasis);

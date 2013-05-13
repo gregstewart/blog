@@ -1,0 +1,25 @@
+---
+layout: post
+title: Some notes on creating tables from the SQL Server Query Analyser
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>Some notes on creating tables from the SQL Server Query Analyser</h3>
+<p class="1">I have decided to include here some notes and a sample script for creating a table using the SQL Server Query Analyser. The main reason for using scripts rather than the graphical user interface (GUI), is that you can save these scripts and re-use them, e.g. your whole system crashes and you quickly want to re-create your tables, the easiest way is to just run the scripts and hey presto your tables are up and running again. Take a look at the script below</p>
+<p class="1">
+<pre>
+CREATE TABLE [dbo].[Example]
+	([ID] [int] Identity (1,1) NOT NULL,
+	[UserName] [char] (50) Null,
+	[Password] [char] (50) Null,
+	[Email] [char] (50) Null,
+	[URL] [char] (50) Null,
+	[Posts] [smallint] Null,
+	[DateCreated] [datetime] Null
+) ON [Primary]
+GO</pre></p>
+<p class="1">The first statement is pretty straightforward you tell the system to create a table with the permissions for <b>dbo</b> and give the table a name of <b>example</b>. Then you can proceed with defining your field names and properties. This whole process has to be done in between rounded brackets. The first field created is unique identifier, called <b>ID</b>, which is an integer starting at value 1 and incrementing in steps of one and also it can't be NULL. Next I defined a <b>Username</b> field, which is a character field, storing up to 50 characters (i.e. usernames longer than fifty characters will not be stored) and this value could be NULL. Let's skip through the char fields as they are all the same. The second to last field labelled <b>Posts</b> is small integer field. In this instance you do not have to specify the field size. It's the same thing for the next field, which is a date/time field. You do not have to specify the field width. Each row apart from the final one has to be ended with a "<b>,</b>". Finally this table is created on the <b>Primary</b> file group. You conclude this script with <b>Go</b>.</p>
+<p class="1">To execute this script from within the Query Analyser, simply highlight the whole script and press <i>CTRL+E</i>. If there are any errors, they will appear in the bottom window pane. If everything went well you should be able to read: <i>The command(s) completed successfully</i>.</p>

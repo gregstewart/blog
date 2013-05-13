@@ -1,0 +1,16 @@
+---
+layout: post
+title: Missing Remoting components
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+The joys of re-building your development machine. Though this was quite possibly the fastest re-build I ever went through, I did come slightly unstuck when trying start working with Flash MX Professional and the remoting components: when I tried to compile a previously working movie I was told NetServices.as, DataGlue.as and NetDebug.as were all missing.
+
+A quick search of my hard rive confirmed this. A quick look at Google didn't give me any indication of why they would be missing apart from a link to download the AS2 flash remoting components (http://www.macromedia.com/software/flashremoting/downloads/components/#flr_as2). 16 meg later I launch the installer and complete the installation, start up Flash MX pro again, re-compile the movie, and bang still no DataGlue.as, etc... Hmm search the disk again... Nothing... So I jump onto a colleagues machine do a search for the files, zip up both "{install path}/en/First Run/Classes" and "{install path}/en/First Run/Includes" and extract them onto my machine and bingo it all works.
+
+Now why would the installer not be able to install those components? The only thing I can think of is that I installed my software into a folder called "C:/Dev Tools/" rather than the "Program Files" and if it's really down to this, then this is really quite a silly bug to have in your installer.
+<h4>UPDATE</h4>
+<a href="http://www.leifwells.com/" title="Leif's Development Blog">Leif Wells</a> has kinly pointed the error of my ways. There was indeed a change in the way MX Pro with the release of the V2 Components, as they were packaged inside components. You know need to drag them onto your stage from Window &gt; Other Panels &gt; Common Libraries &gt; Remoting panel in order to successfully compile the movie. So I have deleted the old files as outlined above and gotten in the habot of dragging them onto the stage and saved myself some typing as well.

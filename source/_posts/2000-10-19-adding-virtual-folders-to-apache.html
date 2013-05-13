@@ -1,0 +1,30 @@
+---
+layout: post
+title: Adding virtual folders to Apache
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>Adding virtual folders to Apache</h3>
+<p class="1">This document will introduce you to creating virtual folders for the Apache v1.3.12 web server (<a href="http://www.apache.org/">www.apache.org</a>). I will be talking you through creating a virtual folder with the help if an example, namely by creating such a folder for the ActiveState (<a href="http://www.activestate.com/">www.activestate.com</a>) PERL html documentation.</p>
+<p class="1">What we are going to do is create a virtual directory called <i>perldocs</i>, which will give us the following URL <i>http://<your server name or IP address>/perldocs/</i>. The PERL documentation can be found in the following location <i>C:/Perl/html/</i> assuming you used the default installation settings. You are armed with the basic info, all we need to do know is inform the server of this information. </p>
+<p class="1">First you will need to stop your server. Open a command prompt and type:</p>
+<p class="1"><b>net stop Apache</b></p>
+<p class="1">This will stop the Apache web server service. Next open your favourite text editor and open the <i>srm.conf</i> file in the <b>conf</b> directory of your server installation by default this should be <i>c:Program FilesApache GroupApache</i>. Before making any modifications to any of your files, remember to make a backup copy first. You will need to add the following lines:</p>
+<p class="1"><font size=-2><i>#virtual html documentation directories<br />
+Alias /perldocs/ "C:/Perl/html/"</i></font></p>
+<p class="1">So your file should look something like this</p>
+<p class="1"><font size=-2><i>#<br />
+# This is the default file for the ResourceConfig directive in httpd.conf.<br />
+# It is processed after httpd.conf but before access.conf.<br />
+#<br />
+# To avoid confusion, it is recommended that you put all of your<br />
+# Apache server directives into the httpd.conf file and leave this<br />
+# one essentially empty.<br />
+#<br />
+<br />
+#html documentation aliases<br />
+Alias /perldocs/ "C:/Perl/html/"</i></font></p>
+<p class="1">Save and quit your editor. When you restart your server Apache (from the command prompt type <b>net start Apache</b>) will load the configuration file after processing the <i>httpd.conf</i> file. Open your browser and point it to the aforementioned URL. It should be noted that when you create the aliases (e.g. <i>perldocs</i>), when you enter the URL make sure that your entry is case-sensitive. Failure to so will result in an error 404 being returned.</p>

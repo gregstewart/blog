@@ -1,0 +1,15 @@
+---
+layout: post
+title: Browsing the network is really slow on my NT workstation
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>Browsing the network is really slow on my NT workstation</h3>
+<p class="1">Ever used Explorer to browse your network and found that it is extremely slow and unresponsive at times? I had a look throught technet to see if there was any information on this problem and found the following command (article Q226370):</p>
+
+<p class="1">RunDll32 advpack.dll,LaunchINFSectionEx C:winntINFmstask.inf,,,256
+</p>
+<p class="1">Apparently it is down to IE4 and it's task scheduler. Applying this command certainly improves the performance of browsing the local area network.</p>

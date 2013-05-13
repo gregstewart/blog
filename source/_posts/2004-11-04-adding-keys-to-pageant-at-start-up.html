@@ -1,0 +1,20 @@
+---
+layout: post
+title: Adding keys to pageant at start up
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+We use SSH a lot at work and to speed up the connection process and lessen the number of passwords and pass phrases we need to remember we use <a href="http://www.tartarus.org/~simon/puttydoc/Chapter9.html#C9" title="Chapter 9: Using Pageant for authentication">Pageant</a> as an authentication agent. One of the little niggles was that when re-booting our computers pageant would forget which keys had been added to it's configuration and hence had top be set up again.
+
+But here's how you can fix this annoyance: Create a shortcut in your start up folder for your Pageant executable, save it and then select the shortcuts properties (i.e. right click on the short cut icon and select properties). You should see something like this:
+
+[code]{install path}pageant.exe[/code]
+
+Where install path is the full path to your Pageant executable. Simply amend the entry to include the full path to your public key and append it to end of the entry and put in quotation marks, like such:
+
+[code]{install path}pageant.exe "{install path}id_rsa.ppk"[/code]
+
+Now every single time you log in to your machine Pageant will fire up and prompt you to provide your pass phrase for that key.

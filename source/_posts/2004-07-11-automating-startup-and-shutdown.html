@@ -1,0 +1,16 @@
+---
+layout: post
+title: Automating startup and shutdown
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>One thing I forgot to mention was the configuration of automating the start and shutdown of BD. Again the instructions available are pretty good and I followed the solaris based instructions and here are the symbolic links that I created between my copies of the start and shutdown scripts to rcx.d folders (where x is a numeric value, eg. rc0.d, rc1.d, etc...). The first is the start up link, the rest are all used for shutdown.</p>
+
+<p><em>host:/etc/init.d# ln -s /etc/init.d/StartBlueDragon.sh /etc/rc3.d/s95bluedragon<br />
+host:/etc/init.d# ln -s /etc/init.d/StopBlueDragon.sh /etc/rc0.d/K95bluedragon<br />
+host:/etc/init.d# ln -s /etc/init.d/StopBlueDragon.sh /etc/rc1.d/K95bluedragon<br />
+host:/etc/init.d# ln -s /etc/init.d/StopBlueDragon.sh /etc/rc2.d/K95bluedragon<br />
+host:/etc/init.d# ln -s /etc/init.d/StopBlueDragon.sh /etc/rc3.d/K95bluedragon</em></p>

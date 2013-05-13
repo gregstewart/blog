@@ -1,0 +1,30 @@
+---
+layout: post
+title: Italicise your unread firefox tabs and other bits
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Stumbled across this neat little entry (courtesy of a blog entry on <a href="http://www.javablogs.com/Welcome.action" title="Welcome to the java.blogs community!">javablogs.com</a>), which allows you to modify the userChrome.css file to have your unread tabs italicised (and/or colour). Simple and effective. The details can be found <a href="http://kb.mozillazine.org/index.phtml?title=Change_the_style_of_tab_markers" title="Change the style of tab markers">here</a>. The easiest way is to grab a copy of the <a href="https://addons.update.mozilla.org/extensions/moreinfo.php?application=firefox&amp;id=17&amp;vid=1028" tite="ChromEdit 0.1.1.1">ChromEdit  extension</a> and edit the userChrome.css file. Scroll to the end of the file and paste in the following code to italicise unread tabs:
+
+[code]
+/* Italicise the title of unread tabs */
+#content tab {
+font-style: italic !important;
+}
+
+/* Normalise the title of selected tab */
+#content tab[selected="true"] {
+font-style: normal !important;
+}
+
+/* Normalise the title of read unselected tabs */
+#content tab[selected="false"] {
+font-style: normal !important;
+}[/code]
+
+Note you'll need to re-start FireFox once to load the ChromEdit extension and another time to have the style sheet take effect.
+
+And over at DevNulled there is a good post on <a href="http://devnulled.com/archives/2004/12/how_to_make_firefox_faster.php">how to speed up FireFox</a>. Be warned though: it really does increase the load of the server you are trying to connect to, which strictly speaking isn't very polite.

@@ -1,0 +1,81 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+#wrapper { 
+    position:absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    overflow: hidden; /* prevent horizontal scrolling when content slides to the left or right */
+    overflow-y: auto; 
+}
+
+#content {
+    position: absolute; 
+    z-index: 4; 
+    left: 0; 
+    width: 100%; 
+    background-color: #eee;
+}
+
+#content div {
+    width: 70%;
+    margin: 0 15%;
+    text-align: left;
+    padding-top: 40px;
+}
+
+#nav {
+    position:fixed; 
+    z-index:3; 
+    left:0; 
+    width: 100%; 
+    height: 220px; 
+    background-color: #ccc;
+}
+
+#extra {
+    position:fixed; 
+    z-index:2; 
+    left:0; 
+    width: 100%; 
+    height: 330px; 
+    background-color: #aaa;
+}
+
+#slideLeft,
+#slideRight {
+    font-size: 10px;
+    color: #fff;
+    background-color: #555;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 44px;
+    width: 15%;
+}
+
+#slideLeft {
+    position: absolute;
+    right: 0;
+}
+
+#slideRight {
+    position: absolute;
+    left: 0;
+}
+
+.padding {
+    width: 80%;
+    border: 1px solid white;
+}
+
+#nav .padding {
+    float: left;
+}
+
+#extra .padding {
+    float: right;
+}

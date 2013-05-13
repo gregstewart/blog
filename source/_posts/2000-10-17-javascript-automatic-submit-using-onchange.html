@@ -1,0 +1,24 @@
+---
+layout: post
+title: ! 'JavaScript: Automatic submit using onChange'
+tags:
+- JavaScript
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+To make life a little bit easier for end users when they use our drop down menus in forms we decided to implement a automatic form submission when they had made their choice. This is an easy feature to implement. The first thing to do is to add the <em>onChange</em> event handler to your form and in the case of a drop down menu, you add this to the opening &lt;SELECT&gt; tag, as indicated below:
+
+[code]
+
+<form method="post"> <select name="{your_select_name}"> <option value="-1">Select something</option> <option value="1">Option 1</option> </select> </form>[/code]
+
+Please note that when use the <em>onChange</em> event handler you have to specify the function that is going to be executed. In this case we are going to write a function that submits the form. This is done as follows:
+
+[code]function AutoSubmit() {
+document.{your_form_name}.submit();
+}[/code]
+
+Not much this function is there? Basically we tell the browser to submit the form on this page, when a change to our select box takes place. Simple, when you know how!

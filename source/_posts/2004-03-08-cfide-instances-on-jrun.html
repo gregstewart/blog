@@ -1,0 +1,14 @@
+---
+layout: post
+title: CFIDE instances on JRun
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>One of the main benefits of using CFMX instances on JRun was the ability to have multiple CFIDE administrators for your applications/instances. However despite the CFIDE working fine, the interface was not displaying properly. i.e. all the images and CSS templates were quite simply missing. Checking the path to the CFIDE showed that they were all there (<em>{your Path}\servers\instanceName\cfusion-ear\cfusion-war\CFIDE\administrator\</em>), so what was going on?</p>
+<p>Well as it turns out, when you run a ColdFusion instance on JRun, it runs in distributes mode. What this means is that JRun is responsible for handling the <em>.cfm</em> and <em>.cfc</em> templates and your web server is responsible for serving the static content, e.g. images and style sheets. So I created a folder combination of CFIDE/administrator in my virtual host directory for that instance (e.g. <em>{your Path}\Apache Group\Apache2\htdocs\cfide\administrator</em>), copied over the style sheets from <em>{your Path}\servers\instanceName\cfusion-ear\cfusion-war\CFIDE\administrator\</em>. Then created another folder for the images and copied them from the previous folder as well. Checked my ColdFusion administrator and all the images and styles were being applied!</p>
+<p>Now if you have multiple instances you may not want to copy all of these files over and over again into each websites virtual host directory, in which case you can simply copy them into your default website directory (say <em>{your Path}\Apache Group\Apache2\htdocs\ </em>) and then edit your <em>httpd.conf </em> by adding the following instruction:</p>
+<p><em>Alias /cfide/ "{your Path}/Apache Group/Apache2/htdocs/Cfide/"</em></p>
+<p>Big thanks to Sean Corfield for mentioning this on the CFCDev mailing list.</p>

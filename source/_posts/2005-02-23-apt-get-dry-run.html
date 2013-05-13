@@ -1,0 +1,16 @@
+---
+layout: post
+title: apt-get dry run
+tags: []
+status: draft
+type: post
+published: false
+meta: {}
+---
+One of the features I like most about Debian is the package manager (apt). It's simply awesome when it comes to managing package dependencies or just simply keeping your system up-to-date. A while back though I ran into trouble when using apt-get upgrade (to cut a long story short, not the package managers fault but mine), but it left me wishing that I could do a dry run of an upgrade to see what would be happening. And of course you can:
+
+[code]
+apt-get -s upgrade
+[/code]
+
+On hitting the return key the process of upgrading your packages proceeds as before, but without actually installing anything. Very neat.

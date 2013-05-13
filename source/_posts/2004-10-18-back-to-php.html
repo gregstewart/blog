@@ -1,0 +1,12 @@
+---
+layout: post
+title: Back to PHP
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Well the fanfare is over I have had to temporarily revert back to the PHP form of this site as BlueDragon was suffering from a few hick ups. Now I am not sure whether this is a Mach-ii, BlueDragon, my coding style, server configuration issue, but after a period of two or three hours the server would be become un-responsive and the process list listed an incredibly large number of BD threads. Normally the threads number 20 odd, but by the time the server stopped responding there were hundreds.
+
+So I tried a few things like changing mod_servletexec.so to the EAPI version provided by NewAtlanta, but I experienced similar problems as discussed over <a href="http://www.newatlanta.com/c/products/bluedragon/self_help/archiveSearch/detail?messageId=76001" title="Re: [BlueDragon] Apache 1.3.31 on Linux Hangs with BlueDragon 6.1">here</a>, so in the end I reverted back to the current mod_servletexec.so and switched back to PHP while I figure out what is happening. Sorry about any disruptions, missing images and what not while I switched back.

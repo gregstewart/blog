@@ -1,0 +1,13 @@
+---
+layout: post
+title: Randomly displaying query rows
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Ever wanted to have a result set to be displayed in a random fashion on each display?? This is a really short and hopefully useful tit bit. Programmatically I am sure you have all figured out how to retrieve a random record, but have you ever considered letting the database do the work? Or have an ordered result set be displayed in a random fashion on each refresh of the page?</p>
+<p>The trick is to order the query based on the <strong>newID()</strong> function, like such:</p>
+<p><em>SELECT * FROM tablename ORDER BY  NewID();</em></p>
+<p>As you may guess for eacxh record retrieved a new UUID is generated and the output order by that value. Simple as...</p>

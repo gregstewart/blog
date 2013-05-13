@@ -1,0 +1,26 @@
+---
+layout: post
+title: ! 'JavaScript: scheduling events'
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p class="one">You may have come across some of the slide shows I have put up on this site. The script that drives the display of text and images is JavaScript and DHTML based. This script was taken from the webreference website under the heading Database Front End. Now recently I just started working on a project that required to have such a slide show, however it required the option to continuous loop if the user pressed the play button and reciprocally stop.</p>
+<p class="one">Now I was able to achieve this effect by making use of the <b>setTimeout</b> and <b>clearTimeout</b> methods. The application of said methods is pretty straight forward, in addition to the aforementioned script, you will need to add the following lines to your script:</p>
+<p class="one"><i>function showPlay() {<br />
+&nbsp;&nbsp;&nbsp;timeoutID = setTimeout("showContinous();", 5000);<br />
+}<br />
+function showContinous() {<br />
+&nbsp;&nbsp;&nbsp;curRecord = (curRecord &lt; maxRecords) ? ++curRecord : 1;<br />
+&nbsp;&nbsp;&nbsp;upDate();<br />
+&nbsp;&nbsp;&nbsp;timeoutID = setTimeout("showContinous();", 5000);<br />
+}
+function showStop() {<br />
+&nbsp;&nbsp;&nbsp;clearTimeout(timeoutID);<br />
+}<br />
+</i></p>
+<p class="one">Let's have a look at the new functions. <i><b>showPlay</b></i> is the function that sets the slide show running continuously. This is also where we invoke the method <b>setTimeout</b>. This method takes 2 arguments, the first being the code or function to be executed and the second the interval at which this is to take place. You may now be wondering why I invoked a variable timeoutID. I did this to capture the ID that this method generates. It will come in handy very soon, so bear with me. The function I am invoking is <b><i>showContinous</i></b>. This function is in essence identical to the function found in the original script <b><i>showNext</i></b>, with the addition of another setTimeout method. Why? Well if you don't invoke the method again, all that happens is that the script only gets executed once and in this case, only moves one slide forward. To make the process continuous you have to call the function again from within the function. Again I capture the timeoutID generated.</p>
+<p class="one">So what do I do with this <b>timeoutID</b>. Well I need it to stop the loop. The function <b><i>showStop</i></b> clears the timeout based on the <b>timeoutID</b>. Why do I capture that ID twice? Well the first time round the loop is not continuous, however the user may choose to stop the presentation at that stage, so that's why a captured it then. In the continuous loop, another <b>timeoutID</b> is generated and hence I needed to capture this one so that I could now stop the loop.</p>
+<p class="one">Now all that needs to be done is to add a couple of links or buttons that trigger these functions and you are done.</p>

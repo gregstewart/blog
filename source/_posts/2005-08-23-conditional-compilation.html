@@ -1,0 +1,24 @@
+---
+layout: post
+title: Conditional compilation
+tags:
+- browser
+- JavaScript
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+What with the buzz going on around xmlHttpRequest, I decided to have a little play with the technology (yes I know very me too of me). One tutorial/example site I stumbled across "<a href="http://www.webpasties.com/xmlHttpRequest/" title="Guide to Using XMLHttpRequest (with Baby Steps)">Guide to Using XMLHttpRequest (with Baby Steps)</a>" used some interesting JavaScript: <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/script56/html/js56jsconconditionalcompilation.asp" title="Conditional Compilation">Conditional Compilation</a>. Here is an example:
+
+[js]
+/*@cc_on @*/
+/*@if (@_jscript_version &gt;= 4)
+alert("JScript version 4 or better");
+@else @*/
+alert("You need a more recent script engine.");
+/*@end @*/
+[/js]
+
+From the looks of it, it's an IE only thing, but I wonder what the advantages are of using this code over a regular browser check? Is this a more reliable way than using <em>window.ActiveXObject</em> and, if you are specifically playing around with xmlHttpRequest, based on that condition making the correct create object call?

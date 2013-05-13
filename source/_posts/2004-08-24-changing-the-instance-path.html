@@ -1,0 +1,17 @@
+---
+layout: post
+title: Changing the instance path
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Another item to add to the list of JRun/cfmx configuration tips. If you wish to change the default path for your CFMX instance, then you need to edit the jrun-web.xml in cfusion_ear\cfusion_war\WEB-INF folder. Look for the &lt;virtual-mapping&gt; and add something like the following that will reflect your instance's new root path.
+
+[code]<virtual-mapping>
+<resource-path>/</resource-path>
+<system-path>c:/mynewrootdir</system-path>
+</virtual-mapping>[/code]
+
+Thanks <a href="http://www.horwith.com/blog" title="Simon Horwith's Blog - Diary of a (ColdFusion) Madman">Simon</a> for sharing this tip!

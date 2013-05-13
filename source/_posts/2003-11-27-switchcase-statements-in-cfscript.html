@@ -1,0 +1,42 @@
+---
+layout: post
+title: switch/case statements in cfscript
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Just recently I have been moving away from using the tag based development methodology of ColdFusion and been doing most of my coding using cfscript. Of course this doesn't natively give me access to the wealth of functionality that ColdFusion has [note: there are ways around that and I hope I'll be bale to write something up soon], however it does give you a more traditional feel for coding and can certainly be a bit tighter. Here I just wanted to highlight how &lt;cfswitch&gt; and &lt;cfcase&gt; differ slightly when used as swicth/case in &lt;cfscript&gt;</p>
+<p>OK let's take a look at the code traditional CF style side by side with cfscript stylee:</p>
+<p style="float: left;"><em>&lt;cfswitch expression="#yourExpression#"&gt;<br />
+	&lt;cfcase value="a,b,c"&gt;<br />
+		...something...<br />
+	&lt;/cfcase&gt;<br />
+	&lt;cfcase value="d"&gt;<br />
+		...something else...<br />
+	&lt;/cfcase&gt;<br />
+	&lt;cfdefaultcase&gt;<br />
+		... default behaviour goes here ...<br />
+	&lt;/cfdefaultcase&gt;<br />
+&lt;/cfswitch&gt;</em></p>
+<p style="float: right;"><em>&lt;cfscript&gt;<br />
+	switch(yourExpression) {<br />
+		case "a": case "b": case "c":<br />
+			...something...<br />
+			break;<br />
+		case "d":<br />
+			...something else...<br />
+			break;<br />
+		default:<br />
+			... default behaviour goes here ...<br />
+			break;<br />
+	}<br />
+&lt;/cfscript&gt;</em></p>
+<p style="clear: both;">I guess that side by side the comparison in terms of neatness and tightness does not really shine through. However this is just for swicth/case, once you come to work with cfscript you'll truly appreciate the scripting approach. So what differs:</p>
+<ol>
+	<li>The first thing is that you will need to include a <em>break;</em> statement for each case. Failure to do that will result in the call processing the entire switch until either reaches the end or encounters a <em>break;</em></li>
+	<li>Multiple cases on one line need to listed individually (<em>case "a": case "b": etc...</em>) as opposed to a comma delimited list in cfcase (<em>value="a,b,etc..."</em>)</li>
+	<li>The default case in <strong>cfscript</strong> is declared using <em>default:</em> (and don't forget the <em>break;</em>)</li>
+</ol>
+<p>And that's about it. A useful reference hopefully.</p>

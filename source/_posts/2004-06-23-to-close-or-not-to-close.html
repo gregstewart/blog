@@ -1,0 +1,11 @@
+---
+layout: post
+title: To close or not to close
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>An interesting little thread on CF talk this afternoon: the usual .Net is better than CF. However the reasoning centered around the fact that CF keeps it's database connections open and this was bad as it slowed down the Application. While it is true that CF keeps the connection open by default, it can be disabled in the Administrator on a data source by data source basis. More importantly though the fact that the connection stays open is actually for performance reasons: there is way more overhead to opening and closing a database connection.</p>
+<p>Some may argue that leaving it open is an un-necessary overhead, but from my experience and that of others on the list, I believe we can say that this is negligible. But also consider that CFMX is built on-top of Java and uses JDBC, so there is actually very little that you can't control if you are prepared to dig under the hood: number of connections that CF can use, whether they are kept open or not and when they timeout (Thanks to Mark Krueger for this info).</p>

@@ -1,0 +1,10 @@
+---
+layout: post
+title: cfhtmlhead
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+This tag will place any text string into the head element of your template. So for example you could leave all your JS libraries in a custom template saved as a var and then using <a href="http://livedocs.macromedia.com/coldfusion/6.1/htmldocs/tags-p57.htm" title="Go to Macromedia Livedocs for cfhtmlhead">cfhtmlhead</a> used in your OnRequestEnd.cfm template. That way you make sure that the code is always included and also is placed where it belongs, i.e. in between your head elements rather than mixed in with your code. The same could be applied to style sheets, build up a keyword list dynamically based on content, etc...

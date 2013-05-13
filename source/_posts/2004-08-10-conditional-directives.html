@@ -1,0 +1,34 @@
+---
+layout: post
+title: Conditional directives
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Our sys admin has shown me how to create conditional statements in your httpd.cong config file. The <a title="&lt;IfModule&gt; directive">&lt;IfModule&gt; directive</a> carries out a test to see if a specified module is included in Apache. You can either do:
+
+[code]<ifModule mod_jrun20.c>
+JRunConfig Serverstore \
+/u2/cfmx_61/jrun4/lib/wsconfig/1/jrunserver.store
+JRunConfig Bootstrap 127.0.0.1:51020
+</ifModule>[/code]
+
+Which processes the directives if the module is loaded. Or you can also do:
+
+[code]<ifModule !mod_jrun20.c>
+LoadModule jrun_module "{Install path}JRun4/lib/wsconfig/1/mod_jrun20.so"
+<ifModule mod_jrun20.c>
+JRunConfig Verbose false
+JRunConfig Apialloc false
+JRunConfig Ssl false
+JRunConfig Ignoresuffixmap false
+JRunConfig Serverstore "{Install path}/JRun4/lib/wsconfig/1/jrunserver.store"
+JRunConfig Bootstrap 127.0.0.1:51020
+#JRunConfig Errorurl &lt;optionally redirect to this URL on errors&gt;
+AddHandler jrun-handler .jsp .jws .cfm .cfml .cfc
+</ifModule>
+</ifModule>[/code]
+
+Which results in the JRun module to be loaded if the module was not previously loaded. And you can see that you can also nest these conditional statements.

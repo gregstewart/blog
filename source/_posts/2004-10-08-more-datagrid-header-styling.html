@@ -1,0 +1,28 @@
+---
+layout: post
+title: More DataGrid header styling
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Two things that I needed to add to my on-going play with my DataGrids, one was to hide a column and the other was to set the width. Hiding isn't so much hiding the column more like removing it. The method for doing this is: removeColumnAt() and the argument passed in is the column number. In the example below I remove the first one (numbering starts with 0).
+
+[as]// Responder function for result
+function myRemotingFunciton_Result (result_rs) {
+  dg_myDataGridName.removeColumnAt(0) // hide the ID
+  dg_myDataGridName.setDataProvider(result_rs);
+}[/as]
+
+The other type (setting the width) involves editing a file that I refered to in <a href="http://gregs.teacupinastorm.com/flash/datagrid_headers.php" title="Datagrid headers">a previous post</a>. So if you had the followig code for styling a column in your dataGrid:
+
+[as]import mx.controls.gridclasses.DataGridColumn;
+yourDataGridInstanceName.columnNames = ["contactName", "companyName", "contactPhone", "summary"];
+//customize column headers
+var contactCol:DataGridColumn = yourDataGridInstanceName.getColumnAt(0);
+contactCol.headerText = "Contact";[/as]
+
+You'd simply add this to set the width to 120 and then simply save your file:
+
+[as]contactCol.width = 120;[/as]

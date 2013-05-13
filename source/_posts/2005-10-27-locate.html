@@ -1,0 +1,19 @@
+---
+layout: post
+title: locate
+tags:
+- ! '*nix'
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+I used to rely on whereis and find to locate programs and files on my debian box, but these weren't being very helpful when I tried to find a file I new existed on the system. I stumbled across the utility <a href="http://www.redhat.com/docs/manuals/linux/RHL-8.0-Manual/getting-started-guide/s1-managing-locating.html" title="Locating Files and Directories">locate</a> after a quick google search. And it did locate that elusive file for me. But only once I had updated it's database (which it kindly informed was 8 days out of date). To update the <strong>locate</strong> database, simply log on as root and type:
+
+[code]udpatedb[/code]
+
+<h4>UPDATE</h4>
+If you are trying to do something similar on your Mac, the command can be found here (so you might to use the full path):
+
+[code]/usr/libexec/locate.updatedb[/code]

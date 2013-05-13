@@ -1,0 +1,119 @@
+---
+layout: post
+title: First steps with Jasmine
+tags:
+- bdd
+- jasmine
+- JavaScript
+- node.js
+- tdd
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+  _social_aggregation_log: a:10:{i:1365163591;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1365165882;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1365168606;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1365172212;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1365179497;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1365194672;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1365223600;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1365267553;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1365354029;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1365526854;O:8:"stdClass":1:{s:6:"manual";b:0;}}
+  _social_notify: '1'
+  _social_aggregated_ids: a:2:{s:7:"twitter";a:0:{}s:8:"facebook";a:0:{}}
+---
+<p>New job and opportunities. One of the core approaches to developing here, is the use TDD. Now in a JS/UI kind of role this is really novel approach (well at least for me). I don't know how many times in the past I have lamented the fact that I needed to click through way too many steps to get to the issue at hand and then rinse and repeat to debug/fix. Even once I had wrapped my head round Chrome's debugger this approach still took way too long. I had dabbled a little in TDD and BDD on personal ruby projects, but never from a UI perspective and when faced with a monumental UI code base I just didn't have the stomach to tackle the problem retro fit tests. Also to be honest the JavaScript testing frameworks just didn't click with me, until Node.js and Jasmine that is. With Node.js installed grab the following modules using npm</p>
+
+<ul>
+<li>coffee-script</li>
+<li>jasmine-node </li>
+</ul>
+
+<p>Easiest way to get tests running type 'node ./spec.js ' at the command line, which is pointing to ./spec/ folder. In my BlogSpec.js file let's start with some basic tests</p>
+
+<pre><code>describe('blog creation', function() { 
+   it('should have a title attribute', function(){ 
+      expect(testBlog.title).toBeDefined(); 
+   }); 
+   it('should have a title', function() { 
+      expect(testBlog.title).not.toBeNull(); 
+   }); 
+});
+</code></pre>
+
+<p>When you run the spec with : 'node-blog git:(master) ✗ node spec.js' the test should fail</p>
+
+<pre><code>Started FF Spec blog creation it should have a title attribute Error: ReferenceError: testBlog is not defined at new &lt;anonymous&gt;
+ (/Users/gregstewart/Projects/node-blog/node\_modules/jasmine-node/lib/jasmine-node/jasmine-1.0.1.js:94:50) at [object Object].fail
+ (/Users/gregstewart/Projects/node-blog/node\_modules/jasmine-node/lib/jasmine-node/jasmine-1.0.1.js:1963:27) at [object Object].execute
+ (/Users/gregstewart/Projects/node-blog/node\_modules/jasmine-node/lib/jasmine-node/jasmine-1.0.1.js:970:15) at [object Object].next\_
+ (/Users/gregstewart/Projects/node-blog/node\_modules/jasmine-node/lib/jasmine-node/jasmine-1.0.1.js:1739:31) at [object Object].start
+ (/Users/gregstewart/Projects/node-blog/node\_modules/jasmine-node/lib/jasmine-node/jasmine-1.0.1.js:1692:8) at [object Object].execute
+ (/Users/gregstewart/Projects/node-blog/node\_modules/jasmine-node/lib/jasmine-node/jasmine-1.0.1.js:2018:14) at [object Object].next\_
+ (/Users/gregstewart/Projects/node-blog/node_modules/jasmine-node/lib/jasmine-node/jasmin%
+</code></pre>
+
+<p>So everything is as expected at this stage, let's start work on getting the basic tests to pass. First off let's create out Blog object</p>
+
+<pre><code>Blog = function(title) { 
+    this.title = title; 
+} 
+Blog.prototype.getTitle = function() { 
+    return this.title; 
+}; 
+exports.Blog = Blog;
+</code></pre>
+
+<p>And not let's bring the Blog object into our test and initialise it:</p>
+
+<pre><code>var Blog = require('../Blog').Blog; 
+describe('blog creation', function() { 
+    var testBlog; beforeEach(function() { 
+        testBlog = new Blog(); 
+    }); 
+    it('should have a title attribute', function(){ 
+        expect(testBlog.title).toBeDefined(); 
+    });
+    it('should have a title', function() { 
+        expect(testBlog.title).not.toBeNull(); 
+    }); 
+});
+</code></pre>
+
+<p>Now let's get the first test to pass, by editing our Blog.js file</p>
+
+<pre><code>Blog = function(title) { 
+    this.title = typeof title !== 'undefined' ? title : null; 
+} 
+Blog.prototype.getTitle = function() { 
+    return this.title; 
+}; 
+exports.Blog = Blog;
+</code></pre>
+
+<p>Nearly there, only problem is that our second test is failing because we require a title to not be null.</p>
+
+<pre><code>var Blog = require('../Blog').Blog; 
+describe('blog creation', function() { 
+    var testBlog; 
+    beforeEach(function() { 
+        testBlog = new Blog('test'); 
+    }); 
+    it('should have a title attribute', function(){ 
+        expect(testBlog.title).toBeDefined(); 
+    }); 
+    it('should have a title value', function() { 
+        expect(testBlog.title).not.toBeNull();
+    }); 
+});
+</code></pre>
+
+<p>Let's see what the output looks like:</p>
+
+<pre><code>➜  node-blog git:(master) ✗ node spec.js Started .. Spec blog creation Finished in 0.001 seconds 1 test, 2 assertions, 0 failures
+</code></pre>
+
+<p>And just because I can, let's rewrite the Blog.js in Coffee Script:</p>
+
+<pre><code>class Blog 
+    constructor:(@title) -&gt; 
+    getTitle: -&gt; @title 
+exports.Blog = Blog;
+</code></pre>
+
+<p>How much terser is that?</p>

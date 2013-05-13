@@ -1,0 +1,83 @@
+---
+layout: post
+title: ! 'Backbone-Jasmine: part 3 - Search Results'
+tags:
+- backbone.js
+- bdd
+- framework
+- jasmine
+- JavaScript
+- javascript
+- tdd
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+  _social_notify: '1'
+  _social_aggregated_ids: a:2:{s:7:"twitter";a:0:{}s:8:"facebook";a:0:{}}
+  _social_aggregation_log: a:10:{i:1356171236;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356173057;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356175822;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356180245;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356187462;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356202074;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356231603;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356275634;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356362164;O:8:"stdClass":1:{s:6:"manual";b:0;}i:1356535864;O:8:"stdClass":1:{s:6:"manual";b:0;}}
+---
+<p>In the following we will leverage Backbone Collections and the fetch feature in order to make a call to the service, receive some JSON and build up an array of models from that response. Let's start with creating the collection tests:</p>
+
+<pre><code>describe('Search Collection', function() {
+
+    beforeEach(function() {
+        this.collection = new BackboneJasmine.SearchCollection();
+    });
+
+    it('should initialise with an empty collection', function() {
+        expect(this.collection.length).toBe(0);
+    });
+});
+</code></pre>
+
+<p>Next populating the collection with some dummy data:</p>
+
+<pre><code>describe('fetch', function() {
+    beforeEach(function() {
+        this.server = sinon.fakeServer.create();
+        this.server.respondWith('GET', '/search', [
+            200,
+            {"Content-Type": "application/json"},
+            this.response
+        ]);
+    });
+
+    afterEach(function() {
+        this.server.restore();
+        this.collection.reset();
+    });
+
+    it('should populate the collection', function() {
+
+        this.collection.fetch();
+        this.server.respond();
+
+        expect(this.server.requests.length)
+            .toEqual(1);
+        expect(this.server.requests[0].method)
+            .toEqual("GET");
+        expect(this.server.requests[0].url)
+            .toEqual("/search");
+
+        expect(this.collection.length).toBe(JSON.parse(this.response).feed.length);
+    })
+});
+</code></pre>
+
+<p>Since the API is for a character's feed, let's call our model Feed. The call to fetch() will go away get the JSON and magically take the data and create one feed model for each feed entry returned and store it in the collection. However because the response is wrapped within a feed object, the collection object also has a parse method to handle the response and let Backbone to work the magic described previously.</p>
+
+<pre><code>var BackboneJasmine = BackboneJasmine || {};
+
+BackboneJasmine.SearchCollection = Backbone.Collection.extend({
+    model: BackboneJasmine.Feed,
+    url:'search',
+
+    parse:function (response) {
+        return response.feed;
+    }
+});
+</code></pre>
+
+<p>All the code is in the <a href="https://github.com/gregstewart/backbone-jasmine/commit/cfe636e">'Search Results branch'</a>.</p>

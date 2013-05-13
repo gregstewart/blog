@@ -1,0 +1,31 @@
+---
+layout: post
+title: Session tracking
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>In recent weeks I have noticed a decided increase in information exposing Java methods to ColdFusion. <a href="http://www.rewindlife.com/archives/000069.cfm" title="Undocumented Application scope functions">This one</a> here from RewindLife shows how to put an undocumented function to good use and track the users session. Check out this titbit of code (for simplicities sake put it in your Application.cfm):</p>
+
+<p><em>&lt;cfapplication name="sessionInfoTester" sessionManagement="true"&gt;<br />
+&lt;cfparam name="session.sUser.timeArrived" default="#now()#" /&gt;<br />
+&lt;cfset session.sUser.lastClick=now() /&gt;<br />
+
+&lt;cfset tracker = createObject("java","coldfusion.runtime.SessionTracker") /&gt;<br />
+&lt;cfset sessions = tracker.getSessionCollection(application.applicationName) /&gt;<br /></em></p>
+
+<p><em>&lt;cfset count=0&gt;<br />
+&lt;cfloop collection="#sessions#" item="s"&gt;<br />
+  &lt;cfset count=count+1 /&gt;<br />
+  &lt;cfoutput&gt;<br />
+  &lt;strong&gt;#s#&lt;/strong&gt;&ltlbr /&gt;<br />
+  - Time arrived at #lcase(timeformat(sessions[s].sUser.timeArrived,'h:mmtt'))#&lt;br /&gt;<br />
+  - Last click #datediff('s',sessions[s].sUser.lastClick,now())#<br />
+	second&lt;cfif datediff('s',sessions[s].sUser.lastClick,now()) NEQ 1&gt;s&lt;/cfif&gt; ago<br />
+  &lt;/cfoutput&gt;<br />
+&lt;br /&gt;<br />
+&lt;/cfloop&gt;<br /></em></p>
+
+<p><em>&lt;cfdump var="#sessions#" /&gt;</em></p>

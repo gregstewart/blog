@@ -1,0 +1,24 @@
+---
+layout: post
+title: tail | grep
+tags:
+- ! '*nix'
+- debian
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+  aktt_notify_twitter: 'no'
+---
+After reading a quote on a mailing list last week about the concept behind unix tools and their focus on doing one task well and the OS allowing you to pipe several commands in one go, it dawned on me that I could do the following on log files:
+
+<code>[code]tail -f /var/log/syslog | grep "named"[/code]</code>
+
+So as the log fills up only items where the pattern "named" is found are displayed. Very neat!
+
+<strong>UPDATE</strong>
+
+Thanks to some of the comments, here's a way to colour code the output (hopefully this will render better than the comment output)
+
+<code>[code]tail -f /var/log/syslog | grep "named" --color[/code]</code>

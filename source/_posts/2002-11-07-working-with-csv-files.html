@@ -1,0 +1,57 @@
+---
+layout: post
+title: Working with CSV files
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>As part of an Intranet project we needed to import a CSV (comma separated values) file from a software package to our Intranet database (sometimes there just isn't an ODBC driver around). In the following I just wanted to show you how I got Cold Fusion to parse through the text file, grab the values required, store them in a structure and then inserted these into a table.</p>
+<p>Let's start off with the code:</p>
+<p><em> &lt;cffile action="READ" file="d:\inetpub\wwwroot\test_file.csv" variable="file_text"&gt;&lt;!--- -Load the file to be parsed- ---&gt;<br />
+&lt;cfset stRecords = StructNew()&gt;&lt;!--- -Create new structure- ---&gt;<br />
+&lt;cfloop list="#file_text#" index="i" delimiters="#chr(13)#"&gt;&lt;!--- -Loop over the text file using the return character as the delimiter, i.e. looping over every row in the text file- ---&gt;<br />
+&lt;cfset counter = 1&gt;&lt;!--- -Initialise counter- ---&gt;<br />
+&lt;cfloop list="#i#" index="j" delimiters=","&gt;&lt;!--- -Now loop over the individual row using comma as the delimiter- ---&gt;<br />
+&lt;cfif counter eq 1&gt;&lt;!--- -The column identifier we know occupies position 1 (always use trim to remove white space)- ---&gt;<br />
+&lt;cfset item_id = #trim(j)#&gt;<br />
+&lt;cfelseif counter eq 2&gt;&lt;!--- -The unique user_id occupies position 2 (always use trim to remove white space)- ---&gt;<br />
+&lt;cfset user_id = #trim(j)#&gt;<br />
+&lt;cfelseif counter eq 3&gt;&lt;!--- -The columns value is stored in position 3 (always use trim to remove white space)- ---&gt;<br />
+&lt;cfset item = #trim(j)#&gt;<br />
+&lt;/cfif&gt;<br />
+&lt;cfset counter = counter + 1&gt;&lt;!--- -Increment counter- ---&gt;<br />
+&lt;/cfloop&gt;<br />
+&lt;cfset stRecords["#trim(item_id)#"] = '#trim(item)#'&gt;&lt;!--- -Add the column id and it's value to the structure- ---&gt;<br />
+&lt;cfif item_id eq 54&gt;&lt;!--- -We know that this is the last column to be parsed so know we can safely insert our new record- ---&gt;<br />
+&lt;!-- Your insert statement goes here and will look like this --&gt;<br />
+INSERT INTO your_table&lt;br /&gt;<br /> (user_id, column_1, column_2, column_3, column_4, column_5, column_6, column_7, column_8, column_9, column_10, column_11, column_12, column_13)&lt;br /&gt;<br />
+VALUES&lt;br /&gt;<br />
+(&lt;cfoutput&gt;#user_id#, #stRecords["7"]#, #stRecords[11]#, #stRecords[12]#, #stRecords[13]#, #stRecords[14]#, #stRecords[41]#, #stRecords[43]#, #stRecords[44]#, #stRecords[51]#, #stRecords[52]#, #stRecords[53]#, #stRecords[54]#&lt;/cfoutput>)<br />
+&lt;p&gt;&lt;/p&gt;<br />
+&lt;cfscript&gt;<br />
+/*Now clear the structure before starting the next chunk to be processed */<br /> structClear(stRecords);<br />
+&lt;/cfscript&gt;<br />
+&lt;/cfif&gt;<br />
+&lt;/cfloop&gt; </em></p>
+<p>Step one involved telling Cold Fusion where to find the file to be parsed and storing the contents of that file in a variable called <strong>file_text</strong> using the <em>CFFILE</em> tag. Now the text file we were working with had the added ambiguity in that the records for weren't stored in single rows but spanned multiple rows. However each row had a column identifier. Listed below I have included a sample of the data to be imported for clarities sake</p> <p><em>1,"EMUPDV41","Employee Master Table",09072001,1640<br />
+7,"00010","02 1234-5678"<br />
+11,"00010","22 Parkland Street"<br />
+12,"00010","North Sydney"<br />
+13,"00010","2000"<br />
+14,"00010","NSW"<br />
+41,"00010","Y"<br />
+43,"00010","N"<br />
+44,"00010","H"<br />
+45,"00010","Y"<br />
+51,"00010","062192"<br />
+52,"00010","193194195"<br />
+53,"00010","Commonwealth Bank of Australia"<br />
+54,"00010","Veronica Macgerkinshaw"<br />
+99 </em></p>
+<p>The rows that are prefixed with the numbers 1 and 9 were header and footer rows respectively. The values we were interested in were between the row numbers 7 and 54, where for example the number 7 was the row identifier (in this case named <strong>item_id</strong>) for phone numbers. Furthermore we new that the <em>user_id</em> was the second value and existed in each row. The third and final value was the actual value (stored later on in <strong>item</strong>) of the row identifier for that user. So in our example a user with the user_id of <em>00010</em> had the phone number: <em>02 1234-5678</em>. Armed with this information I decided that I would need to store these values in a structure before I could insert them into the database. So I started out by declaring my structure: <strong>stRecords</strong>.</p>
+<p>Next it was time to do some actual work. I started of by looping over the the contents of the text file which I had previously stored in the variable <em>file_text</em>. Using the <strong>chr(13)</strong> (carriage return) as my delimiter I was able to break the file into rows. The following lines sets a counter variable. This variable will be used shortly to determine the position of the loop in the actual row. Then it was time to loop over the current row of my first loop. Using the index value <strong>i</strong> I set about grabbing the individual values of the first row in my imported text file.</p>
+<p>Knowing that each row was comprised of three values (and subsequently the loop would loop three times over every line in the text file), I used the counter variable (which increments by one for every loop) to determine first the column name (counter = 1), then the user_id (counter = 2) and finally the value stored in that column (counter = 3). At each step of the loop I stored the values in the aforementioned variables: <strong>item_id</strong>, <strong>user_id</strong> and <strong>item</strong>.</p>
+<p>Once the row had been parsed the loop terminated and I was able to add the resulting values to my structure <strong>stRecords</strong>. First I used the value stored in <strong>item_id</strong> to determine the structure key and then set it's value corresponding to the one stored in the variable <strong>item</strong>. Then it was on to the next row. At this point you may have noticed the use of the <strong>trim()</strong> function. Simply used to remove any whitespace from the values.</p> <p>Now of course there were going to multiple recordsets for many many users, so we needed to figure out where the final row for a user was and where the next one began. Remember I mentioned that the values I was interested in were between 7 and 54, well 7 marks the first row in a user set and 54 the last. So by checking the value of item_id I was able to ascertain when I had reached the end of a set and then commit those changes to the database. Having stored the user details in a structure, I then proceeded to access that the structure keys to populate the table columns. So in our example the user's phone number had an ID of 7 and a value 02 1234-5678. In my table I stored the user's phone number in <strong>column_2</strong>, so all that was now needed was so to specify the position in the structure, which is <strong>stRecords["7"]</strong> (remember I set the structure key equal to row identifier?). And so on and so forth for the remaining columns.</p>
+<p>All that was left to do was to clear the structure before the loop moved on to the next set of user details and repeated the whole process until the footer (99) was reached. I know this is quite specific to a problem we had, but I do hope that it shows you how you can access text files, parse them, store the values you need (in a structure) and then insert these into a database table. 'Til the next time.</p>

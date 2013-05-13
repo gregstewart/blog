@@ -1,0 +1,125 @@
+---
+layout: post
+title: Java 101
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>This will provide a brief overview of the tools and documentation needed to get into Java programming and how to define classes (looking at the differences between applets and java applications) before delving into OO concepts a little. So for starters you'll need to get a hold of the following items, which are available for download:</p>
+<ol>
+	<li>Get the <a href="http://java.sun.com/j2se/1.4/download.html" title="Java Software Development Kit">SDK</a>, at time of writing the version was 1.4</li>
+	<li>Get the full documentation</li>
+	<li>Get the <a href="http://java.sun.com/docs/books/tutorial/book.html" title="books and tutorials">tutorial</a></li>
+	<li>Get a good editor, <a href="" title="TextPad">TextPad</a> is useful or use the IDE: <a href="http://java.sun.com/j2se/1.4/download.html" title="Sun Studio One">Sun Studio One</a> [now bundled with the <acronym title="Software Development Kit">SDK</acronym>]</li>
+</ol>
+<h2>Easy beginnings: comments in java</h2>
+<p>Listed below are three ways of commenting your code:</p>
+
+<p><em>
+// single line<br />
+/* */ multi line<br />
+/** */ documentation, creates the documentation using the <a href="http://java.sun.com/products/JDK/tools/index.html" title="more info on javadoc here">javadoc tool</a></em></p>
+
+<p>All pretty self explanatory!</p>
+
+<h2>Next step: Defining an class</h2>
+
+<p>Listed below are the two types of class definitions I found:</p>
+
+<p><em>class YourClassName {<br />
+...<br />
+}</em></p>
+
+<p>Where <strong>YourClassName</strong> is the same as your file name in this case it would be: <em>YourClassName.java</em>. The other one I came across is as follows</p>
+
+<p><em>public class YourClassName {<br />
+...<br />
+}</em></p>
+
+<p>There are of course a few other components to a class declaration, however a point worth noting is that if you omit the <strong>public</strong> component from a class, this class will only be accessible to other classes in it's package. Whereas using the <strong>public</strong> statement indicates that this class is accessible by other classes, regardless of their package membership.</p>
+
+<p><strong>abstract</strong>, <strong>final</strong>, <strong>extends</strong> and <strong>implements</strong> form the other components of a class declaration.</p>
+
+<h2>The "main" Method in Java Applications</h2>
+
+<p>Every Java application must have a "main" method and it takes the following signature (or structure)</p>
+
+<p><em>public static void main(String[] args) {<br />
+...<br />
+}</em></p>
+
+<p>When an application is executed this the method that is first called. What is a method? A method is a function, i.e. it carries out an action.</p>
+
+<p>What is a constructor? And what's the difference? You can recognize a constructor because it has the same name as the class and has no return type. You can also have multiple constructors, in which case they still have the same name, but take a different number or type of arguments. If you fail to specify a constructor in your class, the Java automatically provides a no argument constructor or "default constructor".</p>
+
+<h2>Applets, what's the difference</h2>
+<p>Things are slightly different when working with applets. As opposed to applications where a lost of system classes are readily made available, for starters to draw an applet you need to import a few new classes, like such:</p>
+
+<p><em>import java.applet.Applet;<br />
+import java.awt.Graphics;</em></p>
+
+<p>Furthermore when creating your class you will make a few more changes:</p>
+
+<p><em>public class YourClassName extends Applet {<br />
+...<br />
+}</em></p>
+
+<p>By using the "extends" statement you are in fact making "YourClassName" a sub class of "Applet", which also means that "YourClassName" inherits all of the behaviour and hence functionality of "Applet".</p>
+
+<p>The equivalent of "main" for applets is "init", "start" or "paint". Every applet, must implement one or more of these methods. For example:</p>
+
+<p><em>public void paint(Graphics g) {<br />
+...<br />
+}</em></p>
+
+<p><strong>g</strong> is an object of Graphics passed to the "paint()" method this sets the onscreen drawing context . One argument that can be passed is the Graphics drawString() method. For example:</p>
+
+<p><em>g.drawString("Hello World", 50,25);</em></p>
+
+<p>This method takes a string as the first argument, then the x and y co-ordinates for the display. There are two more methods available to Applets: "stop" and "destroy".</p>
+
+<h2>Enough already, a quick overview of OO concepts</h2>
+
+<strong>What Is an Object?</strong>
+
+<blockquote>"An object is a software bundle of related variables and methods." </blockquote>
+
+<p>Software objects are often used to model real-world objects you find in everyday life. Examples of objects are things you can see in everyday life: such as a bike. All objects share two characteristics: state and behaviour. Using our bike example, a bike's state might be current gear, current speed or two wheels. And it's behaviour could be braking or accelerating. A software object stores it's state in one or more "variables" and implements behaviour by way of "methods".</p>
+
+<p>A handy way to model this is by using a donut. Where the methods (behaviour) are displayed in the ring and variables (state) is kept inside the hole. Such variables are known as instance variables in objects as they map the state for a particular object. MyBike might have a completely different state to YourBike. The same applies to methods within objects, they are formerly known as instance methods because they add behaviour to a particular instance of an object, not all objects.</p>
+
+<p>The analogy of a donut is good for another reason as it also shows that variables are hidden to the outside world by methods, this is also known as "Encapsulation". However it can also occur that an object may wish to expose these values and/or hide some of the methods.</p>
+
+<strong>What Is a Message?</strong>
+
+<blockquote>"Software objects interact and communicate with each other using messages."</blockquote>
+
+<p>Most objects form part of a greater whole, as such these individual objects may need to interact with other ones. For example a bike is useless and unless you interact with it, i.e. use it and pedal. This kind of interaction in the software world is achieved by way of sending messages from one object to another, or simply put one object calls a method in another object. In some cases calling another method may really on additional information to be passed, these additional bits of information are known as parameters. For example: The object YourBicycle may wish to change to a lower gear, so it would call a method changeGear with a parameter to determine whether to change up or down and in this case the parameter would have a value of lowerGear.</p>
+
+<strong>What Is a Class?</strong>
+
+<blockquote>"A class is a blueprint or prototype that defines the variables and the methods common to all objects of a certain kind."</blockquote>
+
+<p>Using our real world example: bicycles exist by the millions and all share common traits (two wheels, breaks), this would be known as a "class". Whereas your bike would be just one instance of this class or also known as an "object" because it's state or behaviour at any given time can be different to another bike's.</p>
+
+<p>On top of the objects separate instance variables a class can define class variables, these are variables that are shared by all instances of this class. For example a class variable could be the number of gears a bike has. Just as objects have instance methods, classes have "class methods".</p>
+
+<strong>What Is Inheritance?</strong>
+
+<blockquote>"A class inherits state and behaviour from its superclass. Inheritance provides a powerful and natural mechanism for organizing and structuring software programs." </blockquote>
+
+<p>A good example for inheritance is this: Do you know what a "Penny farthing" is? If i told you it was a bicycle it would greatly help to understand that it has two wheels, handle bars and pedals. Essentially inheritance allows you to pass common traits from a superclass (bicycle) to a subclass (penny farthing). Penny farthing inherits all of the traits of the bicycle class and is able to add additional states and behaviour. The tandem bike is a classic example where it inherits a lot of state and behaviour from a bike, but also adds new state (two seats for example).</p>
+
+<p>Subclasses can also override states and behaviour, for example a mountain bike may override the bike superclass by specifying more gears than the original.</p>
+
+<p>Inheritance is not limited to one layer, it can be as deeply nested as needed, this is known as either the inheritance tree or hierarchy. Generally speaking as you navigate deeper down the tree you keep adding more specialised behaviour and state.</p>
+
+<strong>What Is an Interface?</strong>
+
+<blockquote>"An interface is a contract in the form of a collection of method and constant declarations. When a class implements an interface, it promises to implement all of the methods declared in that interface."</blockquote>
+
+<p>Back to the bicycle analogy. A bike class only defines what it can do, not how it interacts with the rest of the world. An unrelated item could be an inventory management tool in a store. The two evidently share a relationship but it's not in terms of what they can each do. In order for the inventory program to be able to track the bike it needs to have a price and tracking number. Where they come from is what matters to the inventory program. So in order for the bike to be in the system it agrees to implement the state and behaviour for the inventory. It interfaces with the application by delivering the price and track number.</p>
+
+<p>And this completes part 1. Part 2 will look at the language itself in more detail, covering variables, operators, expressions, statements, blocks, control flow statements and branching statements.</p>

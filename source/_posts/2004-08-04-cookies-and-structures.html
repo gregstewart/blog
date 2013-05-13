@@ -1,0 +1,14 @@
+---
+layout: post
+title: Cookies and structures
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I was playing around with setting cookies in the Mach-ii framework and kept finding that even tough my cookie was showing up as set in the debug output when I did a <strong>StructKeyExists</strong> check it returned no. After some head scratching, I realised that, and this is not only specific to Mach-ii, I assumed that by setting a cookie with a value of <em>cookie.searchPref.pref1</em> I had created a nested structure searchPrefs with a key of <em>pref1</em>. In actual fact I had created a key in the cookie structure called <em>searchPref.pref1</em>. So the check should really have been:</p>
+
+<p><em>StructKeyExists(cookie,"searchPrefs.pref1")</em></p>
+
+<p>And bingo I was now reading the values stored in the cookie rather than from my application constants.</p>

@@ -1,0 +1,30 @@
+---
+layout: post
+title: CFMX wrapper for java file reader
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Here is a code snippet I stumbled across recently. I modified it slightly to simply output the line that is being read. It serves as a simple example as to how you can read a file and then deal with it line by line.</p>
+<p><em>&lt;cfscript&gt;<br />
+	var linecount = 0;<br />
+
+	filename = "/absolutePath/toYourFile";<br />
+	fileReader = createObject("java", "java.io.FileReader");<br />
+	fileReader = fileReader.init(filename);<br />
+	lineReader = createObject("java","java.io.LineNumberReader");<br />
+	lineReader = lineReader.init(fileReader);<br />
+
+	line = lineReader.readLine(); //Read first line, if any into variable line<br />
+
+	while (isDefined("line")) {<br />
+		lineCount = lineCount + 1;<br />
+		<br />
+		//Process the variable line<br />
+		WriteOutput(lineCount & ". " & line & "&lt;br /&gt;");<br />
+
+		line = lineReader.readLine(); //Read the next line, if any<br />
+	}<br />
+&lt;/cfscript&gt;</em></p>

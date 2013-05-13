@@ -1,0 +1,18 @@
+---
+layout: post
+title: Basic vi editing
+tags:
+- ! '*nix'
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+<p>This document will introduce some of the basic vi editing concepts. First off what is vi? Well it's the built-in text editor that you find on most Unix boxes (including Linux). You start it up by typing the following command:</p>
+[code]vi myFileName[/code]
+<p>myFileName is either an existing file or a new file that you wish to create. OK so far so good. A word of warning I found navigating around text initially a real pain. How do you enter text? Well hit the <em>i</em> key, which stands for... you guessed it insert. You are know in insert mode and can insert text into that file. To stop entering text press <em>CTRL+[</em></p>
+<p>Next let's delete some text that you have entered. There are two ways of doing this. If you want to delete just portions of the text, e.g. a word, first make sure that you are not in the Insert mode (<em>CTRL+[</em>), move to the first letter of the word you wish to delete and pressn <em>x</em>. This should have deleted the first letter. Keep pressing <em>x</em> until you have completely removed the word you wanted to delete.</p>
+<p>What if you want to delete a complete line type <em>dd</em>. This removes the entire line and places it into the buffer. I guess this command is similar to the <em>cut</em> command you would use under windows. So can you paste it back in? Of course you can. Just press <em>p</em> at the appropriate location and the line should reappear.</p>
+<p>Next I will show you how to quit the editor without saving. To do this make sure again you are in no editing mode (<em>CTRL+[</em>) and type: <em>:q!</em>. This should take you back to the command prompt or shell. To quit and save, type: <em>:wq!</em>. Again make sure that you are not in edit mode first.</p>
+<p>Well that's about the extent of my knowledge on vi editing as it is all I need to know. However if I get stuck or should you want to learn more about vi editing then I can seriously recommend this book: <a href="http://www.amazon.co.uk/exec/obidos/ASIN/1565924266/teacupinastor-20">Learning the vi Editor</a> from <a href="http://www.oreilly.com">O'Reilly &amp; Associates, Inc</a>. As with most books from O'Reilly it's clear, concise and very informative.</p>

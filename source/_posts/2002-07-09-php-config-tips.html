@@ -1,0 +1,48 @@
+---
+layout: post
+title: PHP config tips
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>1/ The first problem I came across was working with session variables. For some reason during the PHP installation the default directory for storing the session information had been set "<em>/tmp</em>" which is of course a Unix style path and didn't exist on my system and hence threw an error. You can change this path by locating you <em>php.ini</em> file. By default this is stored in your <strong>Windows</strong> folder on your system drive. Once located open it up and look for <em>session.save_path</em>. Replace the /tmp with the desired location for your session data. In fact there should be a folder in your <strong>PHP</strong> labelled <strong>sessiondata</strong>, so you might as well set it to that. Your <em>.ini</em> file should look something like this assuming that you have installed into the root of your C Drive:</p>
+
+<p><em>session.save_path = c:\PHP\sessiondata</em></p>
+
+<p>If you have loaded PHP as module in Apache, you will need to stop and restart your Apache server.</p>
+
+<p>2/ The next problem I had was with PHP generated e-mails. They simply couldn't be sent at this stage I can't recall what the error message was or even whether there was an error message. All I remember is not receiving the messages. Again you will need to look into your <em>php.ini</em> file. Look for the following segment:</p>
+
+<p><em>[mail function]<br />
+; For Win32 only.<br />
+SMTP =localhost<br />
+<br />
+; For Win32 only.<br />
+sendmail_from =me@localhost.com<br /></em></p>
+
+<p>Again this should probably work just fine on a UNIX or windows box running a mail or SMTP server, but I was not so fortunate. I could have downloaded and installed the <a href="http://www.argosoft.com/applications/mailserver/">ArgoSoft freeware mail server</a>, but instead chose to use the SMTP server address provided by my ISP, because I was pretty much always on-line. So simply edit the line to look something like this:</p>
+
+<p><em>[mail function]
+; For Win32 only.
+SMTP =mail.yourISPsSMTPserver.com
+
+; For Win32 only.
+sendmail_from =yourname@server.com</em></p>
+
+<p>I also edited the "<em>sendmail_from</em>" line, because messages sent other wise via the server tend to display nothing in the FROM: field in your mail client. AGain if you have PHP installed as a module for Apache you will need to restart the Apache server.</p>
+
+<p>3/ On certain windows installations PHP just wouldn't recognise submitted form fields. The work around for this can also be found in your <em><strong>php.ini</strong></em>. Locate the section labelled: <strong>Data Handling</strong>, there you will find the following line:</p>
+
+<p><em>register_globals = Off</em></p>
+
+<p>Simply set that value to <strong>On</strong> and restart your web server and the problem disappears.</p>
+
+<p>4/ Configuring Apache2 to use PHP on a Windows box is sadly not automated either. So you'll need to open your <em>httpd.conf</em> file and add the following lines to it:</p>
+
+<p><em>#PHP 4 config info<br />
+LoadModule php4_module "c:/php/sapi/php4apache2.dll"<br />
+AddType application/x-httpd-php .php</em></p>
+
+<p>Once you have entered these lines, save and restart your web server for the changes to take effect. You can read more about Apache2 configuration <a href="http://www.php.net/manual/en/install.apache2.php" title="Servers-Apache 2.0">here</a>.</p>

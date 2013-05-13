@@ -1,0 +1,20 @@
+---
+layout: post
+title: HTML oddities between NS and IE
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>HTML oddities (between NS and IE)</h3>
+<p class="1">Who hasn't put together a page that looks beautiful in IE, but then looks dreadful in Nestcape and certainly vice versa. Come on hands up, who hasn't come across this problem?? Well in the following I will attempt to put together a list of these oddities and try to provide solutions. So without further ado, here it is:</p>
+<p class="1">
+<li><b>Working with forms and images and code comments</b>. Now you would have thought that using comments and &lt;INPUT&gt; tags in forms wouldn't be an issue, but they are and mainly in IE 5 (that's the browser I was using at the time). I was adding a hidden &lt;INPUT&gt; tag before a &lt;INPUT&gt; submit tag and commenting the changes, all the while making sure that each comment and each tag was on it's own line. When reviewing the page in my browser I noticed that some white space had been added between my form field and submit button. I checked to see if Netscape displayed the same behaviour and it didn't (v. 4.72). It turned out that because I had surrounded my hidden input field with comments, IE had decided to add some white space. The solution, quite simple remove some of the comment that was between the hidden &lt;INPUT&gt; tag and the submit &lt;INPUT&gt; tag.
+<li><b>Using POST and GET in forms:</b> Here's an interesting behaviour that you will only encounter if you are developing without the help of a web server. When using <i>POST</i>, Netscape 4.x will not submit the information, instead it will just sit there and do nothing. Whereas IE will call the next page. Solutions, well there are 2. The first being use a web server to use <i>POST</i> (and if you are working with forms you  normally would). The second is to use the <i>GET</i> method. This publishes all the form fields and their content in the URL, but at least your form gets submitted.
+<li><b>2 text boxes and the enter key:</b>If you are using an image as submit button and have more than one text input box, then hitting the enter key under Netscape 4.72 will not submit the form. Again it works fine under IE. The solution is to trap the keyPressDown event and bind a script to it, that submits the form should the enter key be pressed. If you take a look at <a href="index.cfm?contentid=16">Simulating the enter button...</a>, you can see such a script in action. However since then I ahve refined the script and you can find the latest copy <a href="index.cfm?contentid=79">here</a>.
+<li><b>Cascading Style Sheets:</b> The first thing I noticed here, was that IE allows you to name your IDs by assigning them numbers, but NS does not recognise these. The solution just give them a alphanumeric based description.
+<li><b>Cascading Style Sheets:</b>
+When specifying styles for tables, I noticed that in IE when you set the font size you can simply enter <i>font: 10px</i>. However Netscape simply ingonres this and you need to specify <i>font-size: 10px</i>. Furthermore if you want to specify font sizes and colours for different rows, well it works in IE, but it doesn't in NS. You need to specify it on a &lt;td&gt; tag basis. Slightly annoying.
+<li><b>JavaScript:</b> Recently I tried to access the value for an element in a select box. While under IE you could simply access it by entering <i>form.elementname.value</i> (by elementname I mean the actual name you have assigned to that select box in your form), Netscape kept returning a null. In order to access the select option value you need to type the following: <i>form.elementname.options[form.elementname.selectedIndex].value</i>. SLightly more convoluted but it works on both browsers.
+</p>

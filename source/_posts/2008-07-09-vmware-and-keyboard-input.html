@@ -1,0 +1,27 @@
+---
+layout: post
+title: VMWare and keyboard input
+tags:
+- ! '*nix'
+- mac
+- os x
+- vmware
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+This morning I fired my Windows XP VM on my mac and my keyboard input simply stopped working. After a couple of VM reboots, which had no effect, I did some googling. <a title="keyboard stops working... system beeps" href="http://communities.vmware.com/message/617423">The first result</a> suggested typing a few commands to determine what had disabled it:
+
+[code]
+$ ioreg -l -w 0 | grep SecureInput
+|   "IOConsoleUsers" = ({"kCGSSessionSecureInputPID"=177,"kCGSSessionLoginwindowSafeLogin"=No,"kCGSSessionAuditIDKey"=0,"kCGSessionLoginDoneKey"=Yes,"kCGSSessionSystemSafeBoot"=No,"kCGSSessionOnConsoleKey"=Yes,"kCGSSessionUserIDKey"=501,"kSCSecuritySessionID"=11622192,"kCGSSessionUserNameKey"="gregstewart","kCGSSessionGroupIDKey"=20,"kCGSSessionConsoleSetKey"=0,"kCGSSessionIDKey"=256,"kCGSessionLongUserNameKey"="User"})
+$ ps auxwwww | grep 177
+user 177   7.8  9.2   652520 192788   ??  S    10:51pm  59:09.22 /Applications/Firefox.app/Contents/MacOS/firefox-bin -psn_0_110619
+user 1155   0.0  0.0   599820    464 s001  S+   10:44am   0:00.00 grep 177
+[/code]
+
+According to the post the application that was blocking it was FireFox. "kCGSSessionSecureInputPID"=177 is the info you need to look for, where in my case 177 was the number I needed to use in the next command. Incredulous as I was, I closed FireFox and hey presto keyboard input was working again.
+
+Hopefully this post will help others.

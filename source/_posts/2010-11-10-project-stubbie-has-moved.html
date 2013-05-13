@@ -1,0 +1,26 @@
+---
+layout: post
+title: Project Stubbie has moved
+tags:
+- ColdFusion
+- generator
+- stubbie
+- stubs
+- tdd
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+Yesterday I decided to move <a href="https://github.com/gregstewart/stubbie">Stubbie</a> away from <ahref="http://riaforge.com/">RIAforge</a>. It has nothing to do with RIAForge, I just decided to use Git and as a result move it to <a href="https://github.com/">Github</a>. Since Github basically provides all the tools, there was no need to keep anything on RIAForge. I moved the blog posts over to this blog and you can find them under the <ahref="http://gregs.tcias.co.uk/category/comps/tdd/stubbie/">stubbie category</a>. Over the coming days I aim to add some content to the <a href="https://github.com/gregstewart/stubbie/wiki">Wiki</a>.
+
+I also added a few new features:
+<ul>
+<li>a mach-ii plugin - so that stubs are recreated if needed on each request</li>
+<li>ColdSpring integration for autowiring the objects in your test stubs (which can also make use of the Mach-ii ColdSpring plugin to that end)</li>
+<li>Due to the Mach-ii CS integration I added a remote Facade for use with MXUnit (in order to access the application scope)</li>
+</ul>
+
+It's all a little experimental at this stage and I'd be interested in your experience with the code, feedback, etc... Feel free to drop me a note or <a href="https://github.com/gregstewart/stubbie/issues">raise tickets</a> over @ Github with your feedback or bugs or suggestions. Alternatively, just leave a comment here. 

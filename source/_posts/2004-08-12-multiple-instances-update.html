@@ -1,0 +1,28 @@
+---
+layout: post
+title: multiple instances update
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<a href="http://www.bpurcell.org" title="Brnadon Purcell">Brandon Purcell</a> has updated his article on <a href="http://www.macromedia.com/devnet/mx/coldfusion/articles/multi_instances04.html" title="Installing and Configuring ColdFusion MX 6.1 Multiple Instances with IIS and Apache Virtual Hosts">Installing and Configuring ColdFusion MX 6.1 Multiple Instances with IIS and Apache Virtual Hosts</a>, to include a fix for Apache. If you followed the instructions prior to this update, you might have encountered the following error message in your Apache error log (on screen you would have seen a plain 500 Internal server error):
+
+[code][Thu Jun 24 15:09:33 2004] [notice] jrApache[1635] JRun will not accept request. Check JRun web server configuration and JRun mappings on JRun server.[/code]
+
+The fix is to set the <strong>Apialloc</strong> option for your VirtualHost to <em>false</em> (as shown below). <strong>Apialloc</strong> controls how the connector allocates memory. According to the updated article, setting that value to <em>false</em> will result in requests for memory coming from the Operating System instead of Apache (as is the default or more precisely <strong>Apialloc</strong> set to <em>true</em>).
+
+[code]<virtualHost *>
+ServerAdmin some@domain.com
+DocumentRoot {install path}/path/to/web/site/
+ServerName www.domain.com
+ErrorLog logs/www.domain.com-error_log
+CustomLog logs/www.domain.com-access_log common
+JRunConfig Serverstore "{install path}/JRun4/lib/wsconfig/{instance server store}/jrunserver.store"
+JRunConfig Bootstrap 127.0.0.1:51002
+<strong>JRunConfig Apialloc false</strong>
+</virtualHost>
+[/code]
+
+Now I cannot say that I have encountered this error so far when running multiple instances, but that could be because, as Brandon points out, I am still using Apache version 1.3.x. However since it's a recommendation, I have added to my process list.

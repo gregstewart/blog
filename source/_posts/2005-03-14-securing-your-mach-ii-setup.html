@@ -1,0 +1,121 @@
+---
+layout: post
+title: Securing your Mach-ii setup
+tags: []
+status: draft
+type: post
+published: false
+meta: {}
+---
+<h4>Introduction</h4>
+Here are my thoughts on setting up a <a href="http://www.mach-ii.com/" title="Get the framework">mach-ii site</a>, I am going to assume that you have some knowledge of the framework, like what the mach-ii.xml file is. Also I am assuming that you have configured your web server to use virtual hosts and that you'll be using one of these virtual hosts for your development. This is not a getting started guide in OO and mach-ii, for that have a read of Trond Ulseth's <a href="http://tutorial345.easycfm.com/" title="Mach-ii for newbies - part 1 Getting started">Mach-ii for newbies - part 1 Getting started</a>.
+<h4>The core files</h4>
+First off place the Mach-ii core files outside of the webroot so if you have a webroot located here
+
+<code>[code]c:\Projects\htdocs[/code]</code>
+
+You might want to consider creating a "webapps" (you can call it whatever and place whereever [as long as it;s outside of the webroot] you like really) folder like such:
+
+<code>[code]c:\Projects\webapps[/code]</code>
+
+And placing your mach-ii core files there
+
+<code>[code]C:\Projects\webapps\MachII[/code]</code>
+
+Next you should create a ColdFusion mapping called "MachII" to the Mach-II folder, just as the normal Mach-ii instructions show.
+
+Now you may wonder what the point is of creating a webapps folder just for your Mach-ii core files and even why you should place your Mach-ii core files outside of the webroot. Well security is the obvious answer, you don't really want just any one browsing your CFCs now, even less someone getting access to your mach-ii.xml file.
+<h4>Setting up your site.</h4>
+Next let's take a look at how we can shore up the rest of your application. As an example we'll be using the MachAppSkeleton, so go ahead <a href="http://www.mach-ii.com/downloads/MachAppSkeleton_3.zip" title="Mach-II Application Code Skeleton - Updated 2003/01/22">download these from mach-ii.com</a> and extract them into your webroot. The best way to protect your CFCs and mach-ii.xml file is to also keep them outside of your webroot and that's where the webapps folder comes in.
+
+So back to the administrator to create another mapping. Now depending on your project you could create a single mapping or one for each application you are developing. In our case, a simple webapps mapping works very well.
+
+Now create another MachAppSkeleton folder in the webapps folder and move the config. filters, model and plugin directories from your webroot to that new folder. And the views? You can safely keep those in the webroot of your webserver.
+
+Ok we are nearly ready to launch our skeleton app, but first we need to edit a few files. First we'll want to edit our index.cfm (under c:\Projects\htdocs\MachAppSkeleton\) and change it from:
+
+[code]<!--- Set the path to the application's mach-ii.xml file. --->
+<cfset machii_config_path="ExpandPath('config/machii.xml')/>[/code]</cfset>
+
+To:
+
+[code]<!--- Set the path to the application's mach-ii.xml file. --->
+<cfset machii_config_path="ExpandPath('/webapp/machii.xml')/>[/code]
+
+If you were to now attempt to browse your site it would not return a page so we'll quickly edit the mach-ii.xml file and create a quick view. Ok so open your mach-ii.xml file locate:
+
+[code]
+
+<property name="applicationRoot" value="/APPLICATION_ROOT"></property>[/code]Change that to:
+
+[code]
+
+<property name="applicationRoot" value="/"></property>[/code]If you are not using ?? you can try and change that value from "/" to /MachAppSkeleton. We'll leave the defaultEvent unchanged at this point, so skip down to:
+
+[code]<event-handler event="DEFAULT_EVENT" access="public">
+<!-- any legal elements -->
+</event-handler>[/code]
+
+And change that to:
+
+[code]<event-handler event="DEFAULT_EVENT" access="public">
+<view-page name="helloWorld">
+</view-page>[/code]</event-handler>
+
+Nearly done now, we just specified a view so jump down in the mach-ii.xml file to:
+
+[code]
+<!-- PAGE-VIEWS -->
+
+<page-views>
+<page-view name="NEW_VIEW_NAME" page="/views/NEW_VIEW_FILE.cfm"></page-view>
+<page-view name="exception" page="/views/exception.cfm"></page-view> </page-views>[/code]And change that to:[code]<!-- PAGE-VIEWS -->
+
+<page-views>
+<page-view name="helloWorld" page="/views/helloWorld.cfm"></page-view>
+<page-view name="exception" page="/views/exception.cfm"></page-view> </page-views>[/code]The final step before hitting your browser, creating the actual view "hellWorld.cfm". Simply copy and paste the following code into the a cfm template called helloWorld.cfm and save it to your views folder:[code]<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<h1>Hooray</h1>
+If you can read this, then everything is just dandy!![/code]
+
+Right if you open up your browser and view the site you just set up. If you are using virtual hosts: http://www.mydomain.com/ or if you specified a subfolder to your webroot as the application root try http://localhost/MachAppSkeleton/. You should see this:
+
+(completed site browser view.png)
+<h4>A few more points</h4>
+Now having to keep your code and work on it in two different locations is a little painful: so I can recommend using symbolic links. We are going off on a slight tangent here, but it'll make your life easier if you maintain everything within a site in Dreamweaver (or whatever your favourite editor is). Do note though that if you apply this, you will be able to access your CFCs and configuration xml file with your web browser, so do not apply these steps to your production environment!!! To be completely clear only apply them to your development environment.
+<h5>Unix</h5>
+On a unix system you can the "ln -s" command to create your links. So assuming that you have set your /Projects/htdocs/MachAppSkeleton as your site root in Dreamweaver, then you would want to create the following links from /Projects/webapps/MachAppSkeleton:
+
+[code]ln -s /Projects/webapps/MachAppSkeleton/config /Projects/htdocs/MachAppSkeleton/config
+ln -s /Projects/webapps/MachAppSkeleton/model /Projects/htdocs/MachAppSkeleton/model
+ln -s /Projects/webapps/MachAppSkeleton/filters /Projects/htdocs/MachAppSkeleton/filters
+ln -s /Projects/webapps/MachAppSkeleton/plugins /Projects/htdocs/MachAppSkeleton/plugins[/code]
+<h5>Windows</h5>
+On a windows system there is no built in way to create symbolic links so you either need access to the Windows Resource Kit (the utility is called dlink) or head on over to <a href="http://www.sysinternals.com/ntw2k/source/misc.shtml#junction" title="Junction">http://www.sysinternals.com/ntw2k/source/misc.shtml#junction</a> and download the utility called junction. And here is how you would use junction utility:
+
+[code]junction c:\Projects\htdocs\MachAppSkeleton\config c:\Projects\webapps\MachAppSkeleton\config
+junction c:\Projects\htdocs\MachAppSkeleton\filters c:\Projects\webapps\MachAppSkeleton\filters
+junction c:\Projects\htdocs\MachAppSkeleton\model c:\Projects\webapps\MachAppSkeleton\model
+junction c:\Projects\htdocs\MachAppSkeleton\plugins c:\Projects\webapps\MachAppSkeleton\plugins[/code]
+
+Also when you come to work with your listeners, plugins, filters and whatever other objects you decide to create you'll need to provide the full path (in terms of the ColdFusion mapping) to these. For example, if you had an application listener, previously you would have defined it in mach-ii.xml as follows:
+
+[code]
+<listener name="applicationListener" type="model.applicationListener">     <invoker type="MachII.framework.invokers.CFCInvoker_Event"></invoker> </listener>[/code]Instead you need to do this now:
+
+[code]
+<listener name="applicationListener" type="webapps.MachAppSkeleton.model.applicationListener">      <invoker type="MachII.framework.invokers.CFCInvoker_Event"></invoker> </listener>[/code]Equally if you were to call an object from within your listener you would need to declare it like this:
+
+[code]variables.appConstants = createObject("component", "webapps.MachAppSkeleton.model.applicationConstantsBean").init();[/code]
+
+And since certain return types can be objects, you would need to define the return type like such for example:
+
+[code]<!--- CONSTRUCTOR --->
+<cffunction name="init" access="public" returntype="webapps.MachAppSkeleton.model.ApplicationConstantsBean" output="false"></cffunction>[/code]
+
+The above are all good reasons to resort to a individual ColdFusion mapping for each application as you could at least save yourself the hassle of typing "webapps."
+<h4>Some resources</h4>
+<ol>
+	<li><a href="http://www.corfield.org/index.cfm?event=machii.main" title="Mach II @ corfield org">http://www.corfield.org/index.cfm?event=machii.main</a></li>
+	<li><a href="http://livedocs.macromedia.com/wtg/public/machiidevguide/concepts.html" title="Mach II Development Guide - Concepts &amp; Core Files">http://livedocs.macromedia.com/wtg/public/machiidevguide/concepts.html</a></li>
+	<li><a href="http://livedocs.macromedia.com/wtg/public/machiidevguide/structure.html" title="Mach II Development Guide - Application Structure &amp; Design"> http://livedocs.macromedia.com/wtg/public/machiidevguide/structure.html</a></li>
+</ol>

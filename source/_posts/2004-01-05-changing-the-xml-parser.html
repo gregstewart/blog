@@ -1,0 +1,32 @@
+---
+layout: post
+title: Changing the XML parser
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>A while back I stumbled across some information over at <a href="http://www.bpurcell.org/blog/" title="B. Purcell - homepage">Brandon Purcell's site</a> on how to change the <acronym title="eXtensible Markup Language">XML</acronym> parser that CFMX uses. You may at this stage wonder why I would want to do that? Well CFMX uses by default a <acronym title="Document Object Model">DOM</acronym> based parser, which is great if you are working with small XML files, but gets rather memory intensive when you work with larger ones. ION our case we were going to have to work with a 250 Megabyte XML file and DOM parsing would have soon brought our server to it's knees. SAX parsers are far more suited to parsing large files so that was reason number 1. Number 2 we needed to be able to validate the XML file and I don't think that this is possible using the DOM based parser. Xerces on the other hand met both of our requirements, being both a SAX based parser and able to validate XML files on the fly.</p>
+<p>Below I have reproduced Brandon's <a href="http://www.bpurcell.org/blog/index.cfm?mode=entry&entry=942" title="Changing XML Parsers in JRun or ColdFusionMX">instructions</a>:</p>
+<ol>
+	<li>Get the Xerces kit at <a href="http://xml.apache.org/dist/xerces-j/Xerces-J-bin.1.4.4.zip" title="Get the kit">http://xml.apache.org/dist/xerces-j/Xerces-J-bin.1.4.4.zip</a></li>
+	<li>extract xerces.jar and place it in the classpath ahead of jrun.jar (for example, in runtime/servers/lib)</li>
+	<li>add these switches to the <acronym title="Java Virtual Machine">JVM</acronym> arguments in CF Administrator (or in jvm.config for JRun). Note that this is one long line, not three lines:
+		<ul>
+			<li>Dorg.xml.sax.driver=org.apache.xerces.parsers.SAXParser -Djavax.xml.parsers.DocumentBuilderFactory=org.apache.xerces.jaxp.DocumentBuilderFactoryImpl -Djavax.xml.parsers.SAXParserFactory=org.apache.xerces.jaxp.SAXParserFactoryImpl</li>
+		</ul>
+	</li>
+	<li>restart CFMX (JRun)</li>
+</ol>
+<p>It all looks pretty straightforward right? Well I still ran into a few problems, and Brandon was only too kind to answer my questions. Now for starters I got a little confused about the <em>classpath</em> statement, but after a little digging I figured out my development installation of CFMX running as an instance on JRun, that the <em>jrun.jar</em> file was actually situated at <em>&lt;drive letter&gt;:\JRun\lib</em> and that's where I extracted the <em>xerces.jar</em> file to. Then when it was time to specify the actual classpath I needed to locate <em>jvm.config</em>. This file is located inside of <em>&lt;drive letter&gt;:\JRun\bin</em>. Before editing your file please make a backup of the <em>jvm.config</em> file. Why when I started messing round with this, I didn't and messed up my install of CFMX and needed to re-install the lot (there's nothing quite like learning the hard way :)). The JVM classpath info I needed to edit was located at the end of the file and the entry I added I have bolded in the following:</p>
+<p><em><code># JVM classpath<br />
+java.class.path={application.home}/servers/lib,{application.home}/servers/cfusion/cfusion-ear/cfusion-war/WEB-INF/cfusion/lib/cfusion.jar,{application.home}/servers/cfusion/cfusion-ear/cfusion-war/WEB-INF/cfusion/lib,<strong>{application.home}/lib/xerces.jar,</strong>{application.home}/lib/jrun.jar,{application.home}/lib</code></em></p>
+<p>Next we needed to add the switches for the parser to JVM's arguments. If you look at your <em>jvm.config</em> file again you'll see a line like this (and the following lines [which are all on one line]):</p>
+<p><em><code># Arguments to VM<br />
+java.args=-server -Xmx512m -Dsun.io.useCanonCaches=false -Xbootclasspath/a:"{application.home}/servers/cfusion/cfusion-ear/cfusion-war/WEB-INF/cfusion/lib/webchartsJava2D.jar" -XX:MaxPermSize=128m -XX:+UseParallelGC -DJINTEGRA_NATIVE_MODE -DJINTEGRA_PREFETCH_ENUMS</code></em></p>
+<p>Now you will need to add the switches Brandon mentioned as follows:</p>
+<p><em><code># Arguments to VM<br />
+java.args=-server -Xmx512m -Dsun.io.useCanonCaches=false -Xbootclasspath/a:"{application.home}/servers/cfusion/cfusion-ear/cfusion-war/WEB-INF/cfusion/lib/webchartsJava2D.jar" -XX:MaxPermSize=128m -XX:+UseParallelGC -DJINTEGRA_NATIVE_MODE -DJINTEGRA_PREFETCH_ENUMS -Dorg.xml.sax.driver=org.apache.xerces.parsers.SAXParser -Djavax.xml.parsers.DocumentBuilderFactory=org.apache.xerces.jaxp.DocumentBuilderFactoryImpl -Djavax.xml.parsers.SAXParserFactory=org.apache.xerces.jaxp.SAXParserFactoryImpl</code></em></p>
+
+<p>Right all of the configuration is done now, all that's left is to re-start your JRun instance. I started off with just re-starting the cfusion instance as that was the one that mattered to me. And this is where I ran into some strange behaviour, but I'll tell you this as far as I can tell it works. Stopping the server was no problem, but on -restart the console was telling me that it has failed to re-start. And that was true, however when I tried to re-start it again it came up no problems and had loaded the Xerces XML parser. I tried this a few more times and after every stop it appeared to need a little break before being started up again. Go figure, but at least it works.</p>

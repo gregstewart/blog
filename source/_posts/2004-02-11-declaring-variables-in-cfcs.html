@@ -1,0 +1,16 @@
+---
+layout: post
+title: Declaring variables in CFCs
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>This was another question on the CFCDev mailing list and I keep forgetting the answer to this so for posterity here is the answer. There are three ways to scope variables in a CFC, using "var", "variables" and "this". Now the question that often comes up is what are the differences between the scopes, which ones should you use and when.</p>
+<ul>
+<li><strong>var</strong>: use it between functions/methods and it exists for the life of the function invocation and are immune to race conditions. Very important to declare these specifically and at the beginning of the method (i.e. immediately after cfargument [one exception if you are using CFSCRIPT declare them immediately after the opening tag])</li>
+<li><strong>variables</strong>: private variable accessible to the whole CFC and for the lifetime of the CFC. Great for use as CFC specific data</li>
+<li><strong>this</strong>: similar to "variables" (i.e. lives for the duration of the instance and available to all methods of the CFC), but public (i.e. they can be written to by client code [calling page] and methods in the CFC). Some people don't recommend using it</li>
+</ul>
+<p><a href=? http://www.markme.com/cantrell/archives/002918.cfm? title=? Learning to Like the Var Keyword?>This blog entry</a> on Christian Cantrell's site also has some info on the use of "var"</p>

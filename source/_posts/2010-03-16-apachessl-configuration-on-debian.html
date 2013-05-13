@@ -1,0 +1,22 @@
+---
+layout: post
+title: Apache/SSL configuration (on debian)
+tags:
+- ! '*nix'
+- apache
+- debian
+- ssl
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+More for posterity, this was the last step that was eluding me. I had found numerous resources to get me started on the path to setting up Apache and SSL, but when it came to having a working config and server, when I went to browse my Debian test server, I would get this message:
+
+[code](Error code: ssl_error_rx_record_too_long)[/code]
+
+When you google for the solution I found a number of dead ends, but <a href="http://mentaljetsam.wordpress.com/2009/03/11/firefox-https-error-ssl_error_rx_record_too_long/#comment-803">in the comments for one of them there was a helpful pointer</a>.
+
+When you do an 'ls -la' on sites-enabled (inside /etc/apache2), you will see a symbolic link to the sites-available folder and typically just for the default site (000-default -&gt; default). However in sites-available there's also a default-ssl config file. Creating a symbolic link to this file and reloading apache fixed my problem and now I have apache serving up http over SSL .

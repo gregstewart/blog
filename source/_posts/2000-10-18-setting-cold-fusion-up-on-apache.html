@@ -1,0 +1,62 @@
+---
+layout: post
+title: Setting Cold Fusion up on Apache
+tags:
+- apache
+- ColdFusion
+- web server
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+<p>This post relates to configuring Cold Fusion 4.5 to run on Apache v1.3.12</p>
+<p>This document is briefly going explain out how to configure your Apache web server to execute Cold Fusion pages. First off install the Cold Fusion application server (available from <a href="http://www.allaire.com">Allaire</a>) normally. When the moment arrives to specify the location of your CF documentation and example files, select a directory of your preference (or if you have IIS running alongside Apache, simply accept the default path <em>&lt;drive letter&gt;:INETPUB\wwwroot</em>). After continue with the normal installation procedure.</p>
+<p>Once this is done, shutdown your Apache web server (available from <a href="http://www.apache.org">http://www.apache.org/</a>). Next you will need to copy the following file <em>ApacheModuleColdFusion.dll</em> from the <em>&lt;drive letter&gt;:CFUSION\bin</em> directory to the modules sub-directory in your Apache installation (usually <em>&lt;drive letter&gt;:Program Files\Apache Group\Apache\modules</em>).</p>
+<p>The next step requires you to edit your <em>httpd.conf</em>. Locate the section displayed below:</p>
+[code]# Note: The order in which modules are loaded is important.  Don't change
+# the order below without expert advice.
+#
+#LoadModule anon_auth_module modules/ApacheModuleAuthAnon.dll
+#LoadModule cern_meta_module modules/ApacheModuleCERNMeta.dll
+#LoadModule digest_module modules/ApacheModuleDigest.dll
+#LoadModule expires_module modules/ApacheModuleExpires.dll
+#LoadModule headers_module modules/ApacheModuleHeaders.dll
+#LoadModule proxy_module modules/ApacheModuleProxy.dll
+#LoadModule rewrite_module modules/ApacheModuleRewrite.dll
+#LoadModule speling_module modules/ApacheModuleSpeling.dll
+#LoadModule status_module modules/ApacheModuleStatus.dll
+#LoadModule usertrack_module
+#LoadModule modules/ApacheModuleUserTrack.dll[/code]
+<p>Once you have done so enter the following lines at the end of the above section so that the section should now look like this:</p>
+
+[code]# Note: The order in which modules are loaded is important.  Don't change
+# the order below without expert advice.
+#
+#LoadModule anon_auth_module modules/ApacheModuleAuthAnon.dll
+#LoadModule cern_meta_module modules/ApacheModuleCERNMeta.dll
+#LoadModule digest_module modules/ApacheModuleDigest.dll
+#LoadModule expires_module modules/ApacheModuleExpires.dll
+#LoadModule headers_module modules/ApacheModuleHeaders.dll
+#LoadModule proxy_module modules/ApacheModuleProxy.dll
+#LoadModule rewrite_module modules/ApacheModuleRewrite.dll
+#LoadModule speling_module modules/ApacheModuleSpeling.dll
+#LoadModule status_module modules/ApacheModuleStatus.dll
+#LoadModule usertrack_module
+#LoadModule modules/ApacheModuleUserTrack.dll
+#Cold Fusion settings
+LoadModule coldfusion_module modules/ApacheModuleColdFusion.dll[/code]
+<p>You are now nearly ready to test your Cold Fusion installation. All that remains to be done is to tell your Apache web server the location of your <em>cfdocs/</em> directory. To do this edit your <em>srm.conf</em> file so that your file looks something like this:</p>
+[code]#
+# This is the default file for the ResourceConfig directive in httpd.conf.
+# It is processed after httpd.conf but before access.conf.
+#
+# To avoid confusion, it is recommended that you put all of your
+# Apache server directives into the httpd.conf file and leave this
+# one essentially empty.
+#
+
+#Cold Fusion settings
+Alias /cfdocs/ "&lt;drive letter&gt;:/&lt;your installation directory&gt;/cfdocs/"[/code]
+<p>At this point you should also be aware of the fact that the Apache web server is case sensitive. So there is a distinct difference between entering <em>cfdocs</em> and <em>CFDOCS</em> when specifying your alias name. You are now ready to restart your Apache web server (please note that if you are using the single user version for development purposes your Apache server has to work on port 8080, else Cold Fusion won't allow the execution of .cfm pages).  Once the server is restarted you are ready to test your installation. Simply point your browser to <em>http://&lt;your domain or ip address&gt;/cfdocs/index.htm</em>. If the CF welcome page is served you have properly configured the <em>cfdocs/</em> directory. Now just go to the <strong>Test installation</strong> page and test CF. For problems with CF please refer to your CF documentation. For the CF documentation on configuring Apache to serve CF pages check out the documentation that comes with the CF installation (if installed usually located at <em>http://&lt;server name&gt;/cfdocs/ Administering_ColdFusion_Server/01_Installing_and_Configuring_ColdFusion/admin012.htm#1023844</em>)</p>

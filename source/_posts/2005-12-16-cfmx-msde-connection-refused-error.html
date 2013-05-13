@@ -1,0 +1,29 @@
+---
+layout: post
+title: CFMX - MSDE connection refused error
+tags:
+- ColdFusion
+- MS SQL
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+I just started using MSDE for local development again and after creating my first DSN through the ColdFusion administrator I encountered the following problem:
+
+[code]# Connection verification failed for data source: SMS
+java.sql.SQLException: [Macromedia][SQLServer JDBC Driver]Error establishing socket. Connection refused: connect
+The root cause was that: java.sql.SQLException: [Macromedia][SQLServer JDBC Driver]Error establishing socket. Connection refused: connect[/code]
+
+First thing I checked (well second after making sure I had provided the right connection details) was to see if anything was listening port on port 1433 by using the handy "netstats -a" command. And there wasn't, so a quick Google search turned up<a href="http://www.robisen.com/index.cfm?mode=entry&amp;entry=BE1AB594-55DC-F2B1-F392552E0A41542A"> this gem from Robi Sen</a>. Sadly this tool didn't help me as apparently my version didn't need it, but a comment did point me to <a href="http://support.microsoft.com/kb/841251/" title="How to enable SQL Server connectivity on Windows XP Service Pack 2">a another link</a>. But sadly it didn't help me either, but the comment did give me an idea. When I went to check my network set up for MS SQL server, sure enough TCP/IP was not listed... What followed was a moment of banging my head sharply on the table.
+
+Right changes applied, restarted the server, verify connection and...
+
+[code]Connection verification failed for data source: SMS
+java.sql.SQLException: [Macromedia][SQLServer JDBC Driver][SQLServer]Login failed for user 'hermes'. Reason: Not associated with a trusted SQL Server connection.
+The root cause was that: java.sql.SQLException: [Macromedia][SQLServer JDBC Driver][SQLServer]Login failed for user 'yourUsername'. Reason: Not associated with a trusted SQL Server connection.[/code]
+
+Well this one only took a few seconds to fix: <a href="http://www.banmanpro.com/support/sql2k.asp" title="Login Failed for User 'BanManProSQL', Not Associated with a trusted SQL Server Connection.">Windows Authentication only was enabled</a>! Simply open the properties of your server once more, check the security tab and you should see that the option for Windows Authentication is selected. Just change that to SQL server and Windows and you are ready to go...
+
+I guess this is very much a case of damned if you do and damned if you don't for Microsoft as they seemed to have tightened up the security for MS SQL server (I won't even go into the nuisance of trying to install MSDE and being prompted to set an SA password before starting with no indication how to do so), but surely we should be given the option at install time to set these things? Or maybe it's just the MSDE?

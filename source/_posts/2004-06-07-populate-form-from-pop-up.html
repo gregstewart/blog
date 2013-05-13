@@ -1,0 +1,53 @@
+---
+layout: post
+title: Populate form from pop up
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Here's another little script that came in handy recently: populating a form field from a pop window. Listing 1 contains the form that will be populated and the call to the pop up. The second  is a list that once i selection has been made from, closes the window and populates the field. It uses JavaScript <a href="http://gregs.teacupinastorm.com/ui/javascript/javascript_detection.php" title="JavaScript detection">so make sure it's enabled!</a></p>
+<h5>Listing 1</h5>
+<p><em>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+&lt;head&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /&gt;
+&lt;title&gt;js RePopulate Form From PopUp&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form name="frm_someName" id="frm_someName" method="post" action="" enctype="application/x-www-form-urlencoded"&gt;
+	Name: &lt;input type="text" name="name" id="name" value="" size="15" /&gt;&lt;br /&gt;
+	&lt;a href="jsRePopulateFormFromPopUp_CountryList.htm" title="Select a country" onclick="window.open(this.href, 'popupwindow', 'width=400,height=300,scrollbars,resizable'); return false;"&gt;Select a country&lt;/a&gt;&lt;br /&gt;
+	Country: &lt;input type="text" name="country" id="country" value="" size="15" /&gt;&lt;br /&gt;
+
+	&lt;input type="submit" name="btnSubmit" id="btnSubmit" value="submit" /&gt;
+&lt;/form&gt;
+&lt;p&gt;And here is a div that we populated dynamically:&lt;/p&gt;
+&lt;div id="someDiv"&gt;No country selected&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</em></p>
+<h5>Listing 2</h5>
+<p><em>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+&lt;head&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /&gt;
+&lt;title&gt;js RePopulate Form From PopUp - Coutry List&lt;/title&gt;
+&lt;script language="javascript1.2" type="text/javascript"&gt;
+	function rePopulate(c) {
+		window.opener.document.frm_someName.country.value=c;
+		window.opener.document.getElementById('someDiv').innerHTML="New country : " + c;
+		window.close();
+	}
+&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+&lt;ul&gt;
+	&lt;li&gt;&lt;a href="" title="select England as the country to display" onClick="rePopulate('England');"&gt;England&lt;/a&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;a href="" title="select Germany as the country to display" onClick="rePopulate('Germany');"&gt;Germany&lt;/a&gt;&lt;/li&gt;
+
+	&lt;li&gt;&lt;a href="" title="select France as the country to display" onClick="rePopulate('France');"&gt;France&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</em></p>

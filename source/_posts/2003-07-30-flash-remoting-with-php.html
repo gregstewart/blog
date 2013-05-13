@@ -1,0 +1,134 @@
+---
+layout: post
+title: Flash remoting with PHP
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Not so long ago I made my first foray into invoking a CFC from Flash MX and shortly after that I stumbled across a PHP port of Flash remoting. I immediately decided to have a play round with it as I don?t have access to ColdFusion MX on this server and as I indicated back then the idea of working with Flash and dynamic content was something that really appealed to me. So here was the opportunity to build something Flash based and also put it to good practise. In the following I shall go through the set up, the PHP class that will be invoked by the Flash movie and highlight the differences between the CF version and the PHP one.</p>
+
+<h2>Remoting services with PHP</h2>
+<p>First off head on over to <a href="http://www.amfphp.org/" title="AMFPHP">http://www.amfphp.org/</a> and grab the latest install files. Now the directory structure is rather important as the PHP files and classes reference one another quite a bit. The easiest approach to follow is to either install the files just off the root of your web site or create a mapping that will have the same effect. Hence on my local configuration I extracted the files into my <em>Apache/htdocs</em> directory. After you have done this you should see a flashservices folder under your web site root. Ok so far so good.</p>
+
+<p>Now we will be following a similar example to the CF one whereby we?ll be using a form to submit a value to a PHP class, which will concatenate the value with a string, which will return: ?Hello <em>your submitted string</em>?. So we?ll be creating a class called <strong>SubmitForm</strong>, as a result create a directory called <em>submitform</em> also in your root, or alternatively place it wherever you like just make sure you create a virtual mapping for it. </p>
+
+<p><em>Root<br />
+ |-----flashservices<br />
+ |-----submitform</em></p>
+
+<p>The above representation shows what your directory structure should ideally look like. In the last folder we added, create another one called: services. This is the actual folder that will hold your class file: <em>submitForm.php</em>. Back up one level create a file called <em>gateway.php</em>. The latter file will hold the following PHP code:</p>
+
+<p><em>&lt;?php<br />
+	include "../flashservices/app/Gateway.php";<br />
+	$gateway = new Gateway();<br />
+	$gateway -&gt; setBaseClassPath("./services/");<br />
+	$gateway -&gt; service()<br />
+?&gt;</em></p>
+
+<p>This file includes all the relevant flash remoting components that you will need while setting the path to your services that Flash will interact with.</p>
+
+<p><em>&lt;?php
+	class SubmitForm {<br />
+	<br />
+		function SubmitForm() {<br />
+			$this-&gt;methodTable = array(<br />
+				"submitThis" =&gt; array(<br />
+					"description" =&gt; "Echoes the passed argument back to Flash (no need to set the return type)",<br />
+					"access" =&gt; "remote", // available values are private, public, remote<br />
+					"roles" =&gt; "role, list", // currently inactive<br />
+					"arguments" =&gt; array("arg1")<br />
+				)<br />
+			);<br />
+		}<br />
+		function submitThis($nameField) {<br />
+			$thisResult = "Hello ".$nameField;<br />
+			return $thisResult;<br />
+		}<br />
+	}<br />
+?&gt;</em></p>
+
+<p>The above code is the actual contents of you class file, here you define the class a constructor and a method called: <strong>submitThis</strong>. This latter method is the one that will eventually be called by the Flash movie, passing the submitted form value to it. Nothing amazingly complicated happens here. The constructor (<em>SubmitForm()</em>) sets an array that will be returned back to the Flash movie for the <strong>submitThis</strong> method. At this point you might as well create another file in the <em>submitform</em> folder and this one will be used for your flash movie as it is embedded into an HTML template.</p>
+
+<p>And that pretty much covers the server side of the set up. Now I encountered a few problems with the class file, my constructor I named in-correctly and also I made use of the following code to set the return variable:</p>
+
+<p><em>$this-&gt;thisResult = ?Hello ?.$nameField;</em></p>
+
+<p>However this did not work and resulted in null values being passed back to Flash, so follow the code above.</p>
+
+<h3>The Flash form</h3>
+
+<p>The form itself has changed very little from the example I built using ColdFusion as the backend, so let?s just take a closer look at the ActionScript:</p>
+
+<p><em>// Include the Required NetService class files<br />
+#include "NetDebug.as"<br />
+#include "NetServices.as"<br />
+#include "DataGlue.as"<br />
+
+var gatewayurl = "http://localhost/submitform/gateway.php";<br />
+
+function onClick(btn)<br />
+{<br />
+	trace("onClick " + btn._name);<br />
+	getSubmittedData();<br />
+	gotoAndStop("response");<br />
+}<br />
+<br />
+// get the data from the ui elements on page 1<br />
+function getSubmittedData()<br />
+{<br />
+	trace(nameField.text);<br />
+	userData.nameField = nameField.text;<br />
+	trace ("The value of the submitted field is:" + userData.nameField);<br />
+}<br />
+
+function submitDetails()<br />
+{<br />
+	// connect to the Flash Remoting service provider<br />
+	if (isGatewayOpen == null) {<br />
+  		// do this code only once<br />
+  		isGatewayOpen = true;<br />
+  		// Make the Gateway connection<br />
+  		NetServices.setDefaultGatewayUrl(gatewayurl);<br />
+  		gatewayConnnection = NetServices.createGatewayConnection();<br />
+  		submitForm = gatewayConnnection.getService("submitForm", this);<br />
+  		trace("Connected");<br />
+  		// CALL Web service: submit the form variable<br />
+  		submitForm.submitThis(userData.nameField);<br />
+  		trace("sent request");<br />
+	}<br />
+}<br />
+<br />
+// :::: DEFAULT RESPONDERS ::::<br />
+function submitThis_Result(result) <br />
+{<br />
+	trace("server responded: The result is " + result);<br />
+	<br />
+	trace("setting the field");<br />
+	// This function will be invoked by the server when it has finished processing<br />
+	myResult.text = "The Php class replied with: " + result;<br />
+}<br />
+<br />
+function initData()<br />
+{<br />
+	// make sure we only call initData once<br />
+	if ( inited )<br />
+		return;<br />
+	inited = true;<br />
+	<br />
+	// modeling the form choices with data<br />
+	<br />
+	// set initial values<br />
+	userData = new Object();<br />
+	userData.nameField ="";<br />
+	trace ("object created and populated");<br />
+}</em></p>
+<p>The first thing worth noting is that here I have included the ActionScript remoting components by default, rather than after the form has been submitted. Additionally I have declared a variable [<em>var gatewayurl = "http://localhost/submitform/gateway.php";</em>] that stores the path to our <em>gateway.php</em> file which if you remember points to the PHP flash services files.</p>
+
+<p>Now let?s take a quick look at the <strong>submitDetails()</strong> method, which submits our details to the PHP class. Two lines that differ from the CFC are: <em>submitForm = gatewayConnnection.getService("submitForm", this);</em> [1] and <em>submitForm.submitThis(userData.nameField);</em>[2].</p>
+
+<p>[1] simply invokes the object, whereas in the CFC version you still had to include the full path in a ?.? Annotation.<br />
+[2] in the CFC we simply passed the whole object to the component, whereas in the PHP class case we pass the variable <strong>nameField</strong> of the object <strong>userData</strong>. </p>
+
+<p>Subtle differences, but still important. And there you go two implementations on two different platforms with the exact same outcome. One difference however, you can see this one in action <a href=http://projects.teacupinastorm.com/submitform/ title=?Go on try it out?>here</a> and you can <a href="/downloads/submitform_php.zip" title="Get the files here">download all the files here</a>.</p>

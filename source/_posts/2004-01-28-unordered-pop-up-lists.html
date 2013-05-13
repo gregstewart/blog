@@ -1,0 +1,122 @@
+---
+layout: post
+title: Unordered pop-up lists
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>My contribution to drop down lists based on your old faithful lists.</p>
+<p>This page is heavily based on: <a href="http://www.magnin-sante.ch/journal/html/menu3/menuhorizontal.htm" title="Menu horizontal à plusieurs niveaux">http://www.magnin-sante.ch/journal/html/menu3/menuhorizontal.htm</a>. The main difference are a few style tweaks and the absolute positioning, that allows the pop up list to display over the page content [the existing incarnation forced the remainder of the content to be pushed downward]. To position this properly edit this style definition in the <strong>popup</strong> &lt;div&gt;: <em>style="position: absolute; top: 10px"</em>, by changing the top value to be whatever you need. This was the only way I could think of getting the pop ups to overlay the actual content.</p>
+<p>You can <a href="/downloads/unorderedPopUpList.htm" title="check it out">see it in action here</a></p>
+<p>Browsers tested on:</p>
+<ul>
+	<li>Mozilla 1.4 (OS: Win2k)</li>
+	<li>IE 6 sp1 (OS: Win2k)</li>
+	<li>IE 5.5 sp2 (OS: Win2k)</li>
+	<li>IE 5.01 sp2  (OS: Win2k)</li>
+</ul>
+
+<p>The source:</p>
+
+<p><em>&lt;script language="JavaScript1.2" type="text/javascript"&gt;<br />
+	&lt;!--<br />
+	function show(id) {<br />
+		if (document.getElementById) {<br />
+		  document.getElementById(id).style.display="block";<br />
+		} else if (document.all) {<br />
+		  document.all[id].style.display="block";<br />
+		} else if (document.layers) {<br />
+		  document.layers[id].display="block";<br />
+		} <br />
+	} <br />
+	<br />
+	function hide(id) {<br />
+		if (document.getElementById) {<br />
+		  document.getElementById(id).style.display="none";<br />
+		} else if (document.all) {<br />
+		  document.all[id].style.display="none";<br />
+		} else if (document.layers) {<br />
+		  document.layers[id].display="none";<br />
+		} <br />
+	} <br />
+//--&gt;<br />
+&lt;/script&gt;<br />
+&lt;style&gt;<br />
+	ul, li {<br />
+		list-style-type : none;<br />
+		margin : 0;<br />
+		padding : 0;<br />
+	}<br />
+<br />
+	ul.menu ul li { <br />
+		display : inline; <br />
+	}<br />
+<br />
+	ul.menu li {<br />
+		float : left;<br />
+	}<br />
+<br />
+	ul.menu a {<br />
+		margin : 0 2px;<br />
+		width : 100px;<br />
+		height : 20px;<br />
+		display : block;<br />
+		text-align : center;<br />
+		text-decoration : none;<br />
+		border : 1px solid gray;<br />
+		color : #000;<br />
+		background : #fff;<br />
+	}<br />
+<br />
+	ul.menu a:hover {<br />
+		background : #ccc;<br />
+		border : 1px solid gray; <br />
+	}<br />
+<br />
+	ul.menu a:active {<br />
+		background : gray;<br />
+		border : 1px solid gray; <br />
+		color : #fff;<br />
+	}<br />
+<br />
+	#smenu1, #smenu2 {<br />
+		padding : 0;<br />
+		float : left;<br />
+		display : none;<br />
+		font-size : 10px;<br />
+		width : 100px;<br />
+		color : #000;<br />
+	}<br />
+	hr {<br />
+		display: none<br />
+	}<br />
+&lt;/style&gt;<br />
+&lt;div id="nav" style="position: absolute; top: 50px"&gt;<br />
+	&lt;ul class="menu"&gt;<br />
+		&lt;li&gt;&lt;a href="" title=""&gt;Menu 1&lt;/a&gt;&lt;/li&gt;<br />
+		&lt;li&gt;&lt;a href="" onmouseover="show('smenu1');" onmouseout="hide('smenu1');"&gt;Menu 2&lt;/a&gt;<br />
+			&lt;ul id="smenu1" onmouseover="show('smenu1');" onmouseout="hide('smenu1');"&gt;<br />
+				&lt;li&gt;&lt;a href="" title=""&gt;Sub menu 1&lt;/a&gt;&lt;/li&gt;<br />
+				&lt;li&gt;&lt;a href="" title=""&gt;Sub menu 2&lt;/a&gt;&lt;/li&gt;<br />
+				&lt;li&gt;&lt;a href="" title=""&gt;Sub menu 3&lt;/a&gt;&lt;/li&gt;<br />
+				&lt;li&gt;&lt;a href="" title=""&gt;Sub menu 4&lt;/a&gt;&lt;/li&gt;<br />
+				&lt;li&gt;&lt;a href="" title=""&gt;Sub menu 5&lt;/a&gt;&lt;/li&gt;<br />
+				&lt;li&gt;&lt;a href="" title=""&gt;Sub menu 6&lt;/a&gt;&lt;/li&gt;<br />
+				&lt;li&gt;&lt;a href="" title=""&gt;Sub menu 7&lt;/a&gt;&lt;/li&gt;<br />
+				&lt;li&gt;&lt;a href="" title=""&gt;Sub menu 8&lt;/a&gt;&lt;/li&gt;<br />
+			&lt;/ul&gt;<br />
+		&lt;/li&gt;<br />
+		&lt;li&gt;&lt;a href="" onmouseover="show('smenu2');" onmouseout="hide('smenu2');"&gt;Menu 3&lt;/a&gt;<br />
+			&lt;ul id="smenu2" onmouseover="show('smenu2');" onmouseout="hide('smenu2');"&gt;<br />
+				&lt;li&gt;&lt;a href="" title=""&gt;Sub menu 1&lt;/a&gt;&lt;/li&gt;<br />
+				&lt;li&gt;&lt;a href="" title=""&gt;Sub menu 2&lt;/a&gt;&lt;/li&gt;<br />
+				&lt;li&gt;&lt;a href="" title=""&gt;Sub menu 3&lt;/a&gt;&lt;/li&gt;<br />
+			&lt;/ul&gt;<br />
+		&lt;/li&gt;<br />
+		&lt;li&gt;&lt;a href="" title=""&gt;Menu 4&lt;/a&gt;&lt;/li&gt;<br />
+		&lt;li&gt;&lt;a href="" title=""&gt;Menu 5&lt;/a&gt;&lt;/li&gt;<br />
+	&lt;/ul&gt;<br />
+	&lt;hr /&gt;<br />
+&lt;/div&gt;</em></p>

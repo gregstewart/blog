@@ -1,0 +1,45 @@
+---
+layout: post
+title: Folder disk usage
+tags:
+- ! '*nix'
+- comps
+- debian
+- disk
+- space
+- unix
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+  aktt_notify_twitter: 'no'
+---
+Today my server ran out of disk space. :( With the help of my friend Ed I was able to pin point the exact location. If you run this command from the root of your server:
+
+[code]du -sh *[/code]
+
+You will get something like the following:
+
+[code]5.1M	bin
+4.0K	boot
+8.0K	dev
+5.3M	etc
+795M	home
+11M	lib
+0	lib64
+16K	lost+found
+4.0K	media
+4.0K	mnt
+4.0K	opt
+0	proc
+26M	root
+3.8M	sbin
+4.0K	selinux
+4.0K	srv
+0	sys
+0	tmp
+1.3G	usr
+2.4G	var[/code]
+
+Then you can start drilling down the folders until you find the exact culprit. In my case a log file had grown to 8 Gig in size.

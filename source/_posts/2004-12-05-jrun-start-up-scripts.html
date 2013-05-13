@@ -1,0 +1,57 @@
+---
+layout: post
+title: JRun start up scripts
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+To facilitate the start up of several of our instances I have, with [much] help of our Unix gurus, created a bash script that fires up several instances and loads seperate jvm.config files up for the instances in question. The start script looks like follows:
+
+[code]
+!/bin/sh
+#
+# set env (used for both start &amp; stop)
+#
+# Do not run as root
+#
+if [ `/usr/xpg4/bin/id -u` -eq 0 ]
+then
+echo "***************************************"
+echo "** This script will not run as root. **"
+echo "***************************************"
+echo ""
+echo "You probably want to try:"
+echo "su fusionUser -c $0"
+echo ""
+exit 1
+fi
+
+cat /dev/null &gt; /tmp/jrun.out
+
+if [ $# -eq 0 ]
+then
+servers='instance1 instance2 instance3 instance4'
+else
+servers=$@
+fi
+
+echo "Starting $servers..."
+
+# loop over our array
+for server in $servers; do
+# if the jvm file exists set it
+if [ -f $JRUN_HOME/bin/jvm.config_$server ]; then
+JVM_CONFIG=$JRUN_HOME/bin/jvm.config_$server
+else
+# else set the default one
+JVM_CONFIG=$JRUN_HOME/bin/jvm.config
+fi
+# start the instances
+$JRUN_HOME/bin/jrun -start -config $JVM_CONFIG $server &gt;
+/tmp/jrun-$server.out 2&gt;&amp;1 &amp;
+echo "Sleeping for 10 seconds... time for BGT"
+sleep 10
+done
+[/code]

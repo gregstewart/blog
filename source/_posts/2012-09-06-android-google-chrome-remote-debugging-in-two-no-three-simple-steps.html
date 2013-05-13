@@ -1,0 +1,23 @@
+---
+layout: post
+title: Android - Google Chrome remote debugging in two, no three simple steps
+tags:
+- android
+- mobile
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+Simply enabling Open Chrome on your phone → Settings → Developer Tools → check Enable USB Web debugging and running the following command:
+
+
+
+<pre><code>adb forward tcp:9222 localabstract:chrome_devtools_remote
+</code></pre>
+
+are not quite enough to be able to bring up the Remote Webkit inspector. Remember to also check the box for Settings → Developer options → USB debugging and then you are good to go!
+
+

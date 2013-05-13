@@ -1,0 +1,58 @@
+---
+layout: post
+title: Adding Virtual hosts to IIS
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Very often when developing sites it's best to get as close to the production environment setup as possible, so that when you go live the migration to the production server is seamless. One of the required steps is to set up a virtual host on your development web server and configure your machine to see that virtual host. What does this mean? Well essentially instead of typing in a www.something.com address in my browser I could type dev.something.com and have the browser resolve this request to a dev machine on the internal network, while maintaining the appearance of a fully qualified domain name. Incidently you can use it for a raft of other things, such as creating sub domains. In the following I'll be explaining how to configure virtual hosts IIS 5 running on Windows 2000, setting up your local machine to recognise the virtual host, testing the set up and how I apply this setup to my development.</p>
+<p>First things first setting up a virtual host on IIS. There are 2 ways to do this the first is to use the handy wizard, the second by creating a site manually and then modifying its properties. Let's have a look at the wizard first and start off by firing up the IIS MMC (the management console), right click on the computer that represents your server and select new site from the pop up menu. This launches the wizard, click next when you see the splash screen. The first thing you'll need to do si give the site a description (this is the text that appears in the MMC alongside the site you created), in my case I called it "Robbie Slater Dev" as I was setting up the dev environment for the <a href="http://www.robbieslater.com/">robbie slater web site</a> and then click next.</p>
+<p>The next screen is the important one, it's where you set the IP, port and host header information. You can pretty much leave the first two settings as they are (unless your web server listens on a port other than 80 or you want to specify a specific IP address for that site), the host header field is the important one. Since the live web site was called www.robbieslater.com I opted for the internal domain name to look like this www.robbie.shed (it was shorter to type and shed being the name of the dev server). After clicking next you are given the option to supply the full path to the sites root directory, so if you did a default installation and had your site under wwwroot, the path would look something like this: <strong><em>c:\inetpub\wwwroot\robbieslater</em></strong>. Leave the box ticked for anonymous access, unless you want people to provide a username and password to access the site.</p>
+<p>The next prompt involves setting access permission If you are using ASP make sure the first two options are ticked. If you use anything else (such as PHP or Cold Fusion) you'll need to make sure the Execute option is ticked (you will also need to add the default document type to be executed, you can read more about this here: <a href="article.php?id=9E04466F-F09C-4417-8B15679FF5F5052D">How to create IIS mappings for .cfm
+</a>). Click next and you are done. Excellent now to the other way of adding virtual hosts.</p>
+<p>If you have a site already created, but no host header information set up for it, fear not you can add this information by right clicking on your site and selecting properties. From the dialogue that appears, select the advanced button that appears alongside the IP address drop down. The default entry on the ensuing dialogue should be "IP address (All Unassigned)". Make sure this option is selected and click the <strong>Edit...</strong> button (if on the other hand you have a specific IP address mapped to this site, then select that option in the dialogue). Another dialogue box pops up, you'll notice a blank Host Header Name field and using the previous example for Robbie's site and would have entered <strong><em>www.robbie.shed</em></strong> in that field. Once you are done click OK until you are all the way through until you are back to your MMC. Stopping and starting your site) at this stage is a good idea.</p>
+<p>Now that IIS is configured you are not done yet, your machine won't know that, for example,  www.robbie.shed is mapped to an internal IP address, unless of course you are fortunate enough to have a DNS server at your disposal and have added the domain name to the server with the right IP address (might delve a little more into this in a future installment. If not then you will need to edit your <em><strong>hosts</strong></em> file (on win2k machines you should be able to find it here: <em>C:\WINNT\system32\drivers\etc</em>). it usually contains something like this:</p>
+<p><em># Copyright (c) 1993-1999 Microsoft Corp.<br />
+#<br />
+# This is a sample HOSTS file used by Microsoft TCP/IP for Windows.<br />
+#<br />
+# This file contains the mappings of IP addresses to host names. Each<br />
+# entry should be kept on an individual line. The IP address should<br />
+# be placed in the first column followed by the corresponding host name.<br />
+# The IP address and the host name should be separated by at least one<br />
+# space.<br />
+#<br />
+# Additionally, comments (such as these) may be inserted on individual<br />
+# lines or following the machine name denoted by a '#' symbol.<br />
+#<br />
+# For example:<br />
+#<br />
+#      102.54.94.97     rhino.acme.com          # source server<br />
+#       38.25.63.10     x.acme.com              # x client host<br />
+<br />
+127.0.0.1       localhost<br /></em></p>
+<p>This file allows you to specify an IP address and a hostname for that IP adress. So assuming that your dev server has an IP address of 192.168.0.1 and we have the domain name <strong>www.robbie.shed</strong> add the following line at the end of the <em><strong>hosts</strong></em> file.</p>
+<p><em>192.168.0.1    www.robbie.shed</em></p>
+<p>Nearly done now... You should not have to, but once you have saved the file, it's safer to reboot your computer at this stage, just to make sure the changes to your <em><strong>host</strong></em> file take effect. Once done, the first test involves attempting to <strong>ping</strong> the domain name you added. So go to your command prompt and type: <em><strong>ping</strong> &lt;your virtual hosts' domain name&gt; </em>. If you were following my example closely (i.e. using robbie.shed) then you would type <em><strong>ping</strong> www.robbie.shed</em>. If all is going well the prompt should display a reply with 0% percent packet loss (this can vary depending on your network). Here's the output I received:</p>
+<p><em>c:\>ping www.robbie.shed<br />
+<br />
+Pinging www.sunbeam.cbd [192.168.0.1] with 32 bytes of data:<br />
+<strong></strong>
+Reply from 192.168.0.1: bytes=32 time&lt;10ms TTL=128<br />
+Reply from 192.168.0.1: bytes=32 time&lt;10ms TTL=128<br />
+Reply from 192.168.0.1: bytes=32 time&lt;10ms TTL=128<br />
+Reply from 192.168.0.1: bytes=32 time&lt;10ms TTL=128<br />
+<br />
+Ping statistics for 192.168.0.1:<br />
+&nbsp;&nbsp;Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),<br />
+Approximate round trip times in milli-seconds:<br />
+&nbsp;&nbsp;Minimum = 0ms, Maximum =  0ms, Average =  0ms</em></p>
+<p>If you received something like: <em>Unknown host www.robbie.shed</em>, then something isn't quite right. Check that your <em><strong>hosts</strong></em> has the correct information, or try pinging the IP address of the server to see if it is responding. OK now your machine nows where to look up your virtual domain and now for the acid test, open your browser and enter your virtual domain in the address location. Hopefully your site should be appearing in the browser, but if it doesn't try these things:</p>
+<ul>
+  <li>Check that the default document you are using has been specified in IIS. For example if you want to use index.php as your default you'll need to specify that in the MMC (right click site, properties and select documents from the dialogue tab, typically you'll find <em>Default.htm</em> and <em>Default.asp</em> in there).</li>
+  <li>Sometimes the document type you are specifying isn't executed by the application server so have a look here for information on adding document types to IIS: <a href="article.php?id=9E04466F-F09C-4417-8B15679FF5F5052D">How to create IIS mappings for .cfm</a></li>
+  <li>Finally review your virtual host header settings.</li>
+</ul>
+<p>Hope it all worked out for ya, drop <a href="mailto:info@teacupinastorm.com">me a line</a> if you have any problems... </p>

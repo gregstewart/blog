@@ -1,0 +1,10 @@
+---
+layout: post
+title: IE funkiness
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Migrations can tend to be a little painful at the best of times, but IE just sometimes enjoys adding to the mix. Version 6.028xxx was causing us quite a few headaches yesterday. For some reason that version of the browser refused to store cookies and hence prompted users to log in over and over again for each page request. We eventually figured out that it was the temporary domain name we were using:some_domain.domain.com. Pervious versions of IE simply truncated the domain name at the first "_" and set the cookie quite happily. This version apparently decided that this was not valid and rejected it. There you go something else to remember.</p>

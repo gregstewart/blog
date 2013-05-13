@@ -1,0 +1,17 @@
+---
+layout: post
+title: Configuring Cold Fusion and MySQL
+tags:
+- ColdFusion
+- MySQL
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+<h3>Configuring Cold Fusion and MySQL</h3>
+<p class="1">Listed in this document will be a collection of problems I encountered while working with both <strong>Cold Fusion</strong> and <strong>MySQL</strong>, and some of the work arounds/solutions I have come across to resolve these problems.</p>
+<ul>
+	<li>When planning to store and display large amounts of data in a text field, you have to be aware of a setting in the Cold Fusion Administrator. By default the <strong>Long Text Buffer Size</strong> is limited to <em>65,000</em> characters. As a result should you have more than <em>65,000</em> characters to display the excess will be chopped. This problem can be fixed by either increasing the <strong>Long Text Buffer Size</strong> (better for performance, but still has an impact) or by enabling <strong>Long Text Retrieval Settings</strong> (can have an impact on performance). These settings can be reached by editing the datasource properties.</li>
+</ul>

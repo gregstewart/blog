@@ -1,0 +1,21 @@
+---
+layout: post
+title: Accessing a dB on a remote server
+tags:
+- ColdFusion
+- database
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+Some of the information we wanted to publish on  my previous company's intranet was residing on databases that weren't on the main web server. This initially caused a little headache as we really needed to access that data on the remote NT server and publish it. So how do you get around that problem??
+
+Well the solution to that problem turns out to be incredibly simple. I maped a drive to our web server to the share where the database was held. Then I started up the Cold Fusion Administrator and created a datasource for that database (Db) and went through the process in the normal manner. You'll notice that once you browse for that Db that you can't see the mapped drive. So go back to the previous screen and enter the path manually, something like this:
+
+[code]
+{drive letter}\:{share name}\{directory or file name} 
+[\code]
+
+That's pretty much it. You can now safely create the datasource. Should the Verification process fail go to the advanced properties section of the datasource properties, you may have to specify a user account with sufficient permissions to access that share, i.e. create a CF service account with sufficient permissions and that should do the trick.

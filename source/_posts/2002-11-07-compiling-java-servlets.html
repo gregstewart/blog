@@ -1,0 +1,21 @@
+---
+layout: post
+title: Compiling Java servlets
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>If you are experiencing a few difficulties compiling your Java Servlets, here are the steps required to configure your environment properly. First of all you will need these 2 development kits:</p>
+<p>
+<ul>
+  <li><a href="http://java.sun.com/j2se/1.3/download-windows.html">JDK 1.3</a> [at the time of writing the latest version was 1.3.0_02]</li>
+  <li><a href="http://java.sun.com/products/servlet/archive.html">JSDK 2.1</a></li>
+</ul></p>
+<p>OK once you have downloaded these and installed them, copy <strong>server.jar</strong> and <strong>servlet.jar</strong> to your <em>&lt;drive letter&gt;:\&lt;JDK install directory&gt;\lib\</em>. Then you will need to add these two files to your <strong>classpath</strong>. Open up your Control Panel and select System. Once the dialogue is up choose Environment and look for the <strong>classpath</strong> entry in system variables. Once you have clicked on that variable you should be able to add another entry to the value. Type in the following:</p> <p><em>;&lt;drive letter&gt;:\&lt;JDK install directory&gt;\lib\servlet.jar;&lt;drive letter&gt;:\&lt;JDK install directory&gt;\lib\server.jar</em></p>
+<p>Also make sure that your Path has been set ptoperly to relfect your JDK <strong>bin</strong> directory. In Environment under the variable <strong>Path</strong>, look for the following entry:</p>
+<p><em>&lt;drive letter&gt;:\&lt;JDK install directory&gt;\bin;&lt</em></p>
+<p>If it isn't there then add it. Now if you want to compile one of your Java servlets all you need to type from any location is:</p>
+<p><em>javac JavaProgramName.java</em></p>
+<p>Also note that when typing the above command make sure that you specifying the <strong>.java</strong> file with it's proper case. The compiler is case sensitive and hence won't compile properly, so if you type in: <strong><em>javac javaprogramname.java</em></strong> and the fiel was saved as <strong><em>JavaProgramName.java</em></strong>, then the compiler will throw an error. There you go all done, now you just have to make sure there are no errors in your code.</p>

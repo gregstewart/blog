@@ -1,0 +1,29 @@
+---
+layout: post
+title: Outputting queries with CFScript
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Over the past few months I have using more and more of CFScript to do my development. One of the things that still bothered me though was that I had not figured out how to loop over a result set. That no longer is the case... by using a combination of a CFC to execute the query and storing the result in a variable I was able to loop over this result set and grab the records and values in question.</p>
+<p>As a base I used a CFC that executed the query and made a note of the column names that I wanted to work with. The format for accessing a record when using CFScript is: <strong>queryName['column name'][record]</strong>. A thing ot note is you can still access to the default variables that the query object generated.</p>
+<p>For starters I made use of the <em>recordcount</em> variable to determine the number of loops that need to be executed. The loop takes the shape of a for loop.</p>
+<p><em>&lt;cfscript&gt;<br />
+ //invoke the object<br />
+ yourCFC = CreateObject("pathToCfc/cfcName");<br />
+ // execute the query by calling the method that holds the query<br />
+ myQuery = yourCFC.fnYourMethod();<br />
+ attributes.totalRecord = myQuery.recordcount;<br />
+ if (attributes.totalRecord neq 0) { // check that a result was returned<br />
+	// loop over the query<br />
+	for (i=1; i lte attributes.totalRecord; i=i+1) {<br />
+		// output the value for column: columnName<br />
+		writeoutput(myQuery.currentrow &amp; ". Column name has a value of: " &amp; myQuery['columnName'][i] &amp; "&lt;br /&gt;");<br />
+	}<br />
+ } else {<br />
+ 	writeoutput("&lt;p&gt;Sorry no result.&lt;/p&gt;");<br />
+ }<br />
+&lt;/cfscript&gt;</em></p>
+<p>It is pretty straight forward you just have to know how. Since you also have access to the query object variables <em>columnList</em>, I suppose you could stores these in a list and loop over that for each value of <em>i</em> as well.</p>

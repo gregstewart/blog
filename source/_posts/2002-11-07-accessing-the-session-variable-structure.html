@@ -1,0 +1,24 @@
+---
+layout: post
+title: Accessing the session variable structure
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Following on from the article on <a href="http://gregs.teacupinastorm.com/html/article/article.php?id=103fd90c85564e472733d126fbbfd9e8">clearing your application and session variables article</a>, here I'll focus on accessing the structure in which these variables are stored and outputing their names and values. In essence we will be looping over the structure and display the session variable value and name. Since the information is stored in a structure you will need to set the attributes <strong>collection</strong> and <strong>item</strong> of your &lt;cfloop&gt; tag, where the collection you are accessing is called <strong>session</strong> (or <strong>application</strong> if you wanted to look at that structure). The variable in <strong>item</strong>, is set to <strong>i</strong>, this is what we are going to output. The page would look as follows.</p>
+<p><em>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;<br />
+<br /> &lt;html&gt;<br />
+&lt;head&gt;<br />
+&nbsp;&nbsp;&lt;title&gt;Displaying all session variables&lt;/title&gt;<br />
+&lt;/head&gt;<br />
+<br />
+&lt;body&gt;<br />
+&lt;cfloop collection="#session#" item="i"&gt;<br />
+&nbsp;&nbsp;&lt;cfoutput&gt;#i# - #session[i]#&lt;br /&gt;&lt;/cfoutput&gt;<br />
+&lt;/cfloop&gt;<br />
+<br />
+&lt;/body&gt;<br />
+&lt;/html&gt;<br /> </em></p>
+<p>In the output <strong>i</strong> will represent the session variable name and the array syntax (<strong>#session[i]#</strong>) will output the actual value of the session variable. There you go all set now you easily see what values have been set for your session variables.</p>

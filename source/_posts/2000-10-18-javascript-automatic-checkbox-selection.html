@@ -1,0 +1,52 @@
+---
+layout: post
+title: Automatic checkbox selection
+tags:
+- browser
+- JavaScript
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+<p>Imagine a situation where you have a search form, with different search options based on different categories (such as Search all, news, weather, entertainment, etc...). Now when you submit your form you won't users to either select the <strong>Search All</strong> option or the <strong>different categories</strong>, but not both (i.e. the form is to be cleared of all the <strong>different categories</strong> if <strong>Search All</strong> is selected and vice versa when you select a <strong>different category</strong> the <strong>Search All</strong> option is to be cleared). In the following I will talk you through a script I wrote to achieve just that effect.</p>
+<p>Let's start off with the actual form:</p>
+<p><em>&lt;form name="example" action="&lt;your destination page&gt;"&gt;<br />
+&lt;input type="Checkbox" name="test" onclick="javascript:SetOther()" checked&gt; Search All<br />
+&lt;input type="Checkbox" name="test2" onclick="javascript:SetAll()"&gt; News<br />
+&lt;input type="Checkbox" name="test2" onclick="javascript:SetAll()"&gt; Weather<br />
+&lt;input type="Checkbox" name="test2" onclick="javascript:SetAll()"&gt; Entertainment<br />
+&lt;input type="Checkbox" name="test2" onclick="javascript:SetAll()"&gt; Music<br />
+&lt;input type="Submit" value="Search"&gt;<br />
+&lt;/form&gt;</em></p>
+<p>For the script to work it is very important to give the form a name so that the JS can reference the script. Else there is nothing special about the <strong>&lt;Form&gt;</strong> tag. The checkboxes contain all <em>onclick</em> event handlers and they call different functions (to carry out different actions, more on that when we review the script). Also note that the <strong>different categories</strong> checkboxes have the same name. The final component is the search button.</p>
+<p>Now let's look at the script:</p>
+<p><em>&lt;SCRIPT LANGUAGE="JavaScript"&gt;<br />
+&lt;!-- hide script from older browsers<br />
+function SetAll() {<br />
+&nbsp;&nbsp;&nbsp;dml = document.example;<br />
+&nbsp;&nbsp;&nbsp;len = dml.elements.length;<br />
+&nbsp;&nbsp;&nbsp;val = 0;<br />
+&nbsp;&nbsp;&nbsp;var i = 0;<br />
+&nbsp;&nbsp;&nbsp;for(i = 0; i&lt;len; i++) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (dml.elements[i].name == 'test2') {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dml.test.checked = val;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;}<br />
+}<br />
+function SetOther() {<br />
+&nbsp;&nbsp;&nbsp;dml = document.example;<br />
+&nbsp;&nbsp;&nbsp;len = dml.elements.length;<br />
+&nbsp;&nbsp;&nbsp;val = 0;<br />
+&nbsp;&nbsp;&nbsp;var i = 0;<br />
+&nbsp;&nbsp;&nbsp;for(i = 0; i&lt;len; i++) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (dml.elements[i].name == 'test2') {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dml.elements[i].checked = val;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;}<br />
+}<br />
+--&gt;<br />
+&lt;/script&gt;</em></p>
+<p>Right let's take a look at the first function, called <em>SetAll</em>. This functions controls the behaviour of the <strong>Search All</strong> checkbox, i.e. if the any of the <strong>different categories</strong> checkboxes are ticked remove the check for <strong>Search All</strong> checkbox. On the first three lines of that function I set a bunch of variables to make the coding easier (i.e. shorter). The variable <em>dml</em> stores the form name, <em>len</em> stores the number of elements elements (checkboxes) of said form, <em>val</em> is set <em>0</em> and I also set <em>i</em> to <em>0</em>. Next I looped (<em>for</em> statement) over the number of elements, checking which elements named <em>test2</em> are checked (<em>if</em> statement). Now you can see why I gave the form elements for <strong>different categories</strong> the same name, because the behaviour dictated that if any of the <strong>different categories</strong> is checked the script was to remove the check from <em>Search All</em>. The statement between the if clause does exactly that, it sets for element <em>test</em> to <em>val</em>, which is <em>0</em>.</p>
+<p>The second function displays a similar behaviour. The difference is that when the <strong>Search All</strong> checkbox is ticked, the tick in all the other categories is removed. I hope all this made sense and that you found it useful, so until the next time!!</p>

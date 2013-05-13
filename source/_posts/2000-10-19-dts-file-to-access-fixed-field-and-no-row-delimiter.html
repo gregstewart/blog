@@ -1,0 +1,21 @@
+---
+layout: post
+title: ! 'DTS: File to Access (fixed field and no row delimiter)'
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>DTS: File to Access (fixed field and no row delimiter)</h3>
+<p class="1"><i>Please not this article is part of a larger article</i></p>
+<p class="1">Sometimes you may come across a text file that stores all of its information in a column rather than have the fields you want to import in one row and delimited by a recognised marker. Instead you have something like this:</p>
+<p class="1"><i>Field 1<br />
+Field 2<br />
+Field 3<br />
+....
+</i></p>
+<p class="1">This makes importing a text file slightly trickier as you have to convert each row into a column. Thankfully DTS allows you to do this quite simply (once you know how). First off select your data source type, i.e. in this case <b>Text File</b>, from the drop down menu.Next select the file you wish to import by clicking on on the Browse button (<b>...</b>) next to the field labelled <b>File Name</b>. Once you are happy with your selection, click <i>Next</i>.</p>
+<p class="1">First thing to do when setting the file format is to choose <b>Fixed field</b> from the first two options. The file type should be set to <b>ANSI</b>, the row delimiter to <b>&lt;none&gt;</b> and the text qualifier should be greyed out. OK, click <i>Next</i>. You can now see that you have transformed the rows into columns. First you have to define the Row width. This is done by moving the red line to the end of the line of text pictured. You may also notice that the row ends with <b>||</b>, make sure you set your red line after those two <b>||</b>. Click <i>Next</i> again. In this dialogue you specify the the fixed width of your columns. Again you will note the <b>||</b>, you place your column delimiter after those <b>||</b> by clicking with your mouse just behind the last <b>|</b>. You do this for every single field. Take great care when positioning your delimiter, any mistake will result in your data no being exported. On the upside troubleshooting the misplaced column break is easy as it only imports that is properly marked off. Hence any missing data should indicate a misplaced column break.</p>
+<p class="1">Once you are done click <i>Next</i>. Now you choose your destination source. From the <b>Destination</b> drop down menu, choose <i>Microsoft Access</i>. You will now have to specify your destination file. Once you have done that and set any, if necessary, security options click <i>Next</i>. Now you are in a position to preview the fruits of your labour. If everything went according to plan, by highlighting the destination table and clicking on the <i>Preview</i> button, you will fire up a dialogue that should display your selected data and how it will appear in it's new table. At this stage I would like to point out that by default the export is to a new table (more information on how to append to an existing table will be published later [i.e. once I figure out how to do that]). If you are happy with the prospective result, click <i>Next</i> again.</p>
+<p class="1">Right this concludes this section of the File to Access (fixed field and no row delimiter), please go back to the previous document by <a href="http://www.armagossa.com/index.cfm?contentID=52#return">clicking here</a> to complete the transformation.</p>

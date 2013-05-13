@@ -1,0 +1,18 @@
+---
+layout: post
+title: Alert box
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+There are a few things when building UI's in Flash MX 2004 that simply make me scratch my head in wonder. Take the neat little Alert box as an example, here is the code I use to invoke it:
+
+[as]var myAlert = mx.controls.Alert;
+// Set the button labels up
+myAlert.yesLabel = "OK";
+// set the alert display
+myAlert.show("Sorry no results were found. Please try again.", "Warning", Alert.YES,null, dmcClicklHandler,Alert.YES);[/as]
+
+This as far as I understand it should create a small alert box and display my warning message. But no, instead it errors until I drag one of the alert components onto my screen and re-compile the movie. Of course compiling the little movie will display this new alert box and my action script based one. So back I go, delete the dragged on component, re-compile and hey presto creating one now with ActionScript is a breeze. Go figure, why you need to drag one onto your screen and then delete it before you can create them using ActionScript.

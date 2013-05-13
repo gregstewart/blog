@@ -1,0 +1,62 @@
+---
+layout: post
+title: Generic form validation
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>The holy grail of development, writing a piece of code that you can just drop into any application and run with. Well here is my attempt at writing a javascript that would handle form validation on the fly. And well even if I say so myself it has come in pretty handy and though it's not suitable for all cases, e.g. where there are two forms on one page, it handles everything else pretty well.</p>
+<p>So what does it do? and how does it work? The script comes in 2 parts. The first being <strong>c_validate.js</strong>. This is the script that handles the bulk of the form validation. It works by looping over all the form fields on a given page. Then it determines what type (text, password, select [single and multiple]) it is and based on that executes a set of validation rules. The validation checks it does are:</p>
+<ul>
+<li>Specify which fields are required and which are optional</li>
+<li>Standard empty/blank form fields</li>
+<li>Validates e-mail addresses</li>
+<li>Checks for matching passwords (where applicable)</li>
+<li>Checks for numeric values where specified</li>
+<li>Checks that numeric values are between a set range</li>
+<li>Checks dates*</li>
+<li>Uses the form field name for the error message</li>
+<li>Display a dHTML error message (IE only)</li>
+</ul>
+<p><i>*The date checking bit comes in the form of a script called <strong>_date.js</strong>, which was written by someone else, a chap called Michael</i></p>
+<p>If the content of you form breaks any of the validation rules then in IE it dynamically displays a message near the offending form field and in Netscape pops up an alert dialogue box (I have yet to get the dHTML bit too work, but I will). Any errors will stop the form from submitting. So how do you implement it? It's very simple, in the header section of the page you want to validate add the following two javascript statements (the ones in bold):</p>
+<p><em><pre>
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;
+
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Untitled&lt;/title&gt;
+<strong>&lt;script language="JavaScript1.2" type="text/javascript" src="js/_validate.js"&gt;&lt;script&gt;
+&lt;script language="JavaScript1.2" type="text/javascript" src="js/_date.js"&gt;&lt;/script&gt;</strong>
+&lt;/head&gt;
+</pre></em></p>
+<p>Where <strong>js/</strong> is the directory where the two files reside. Next in your <strong>&lt;form&gt;</strong> tag, add the attribute <em>onSubmit</em> with a value of <em>return verify(this);</em>, like such:</p>
+<p><em>&lt;form action="your_page.html" method="post" name="your_form_name"
+id="your_form_name" enctype="application/x-www-form-urlencoded" onsubmit="return verify(this);"&gt;</em></p>
+<p>Now in order for the dHTML validation messages to appear you need to add a <strong>&lt;span&gt;</strong> tag with an attribute <em>id</em> that has a value of <em>elField0</em>, where the <strong>0</strong> is for your first form field. You repeat this for the next form field, but give it an <em>id</em> of value <em>elField1</em> and so on and so forth for for each and every form field on the form always incrementing the value by 1. This will look like such:</p>
+<p><em>
+First Name: &lt;input type="text" name="r_first_name" id="r_first_name" size="20" value=""&gt;&lt;span id="elField0"&gt;&lt;/span&gt;<br />
+Surname: &lt;input type="text" name="r_surname" id="r_surname" size="20" value=""&gt;&lt;span id="elField1"&gt;&lt;/span&gt;
+</em></p>
+<p>As I mentioned above you can specify which form fields are required and which are optional. You do this by pre pending either <strong>r_</strong> for required or <strong>o_</strong> for optional to your form field name. Just look at the example above and you will notice that both form fields are required, because the form field names are: <em>r_first_name</em> and <em>r_surname</em>. If you wanted to make the first name field optional, simply label it: <em>o_first_name</em>. A question that might come to your minds is: "If my form field is optional do I need to include the <strong>&lt;span&gt;</strong> tag with an incremented elField?". The answer is no, you don't have to include it, but you still need to increment the elField, see the example below, where the phone entry is optional:</p>
+<p><em>First Name: &lt;input type="text" name="r_first_name" id="r_first_name" size="20" value=""&gt;&lt;span id="elField0"&gt;&lt;/span&gt;<br />
+Surname: &lt;input type="text" name="r_surname" id="r_surname" size="20" value=""&gt;&lt;span id="elField1"&gt;&lt;/span&gt;<br />
+Phone: &lt;input type="text" name="o_phone" id="o_phone" size="20" value=""&gt;<br />
+E-mail: &lt;input type="text" name="r_email" id="r_email" size="20" value=""&gt;&lt;span id="elField3"&gt;&lt;/span&gt;</em></p>
+<p>Now I also mentioned in my list of things that this script does, that it uses the form field name submitted to generate the error message. So using our aforementioned First name input box, the script would grab <em>r_first_name</em>, strip off the <em>r_</em> and replace the "_" with a white space and concatenate it with the standard error message: "<em>You need to specify a first name</em>". Marvellous. In Netscape's case it does the same thing but appends it a list that will populate the alert box.</p>
+<p>That's pretty much all there is to doing checks for not completed form fields. But you can do a little more. If you want to check that the user has entered a valid e-mail address, make sure the form field name a) has the <em>r_</em> pre pended and b) contains the word <em>email</em>, for example <em>r_email_address</em>. Similar thing for dates. Again pre pend the <em>r_</em> and include the word <em>date</em>. Please note that this kind of check is only performed if the input box is of type "<strong>Text</strong>". If you would like to validate matching passwords, you have to name the first input field <em>r_password</em> and the second <em>r_verify_password</em>.</p>
+<p>Well that's about it. It's not totally generic and relies heavily on your form field naming convention, but if that is not a problem then this might help you out. Below I have listed some of the issues with this script and stuff that is planned for it. <a href="http://www.teacupinastorm.com/gregs/downloads/validate.zip">And here you can download the script and this page</a>. Finally I'd briefly like to thank a few people, who have helped out developing this form, by either using it, contributing or juts plain testing it. Special thanks goes out to Werner, Istvan and Michael.</p>
+<p>Ok the quirks...
+<ul>
+<li>Netscape 4.78, insists on validating every text field for a numeric field.</li>
+<li>Macs and Netscape well there would have to be a quirk and that is the limitation of 255 characters for the alert dialogue, so Mac developers beware of long forms.</li>
+</ul>
+Future additions:<br />
+<ul>
+<li>dHTML for both Netscape 4.7x and 6.x.</li>
+<li>Group check box validation.</li>
+<li>Credit card numbers</li>
+<li>And whatever else anyone else can think of.</li>
+</ul></p>

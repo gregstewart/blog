@@ -1,0 +1,15 @@
+---
+layout: post
+title: configuring your network card
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+I just got a test machine at work running Debian. It was set up to use dhcp and for development purposes I needed a static IP address, so in order to change that I needed to do the following:
+<ol>
+	<li>kill the dhcpclient to preserve the DNS settings kept in resolv.conf</li>
+	<li>type: <strong>ifconfig eth0 &lt;your static IP address&gt; netmask 255.255.0.0</strong></li>
+	<li>followed by: <strong>route add default gw &lt;gateway ip address&gt;</strong></li>
+</ol>

@@ -1,0 +1,25 @@
+---
+layout: post
+title: A few good reasons
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Last week we had a <a href="http://www.webcredible.co.uk/" title="web usability, credibility, accessibility &amp; SEO">consultancy company</a> [these guys really deserve credit if anything for their almost boundless enthusiasm] come in to deliver their usability and accessibility report for our corporate site. Personally I have been a firm believer in following web standards and building accessible websites for a couple of years now and the problems with our site were obvious to me and a few of the other developers on our team, but there are always some people and/or departments who just don't get it. As a developer you can probably talk at great lengths about why web standards are a good thing (or a bad thing depending on your view point), leaner code, reduced costs, improved search engine ranking, cross device implementations, etc, etc...
+
+The presentation these guys delivered was enlightening, this was the first time I got to play with <a href="http://www.freedomscientific.com/" title="Freedom Scientific Home Page">JAWS</a> (a screenreader). I can only urge, nay implore, anyone who builds websites and believes that accessibility and standards are good thing (and especially those who don't) to close their eyes and listen to how their site works through JAWS: I guarantee you'll be shocked. It's one thing to know about the benefits of standards and accessibility, but an entirely different one to experience them (or more appropriately the lack of them). And the look on the Marketing team's face was priceless.
+
+There were a few things that emerged from this meeting that strengthened the case for standards based markup and accessibility that went beyond the usual arguments. So here in a nutshell are a few of the things that really stuck in my mind:
+<ul>
+	<li><strong>using lists for navigations:</strong> this is more than just a cool way to implement your site's navigation. As the screen reader worked it's way through our top and secondary level navigation it became immediately clear that as a user you had no idea how many items were in the nav and as a result you simply had to wait until it reached the end. This also amounts to bad usability. By using a list you get the following added benefits
+<ol>
+	<li>the reader tells you how many items to expect (e.g. 5 list items)</li>
+	<li>gives you an indication of where you are within the listing (item 1: home, item 2: about us)</li>
+</ol>
+</li>
+	<li><strong>treating your web page as a document:</strong> by using divs, headers and paragraphs properly, also breaks up the flow of the page accordingly. The consultants demonstrated how visually impaired users access the web, in their toolkit they have an application (sadly didn't catch it's name) that indexes the document and then provides shortcuts based on list information and document headers, thus allowing them to easily jump to the relevant section of the document quickly. Which is very much the same way say you and I read web sites. We scan the site for relevant information and zero in on it. All of sudden the structure nav, sub nav, content (content sections) were completely apparent. And you know what? It also made the document more enjoyable to read.</li>
+	<li><strong>using the optgroup tag:</strong> I have used this tag in the past to group information logically together for form drop downs. This is a powerful visual aid for locating information rapidly. For screenreaders and the aforementioned tool, using this tag is a huge bonus, because it again allows users to zero in quickly on the information saught. Imagine a drop down with say 50 options, visually this is quite manageable as you can quick scan. With a screen reader you have to wait until the option you are after has been readout. And we all know that what we are usually looking for is the last option! Let me just add this dimension: for those who have played around with JAWS, you will know this alterego of Sam Recite It can be excruciating to listen to for long periods of time and no one should have to put up with that, so make those drop downs and lists more accessible.</li>
+</ul>
+Some more food for thought or simply yet another compelling set of reason to do it right. Oh and even though this site validates (mostly) it still leaves a little to be desired when accessed with JAWS.

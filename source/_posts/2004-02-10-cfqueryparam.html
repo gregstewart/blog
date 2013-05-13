@@ -1,0 +1,18 @@
+---
+layout: post
+title: cfqueryparam
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>As part of our dev guidelines for CFMX, all data that is submitted by a user to the database is passed in by making use of the &lt;cfqueryparam&gt; tag, which basically allows you to validate the data type of the value submitted. There also a few additional parameters that allow you to further validate the values passed such as length, scale, whether it can be null or not, or if it is a list. It's a useful addition to protecting your applications. However there appears to be a bug with single quotes in CFMX when you are inserting data, i.e. single quotes are escaped and passed into the database, e.g. O'Brien becomes O''Brien. The documentation for CFMX specifically states that:</p>
+
+<p><em>"New in ColdFusion MX: ColdFusion automatically escapes simple-variable, array-variable, and structure-variable references within a cfQuery tag body or block. (Earlier releases did not automatically escape array-variable references.)"</em></p>
+
+<p>However out of the box it doesn't, admittedly I have only come across this problem in conjunction with components and haven't tested it outside of these. Now this has since been patched, but for those not in a position to apply it, there is a workaround. Simply wrap the string in the PreserveSingleQuotes() function. As a result your SQL statement should look something like this:</p>
+
+<p><em>?<br />
+YourField = &lt;cfqueryparam value="#trim(PreserveSingleQuotes(YourField))#" cfsqltype="CF_SQL_VARCHAR"&gt;,<br />
+?</em></p>

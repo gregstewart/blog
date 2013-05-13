@@ -1,0 +1,12 @@
+---
+layout: post
+title: CSS flash in IE
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>The solution to the "flash of unstyled content" in IE [<a href="http://www.bluerobot.com/web/css/fouc.asp" title="Flash of Unstyled Content (FOUC)">Look here</a> for a full discussion on what it is], is a simple but effective one. Include the following lines after your closing <strong>title</strong> and immeditately before any style sheet is called.</p>
+<p><em>&lt;!-- to correct the unsightly Flash of Unstyled Content. http://www.bluerobot.com/web/css/fouc.asp --&gt;<br />
+&lt;script type="text/javascript"&gt;&lt;/script&gt;<br /></em></p>

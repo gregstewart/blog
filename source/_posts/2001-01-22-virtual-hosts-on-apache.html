@@ -1,0 +1,84 @@
+---
+layout: post
+title: Virtual Hosts on Apache
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p class="1">I quite frequently find myself working on 2 or 3 different web related projects at a time and thought it's quite easy to develop of root sub directories, the end result usually sits in the root directory on the hosting site and hence requires a few modifications to the pages developed before they can be uploaded. In the following I describe the steps required to implement virtual hosts (e.g. http://www.site1.net/,  http://www.site2.net/, etc?) on your local computer running Windows NT4 and Apache 1.3.12, that should make this whole porting affair a little easier. So let's get cracking.</p>
+<p class="1">Firstly we need to locate and edit the <em>hosts</em> file. Under Windows NT 4.0 it's usually located in your <em>&lt;your drive letter&gt;:winntsystem32driversetc</em> folder. In it you should see the following:</p>
+
+<p class="1"><em># Copyright (c) 1993-1995 Microsoft Corp.
+#
+# This is a sample HOSTS file used by Microsoft TCP/IP for Windows NT.
+#
+# This file contains the mappings of IP addresses to host names. Each
+# entry should be kept on an individual line. The IP address should
+# be placed in the first column followed by the corresponding host name.
+# The IP address and the host name should be separated by at least one
+# space.
+#
+# Additionally, comments (such as these) may be inserted on individual
+# lines or following the machine name denoted by a '#' symbol.
+#
+# For example:
+#
+#Â 102.54.94.97Â Â rhino.acme.comÂ Â # source server
+#Â 38.25.63.10Â Â x.acme.comÂ Â # x client host</em>
+
+<em>127.0.0.1Â Â localhost</em>
+<p class="1">This is the file that is going to enable you to resolve computer names (or aliases as you'll see in a minute) with IP addresses. Ok so now that you have located the file, the next step is to add an entry to it. Just use your favourite editor and append the following line:</p>
+<p class="1">127.0.0.1Â Â localhostÂ www.site1.net</p>
+
+<p class="1">What you have done here, is inform the system that any request made from your browser (and only your browser) for the www.site1net will be mapped to the IP address 127.0.0.1. GO ahead and test it, by going to the command prompt and typing in ping www.site1.net, you should be getting a  reply if you saved the changes. Right now it's time to modify your Apache configuration to allow for virtual hosts.
+Next you need to locate your <em>httpd.conf</em> file. This is usually located in: <em>&lt;your drive letter&gt;:Program FilesApache GroupApacheconf</em>. Open it with you editor and look for:
+
+<p class="1"><em>#
+# If you want to use name-based virtual hosts you need to define at
+# least one IP address (and port number) for them.
+#
+#NameVirtualHost 12.34.56.78:80
+#NameVirtualHost 12.34.56.78</em>
+<p class="1">There you will need to specify the IP address you are mapping to. In our example this is 127.0.0.1, so your entry should look like this:</p>
+
+<p class="1"><em>#
+# If you want to use name-based virtual hosts you need to define at
+# least one IP address (and port number) for them.
+#
+#NameVirtualHost 12.34.56.78:80
+#NameVirtualHost 12.34.56.78
+NameVirtualHost 127.0.0.1</em>
+<p class="1">Right so far so good onto the next modification to that file locate the following lines in your httpd.conf file:</p>
+
+<p class="1"><em>#
+# VirtualHost example:
+# Almost any Apache directive may go into a VirtualHost container.
+#
+#&lt;VirtualHost ip.address.of.host.some_domain.com&gt;
+#Â ServerAdmin webmaster@host.some_domain.com
+#Â DocumentRoot /www/docs/host.some_domain.com
+#Â ServerName host.some_domain.com
+#Â ErrorLog logs/host.some_domain.com-error_log
+#Â CustomLog logs/host.some_domain.com-access_log common
+#&lt;/VirtualHost&gt;</em>
+<p class="1">This is the segment where you will be specifying your server name (the machine name you specified in your hosts file [in this case www.site1.net]), any server aliases and the document root. Using the information from our example and wanting to map this virtual host to the Apache documentation directory, you entry would look like this:</p>
+
+<p class="1"><em>#
+# VirtualHost example:
+# Almost any Apache directive may go into a VirtualHost container.
+#
+#&lt;VirtualHost ip.address.of.host.some_domain.com&gt;
+#Â ServerAdmin webmaster@host.some_domain.com
+#Â DocumentRoot /www/docs/host.some_domain.com
+#Â ServerName host.some_domain.com
+#Â ErrorLog logs/host.some_domain.com-error_log
+#Â CustomLog logs/host.some_domain.com-access_log common
+#&lt;/VirtualHost&gt;
+&lt;VIRTUALHOST 127.0.0.1&gt;
+ServerName www.site1.net
+ServerAlias *site1.*
+DocumentRoot "c:/Program Files/Apache Group/Apache/htdocs"
+&lt;/VIRTUALHOST&gt;</em>
+<p class="1">Ok, once you have done all your changes stop and restart the Apache service and you should be on your way.</p>

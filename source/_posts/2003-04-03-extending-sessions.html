@@ -1,0 +1,39 @@
+---
+layout: post
+title: Extending sessions
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>There are always moments when a user leaves his browser window open, goes off does something else, comes back and bang the information he was carefully entering has disappeared. A truly annoying sequence of events and due to the web's stateless nature not too uncommon. Granted such a situation happens rarely, but sometimes users have to read quite lengthy documents in order to make a decision, and depending on your reading speed this could leave you facing a similar situation. SO here is the hack.</p>
+<p>By making use of a 1 px high, by 1 px wide &lt;iframe&gt; that is embedded in the template that the user is looking at and which calls a page that is instructed to refresh at a set interval you can fake a user interacting with the application for days on end. Without further ado the code, first the template (aptly called <em>iframe.cfm</em>) with the &lt;iframe&gt;.</p>
+<p><em>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;<br />
+<br />
+&lt;html&gt;<br />
+&lt;head&gt;<br />
+	&lt;title&gt;Untitled&lt;/title&gt;<br />
+&lt;/head&gt;<br />
+
+&lt;body&gt;<br />
+&lt;iframe src="refresh.cfm" name="get_time" height="55" width="170" scrolling="No" frameborder="0"&gt;&lt;/iframe&gt;<br />
+&lt;p&gt;The content can appear here&lt;/p&gt;<br />
+<br />
+&lt;/body&gt;<br />
+&lt;/html&gt;</em></p>
+<p>And now the template that refreshes every 60 seconds (<em>refresh.cfm</em>)</p>
+<p><em>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;<br />
+<br />
+&lt;html&gt;<br />
+&lt;head&gt;<br />
+	&lt;title&gt;Untitled&lt;/title&gt;<br />
+  &lt;META HTTP-EQUIV="REFRESH" CONTENT="60;URL=???"&gt;<br />
+&lt;/head&gt;<br />
+<br />
+&lt;body&gt;<br />
+&lt;cfoutput&gt;#now()#&lt;/cfoutput&gt;<br />
+&lt;/body&gt;<br />
+&lt;/html&gt;</em></p>
+<p>Now the real trick to this working is the &lt;META&gt; tag in the header section of the document, which refreshes, in this case every seconds (CONTENT="<strong>60</strong>;URL=???"). If you were to increase the size of the &lt;iframe&gt; you'd be able to see that the time stamp generated and output in <em>refresh.cfm</em> changes every minute, thus proving that something happens every seconds, alternatively just leave your browser window open overnight on the application page you are testing this for and see what happens the next day.</p>
+<p>One small caveat is that not all browsers, if memory serves me right support the &lt;META HTTP-EQUIV="REFRESH" CONTENT="60;URL=???"&gt; so be aware of this...</p>

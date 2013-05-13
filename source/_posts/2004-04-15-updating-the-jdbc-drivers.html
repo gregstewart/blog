@@ -1,0 +1,27 @@
+---
+layout: post
+title: Updating the JDBC drivers
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I found myself in a position today where I had to update the <acronym title="Java Database Connectivity">JDBC</acronym> drivers on our <acronym title="ColdFusion MX">CFMX</acronym> servers. You can find out more about <a href="http://www.macromedia.com/support/coldfusion/ts/documents/cfmx61_sqlserver_cpu.htm" title="ColdFusion MX 6.1: Updated DataDirect drivers for 100% CPU utilization and other issues">the fixes when applying the driver and download here</a>.</p>
+
+<p>First things first, to check what version you are running add the following lines to a .cfm template and run it:</p>
+
+<p><em>&lt;cfscript&gt;<br />
+	jdbcDriver = CreateObject("java", "macromedia.jdbc.sqlserver.SQLServerDriver");<br />
+	writeoutput(jdbcDriver.getMajorVersion() & "." & jdbcDriver.getMinorVersion());<br />
+&lt;/cfscript&gt;<br />
+&lt;!--- just for the hell of it dump all the methods ---&gt;<br />
+&lt;cfdump var="#jdbcDriver#" /&gt;</em></p>
+
+<p>This should return <strong>3.2</strong> (if you are running 6.1 anyway). Now back up your copy of macromedia_drivers.jar, stop your instance and copy the new macromedia_drivers.jar file over. Now if you have CFMX running as an instance of JRun (or as Macromedia call it: the J2EE configuration), you?ll need to copy the drivers over to instance cfusion\lib folder. Simply copying it into JRun\lib will only affect JRun.</p>
+
+<p><em><strong>{your install path}</strong>\JRun4\servers\<strong>{your instance}</strong>\cfusion-ear\cfusion-war\WEB-INF\cfusion\lib\ </em></p>
+
+<p>Then remember to restart the CFMX instance and the re-run the script and see if the version number has increased to <strong>3.3</strong>. If not consider stopping and restarting your JRun server and all the instance associated with it.</p>
+
+<p>One thing I noticed and this was purely coincidental was that if I checked the version of jdbc driver currently loaded after copying the new drivers over and not restarting the instance, the version number returned was: <strong>-1.-1</strong>!</p>

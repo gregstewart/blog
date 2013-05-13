@@ -1,0 +1,25 @@
+---
+layout: post
+title: More stored procedures
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>This time round I wanted to execute a query within my stored procedure (SP) and store the result in a variable that I could use at a later point in the SP. The idea is that you have to declare a variable that will hold the result (in this case <strong>@currentDay</strong>) and then you write your SQL like such: "<em>Select  @currentDay = DATEPART(dw, GETDATE())</em>" [incidentally I am grabbing the numeric day value, e.g. 1 which means Sunday]. Just to demonstrate the principle, below is some code that creates an SP, defines the expected inputs, declares a few variables, then
+
+executes the <em>select</em> statement, assigns the result to <strong>@currentDay</strong> and then prints it.</p>
+
+<p><em>CREATE PROCEDURE [dbo].[qSomeSP] (<br />
+@someID int = NULL,<br />
+@someChar varchar(30) = NULL,<br />
+)<br />
+AS<br />
+<br />
+DECLARE<br />
+@currentDay varchar(10)<br />
+<br />
+Select  @currentDay = DATEPART(dw, GETDATE())<br />
+PRINT(@currentDay)
+</em></p>

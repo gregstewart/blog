@@ -1,0 +1,69 @@
+---
+layout: post
+title: the problem with multiple selects and php
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Forms are the primary method for users to interact with web applications and though there are a number of pitfalls associated with user interactions and forms, I want to specifically take a closer look at the way PHP behaves when dealing with a particular form element: the multiple select box. Listed below is a standard form and select input box</p>
+<p><em>&lt;form action="some_html.html" method="post" name="frm_test" id="frm_test" enctype="application/x-www-form-urlencoded"&gt;<br />
+ &lt;select name="test_select" id="test_select" multiple="multiple"&gt;<br />
+  &lt;option value="1"&gt;1&lt;/option&gt;<br />
+  &lt;option value="2"&gt;2&lt;/option&gt;<br />
+  &lt;option value="3"&gt;3&lt;/option&gt;<br />
+  &lt;option value="4"&gt;4&lt;/option&gt;<br />
+ &lt;/select&gt;<br />
+ &lt;input type="Submit" name="btn_submit" id="btn_submit" value="Submit" /&gt;<br />
+&lt;/form&gt;</em></p>
+<p>This is a pretty standard form with a normal multiple select box. The user can select one or more options and then click on the submit button and pass these values to the server for processing. If you were using PHP as your server side scripting language, submitting this form with more than one option selected would result in only one value being passed to the application or script that you are calling. Why? Well it turns out that multiple select values are actually passed in an array and PHP needs to understand it as such (I may be really oversimplifying this, but what the hey this really works). The first thing you'll need to do is change the way you name your form variables for that type of form field, i.e. instead of using <em>name="test_select"</em> you'll need to refer to it as <em>name="test_select[]"</em>. When this form field is submitted PHP will now know that the values are stored in an array. So here is the now amended form:</p>
+<p><em>&lt;form action="some_html.html" method="post" name="frm_test" id="frm_test" enctype="application/x-www-form-urlencoded"&gt;<br />
+ &lt;select name="test_select[]" id="test_select[]" multiple="multiple"&gt;<br />
+  &lt;option value="1"&gt;1&lt;/option&gt;<br />
+  &lt;option value="2"&gt;2&lt;/option&gt;<br />
+  &lt;option value="3"&gt;3&lt;/option&gt;<br />
+  &lt;option value="4"&gt;4&lt;/option&gt;<br />
+ &lt;/select&gt;<br />
+ &lt;input type="Submit" name="btn_submit" id="btn_submit" value="Submit" /&gt;<br />
+&lt;/form&gt;</em></p>
+<p>Now this style of annotation may cause one or two errors with your existing JavaScripts. So as a work around just change the attribute <strong>name</strong> to the new naming convention as JavaScript references the <strong>id</strong> attribute (if provided, else I think it uses <strong>name</strong>)<!--  [please note this will work until the attribute <strong>name</strong> is decapracted] -->. So here is how your form would now look:</p>
+<p><em>&lt;form action="some_html.html" method="post" name="frm_test" id="frm_test" enctype="application/x-www-form-urlencoded"&gt;<br />
+ &lt;select name="test_select[]" id="test_select" multiple="multiple"&gt;<br />
+  &lt;option value="1"&gt;1&lt;/option&gt;<br />
+  &lt;option value="2"&gt;2&lt;/option&gt;<br />
+  &lt;option value="3"&gt;3&lt;/option&gt;<br />
+  &lt;option value="4"&gt;4&lt;/option&gt;<br />
+ &lt;/select&gt;<br />
+ &lt;input type="Submit" name="btn_submit" id="btn_submit" value="Submit" /&gt;<br />
+&lt;/form&gt;</em></p>
+<p>Ok so far so good, however there is another issue that you should be aware of and that is that values are only submitted if they have been selected. 9/10 this isn't an issue because your user will have selected them himself, but there was a case recently where I was transferring values from one select box to another and as a result these transferred values weren't selected and hence not submitted [note: I don't know if this is just a PHP specific issue as I haven't had a chance to test it with other application servers, but it's worth bearing in mind]. JavaScript to the rescue. First the amended form:</p>
+<p><em>&lt;form action="some_html.html" method="post" name="frm_test" id="frm_test" enctype="application/x-www-form-urlencoded" onSubmit="return allSelect();"&gt;<br />
+ &lt;select name="test_select[]" id="test_select" multiple="multiple"&gt;<br />
+  &lt;option value="1"&gt;1&lt;/option&gt;<br />
+  &lt;option value="2"&gt;2&lt;/option&gt;<br />
+  &lt;option value="3"&gt;3&lt;/option&gt;<br />
+  &lt;option value="4"&gt;4&lt;/option&gt;<br />
+ &lt;/select&gt;<br />
+ &lt;input type="Submit" name="btn_submit" id="btn_submit" value="Submit" /&gt;<br />
+&lt;/form&gt;</em></p>
+<p>So when the form is submitted the function <strong>allSelect()</strong> is called (I found this script at: <a href="http://www.xs4all.nl/~ppk/js/transfer.html">http://www.xs4all.nl/~ppk/js/transfer.html</a>), which will select all the elements in a drop down box before submitting the form. And here is the code which you will need to include in your page (you will possibly need to modify the field name to match what you have called your multiple select box, i.e. modify the line <em>List = document.forms[0].<strong>your_field_name</strong>;</em>).</p>
+<p><em>&lt;script language="JavaScript1.2" type="text/javascript"&gt;<br />
+function allSelect()<br />
+{<br />
+  List = document.forms[0].test_select;<br />
+  if (List.length &amp;&amp; List.options[0].value == 'temp') return;<br />
+  for (i=0;i&lt;List.length;i++)<br />
+  {<br />
+     List.options[i].selected = true;<br />
+  }<br />
+}<br />
+&lt;/script&gt;</em></p>
+<p>Finally I'll quickly show you how to access the submitted variables from within a PHP script:</p>
+<p><em>if (is_array(test_select[])) { // is this an array?<br />
+$selects = sizeof(test_select[]); // get the size of the submitted array (i.e. how many content items were submitted for the home page)<br />
+for ($i=0; $i&lt;$selects; $i++) { // ok loop over it<br />
+echo($test_select[$i]."&lt;br /&gt;"); // and output it to screen<br />
+}<br />
+}</em></p>
+<p>In the first instance I am checking that this is actually an array and if the condition is satisfied I determine it's length. Now I can create a loop and output each value submitted by setting the array dimension to the current value of <strong>$i</strong> (e.g. first loop $i will be equal to 0 [or $test_select[0] ], second loop $i = 1, etc...). OK that's it, I hope this has helped in some way, shape or form...</p>

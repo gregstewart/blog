@@ -1,0 +1,10 @@
+---
+layout: post
+title: how big is a database field??
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>This has puzzled me for a while when dealing with Varchar database field types. Say I assign a value of 255 to the length of my database field, I simply assumed that I could capture 255 bytes worth of characters. However this is not the case. Looking at mailing lists I found some info and this is how I understand it now: if you have three characters, each character takes up 1 byte, making the total length 3 bytes. Then add to that 1 byte to store the number of chars, giving you 4 bytes used. Next I also found a reference to an additional byte, relating to table definitions because Varchar uses variable length data. So number of chars (where 1 byte equals one character) + 2 bytes should give you the right value. Thus is we have a field of type Varchar and of Length 255, can we safely assume that the maximum length a submitted string can be is 253? I hope so!!!</p>

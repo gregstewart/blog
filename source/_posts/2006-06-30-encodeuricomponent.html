@@ -1,0 +1,14 @@
+---
+layout: post
+title: encodeURIComponent()
+tags:
+- JavaScript
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+I just stumbled across <a title="Update to Spelling Integration" href="http://labs.redbd.net/blog/index.cfm/2006/6/22/Update-to-Spelling-Integration">this post</a> from the <a title="RedBalloon Days - Gift Ideas - Certificates &amp; Experience Vouchers - Australia" href="http://www.redballoondays.com.au/">Red Balloon</a> guys, which reminded me that I wanted to blog about this great little resource about <a title="Comparing escape(), encodeURI(), and encodeURIComponent()" href="http://xkr.us/articles/javascript/encode-compare/">the subtle differences of URL encoding and JavaScript</a>.
+
+The bottom line of this article is that 9 times out of 10 you'll want to be using <em>encodeURIComponent()</em> to encode vars that are to be passed as part of a URL instead of the <em>escape()</em> method.

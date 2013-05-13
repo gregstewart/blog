@@ -1,0 +1,70 @@
+---
+layout: post
+title: Project update
+tags:
+- ColdFusion
+- generator
+- stubbie
+- stubs
+- tdd
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+It's been for ever and a day, since I have done any commits to this project, but prompted by Janet's comments I have made a handful of commits to the repository.
+
+<ol>
+<li>cfUnit is now supported</li>
+<li>A fix for cfmx 6.1 and recursive directory lookups</li>
+<li>The code can now handle missing tearDown methods in existing test cfcs.</li>
+</ol>
+
+I have also tried to simplify the config.xml file a little and here's what the default looks like:
+
+[code]
+<stubbie>
+
+	<config>
+		<appName value="myMapping" /><!-- the name of your app, can be the mapping name as set up in cfadmin -->
+		<appPath value="/my/full/path/to/the code/" /><!--full path to the app -->
+		<packageRoot value="" /><!-- if you have a mapping for your app's cfcs, e.g. com.mydomain, specify it here (if you have specified an app name the result will be com.mydomain.myapp) -->
+		<saveTestFilesTo value="" /><!-- Not implemented yet, optional storage location for the test stubs -->
+		<unitTestFramework value="cfcUnit"/><!-- cfcUnit/cfUnit -->
+		<coldSpring use="false" path="config/cs.xml"/><!-- (working on it) whether or not to use CS and if so where is the cs config file in relation to the app path -->
+	</config>
+	
+</stubbie>
+
+[/code]
+
+A concrete example usually works best, so:
+
+[code]
+<stubbie>
+	<config>
+		<appName value="art" /><!-- the name of your app, can be the mapping name as set up in cfadmin -->
+		<appPath value="/Users/gregstewart/Sites/Client X sites/Fusebox/ART2/" /><!--full path to the app -->
+		<packageRoot value="" /><!-- if you have a mapping for your app's cfcs, e.g. com.mydomain, specify it here (if you have specified an app name the result will be com.mydomain.myapp) -->
+		<saveTestFilesTo value="" /><!-- Not implemented yet, optional storage location for the test stubs -->
+		<unitTestFramework value="cfcUnit"/><!-- cfcUnit/cfUnit -->
+		<coldSpring use="false" path="config/cs.xml"/><!-- (working on it) whether or not to use CS and if so where is the cs config file in relation to the app path -->
+	</config>
+</stubbie>
+[/code]
+
+<em>appName</em> : This now refers to a cf mapping in the administrator for my project, in this case art, however if you are using a package approach (with say a value of "com.domain"), then this value would simply be appended to the packageRoot (e.g. com.domain.art)
+
+<em>appPath</em> : This is now the full path to the application, e.g. on my local machine /Users/gregstewart/Sites/Client X sites/Fusebox/ART2/
+
+<em>packageRoot</em> : Hasn't changed
+
+<em>saveTestFilesTo</em> : Hasn't changed
+
+<em>unitTestFramework</em> : Now supports cfUnit.
+
+<em>coldSpring</em> : Something working on, i.e. use ColdSpring to generate mock objects. Could be ages before it sees the light of day, if my past track record is anything to go by.
+
+Thoughts and suggestions are still most welcome!

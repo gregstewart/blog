@@ -1,0 +1,107 @@
+---
+layout: post
+title: Code View
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<a href="http://www.1976design.com/blog/" title="Dunstan's Blog">Dunstan Orchard</a> was detailing some of the code behind his blog's recent re-design and his approach/technique to <a href="http://www.1976design.com/blog/archive/2004/07/29/redesign-tag-transform/" title="Redesign explained: tag transformations">code display</a> (which is discussed about half way down) was I thought quite awesome [his site is equally awesome and his thoughts and comments are hilarious].
+
+He opted to use CSS and a numbered list represent indented and line numbered code. It also displays single and multi line comments in a different colour(Ironically I forgot to include a check for CFML based comments &lt;!--- ---&gt;. I'll add this later). His wrote the script using PHP and with his permission I created a ColdFusion <acronym title="User Defined Function">UDF</acronym>. And the UDF is as follows:
+[code]<cfscript>
+/**
+* This function reads in a file with code and displays and formats the code nicely.
+* Modified/Adapted for ColdFusion by Greg Stewart
+* Rewritten based on original PHP function by Dunstan Orchard (http://www.1976design.com/).
+*
+* @param fName 	 			The file to parse.
+* @return output 			The formatted xHTML code view.
+* @author Greg Stewart (gregs(at)tcias.co.uk)
+* @version 1, August 5, 2004
+*/
+function codeTransform (fName) {
+var output =  "<ol class='code'>";
+var linecount = 0;
+var tabCount = "";
+var comnt = "";
+var class = "";
+var multiLineCmnt = 0;
+
+fileReader = createObject("java", "java.io.FileReader");
+fileReader = fileReader.init(fName);
+lineReader = createObject("java","java.io.LineNumberReader");
+lineReader = lineReader.init(fileReader);
+// Read first line, if any into variable line
+line = lineReader.readLine();
+
+while (isDefined("line")) {
+lineCount = lineCount + 1;
+// convert tags to safe entitiies for display
+line = HTMLEditFormat(line);
+// find out how many tabs (based on FindOccurences() by Ray Camden from cflib.org)
+tabCount = Len(line) - Len(Replace(line,"#chr(9)#","","ALL")) / len("#chr(9)#");
+// set the style for tabs
+if (tabCount gt 0) {
+tabCount = "tab" & tabCount;
+} else {
+tabCount = "";
+}
+// now remove the tabs
+line = Replace(line,"#chr(9)#","","ALL");
+
+// let's deal with comments
+slashSlashPos = REFind("^//",line, 1, "true");
+slashStarPos = REFind("/\*",line, 1, "true");
+starSlashPos = REFind("\*/",line, 1, "true");
+
+if (multiLineCmnt neq 1) {
+if (slashSlashPos.pos[1] neq 0) {
+comnt = "cmnt";
+multiLineCmnt = 0;
+} else {
+comnt = "";
+multiLineCmnt = 0;
+}
+
+if (slashStarPos.pos[1] neq 0) {
+comnt = "cmnt";
+if (starSlashPos.pos[1] neq 0) {
+multiLineCmnt = 0;
+} else {
+multiLineCmnt = 1;
+}
+}
+}
+
+if (starSlashPos.pos[1] neq 0) {
+comnt = 'cmnt';
+multiLineCmnt = 0;
+}
+// build up the class
+if ((tabCount neq "") AND (comnt neq "")) {
+
+// set the style for both tabs and comments
+class = "tabCount" & & " comnt";
+} else if ((tabCount neq "") OR (comnt neq "")) {
+// or for just tabs or comments
+class = "tabCount&amp;comnt&amp;"""";
+}
+// Process the variable line
+if (line neq "") {
+output = output & "<li class='code'> & line & "</li>";
+} else {
+output = output & "<li class='''></li>";
+}
+// Read the next line, if any
+line = lineReader.readLine();
+}
+output = output &  "</ol>";
+return output;
+}
+// call the function
+writeOutput(codeTransform("/path/To/File/To/Display/file.name"));
+[/code]
+
+I'll start using this for my code display once I figure out how to integrate PHP and CFML.

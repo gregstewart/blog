@@ -1,0 +1,17 @@
+---
+layout: post
+title: Getting CFMX to sleep
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+I thought this was quite neat and thanks to Ryan Duckworth for posting it (admittedly quite a while back now). I simple way to get CFMX to sleep for a few cycles (well 5 minutes in this example):
+
+[code]<cfset createObject('java',
+'java.lang.Thread').sleep(300000) />[/code]
+
+He also stated that it's no inefficient a process, because:
+
+"A java thread (which ColdFusion code is converted to) is doing a NOP (no operation) procedure during a java Sleep command which causes no inefficiency.  The multi-processing nature of the CPU handles this functionality for you and will use those CPU cycles with other requests during the sleep."

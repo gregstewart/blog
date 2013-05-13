@@ -1,0 +1,45 @@
+---
+layout: post
+title: ! 'JavaScript: Using Regular Expressions to search and replace (IE4)'
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p class="one">As part of a project I wanted to grab the form field name and use it to display error messages. No problem there, but as most of you know form field names can at times be rather cryptic so I decided on choosing a naming convention that would allow me to use Regular Expressions to strip out the following information: required, field name and the error message to be displayed. The format for I choose looked like this: <b><i>r_field#_?Your_error_message?</b></i>, where you use <b>r_</b> to indicate required and <b>o_</b> for optional. <b>Field#</b> is used to give the field name a unique value. The last bit is pretty straight forward between the single quotes you store the error message you want displayed.</p>
+<p class="one">In the following I will talk you through writing a script that extrapolates the error message, replaces the &quot;_&quot; with a space, removes the single quotes and writes the error message to the page. Ready? Well let?s take a look at the whole script:</p>
+
+<p class="one"><i>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;<br />
+&lt;html&gt;<br />
+&lt;head&gt;<br />
+&lt;title&gt;Example match and replace&lt;/title&gt;<br />
+&lt;script language="JavaScript1.2"&gt;<br />
+function strip(f) {<br />
+&nbsp;&nbsp;&nbsp;for (var i=0;i&lt;f.length;i++) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e = f.elements[i];<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var ar = e.name.match(/(w+)?([^# ]*)/);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var str = RegExp.$2.replace(/_|'/g, ' ');<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(((e.type == "text") || (e.type == "textarea")) &amp;&amp; !e.optional) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ((e.value == null) || (e.value == "")) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichEl = eval("document.all.elField" + i);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichEl.innerHTML = str;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;return false;<br />
+}<br />
+&lt;/script&gt;<br />
+&lt;/head&gt;<br />
+&lt;body&gt;<br />
+&lt;form name="form1" action="" method="post" enctype="multipart/form-data" onsubmit="return strip(this);"&gt;<br />
+&lt;input type="Text" name="r_test1_'test_1'" size="25"&gt;&nbsp;&nbsp;&lt;SPAN ID="elField0"&gt;&lt;/SPAN&gt;&lt;br&gt;<br />
+&lt;input type="Text" name="r_test2_'test_2'" size="25"&gt;&nbsp;&nbsp;&lt;SPAN ID="elField1"&gt;&lt;/SPAN&gt;&lt;br&gt;<br />
+&lt;input type="Submit" name="sub_but_2" value="Submit"&gt;&nbsp;&nbsp;&lt;SPAN ID="elField2"&gt;&lt;/SPAN&gt;<br />
+&lt;/form&gt;<br />
+&lt;/body&gt;<br />
+&lt;/html&gt;</i></p>
+<p class="one">Not too long is it? Ok the form is pretty standard and the JavaScript function strip(this) is called once the form is submitted. I also appended a &lt;span&gt; to each form field as this is where the error message is going to be displayed (should an error occur).</p>
+<p class="one">Now onto the script, first we start off by looping over all the form elements. Next to reduce typing I declared a variable <b><i>e</i></b> that stores the individual form element for each loop. Next I broke down the field name (<b><i>e.name</i></b>) using the <b>match()</b> function and storing the substrings. As a result the error message gets stored in <b><i>RegExp.$2</i></b> [RegExp.$# is a property associated with Regular Expressions that are available to the developer, for more information follow the link on the right hand side on Regular Expressions]. Moving along, next we are going to use the <b>replace()</b> function on <b><i>RegExp.$2</i></b> and remove the &quot;_&quot; and the single quotes. To this end we define a pattern to be replaced as follows: <b><i>/_|?/g</i></b>. and this pattern will be replaced with: ? ? (that?s right a blank space). The result of this we store in a variable called <b><i>str</i></b>. </p>
+<p class="one">The next step in the script involves checking the content of the form fields, in this case for each form element it checks whether or not the form element type is either a text field or a text area field and whether or not it?s optional (<i>not used in this script</i>). If the field is of type text, the script then checks to see if these have been completed or not. In our example all fields are required, so leaving them blank and submitting the form will result in an error message being generated. At this stage we need to figure out where the error message is going to appear, this is where the &lt;span&gt; comes in. Each tag has an ID called <b><i>elField#</i></b>, where # is a sequential number starting with zero, hence the first form element will have the following &lt;span&gt; ID: <b><i>elField0</i></b>. Using the loop value <b><i>i</i></b> we evaluate the position which for the first element is <b>0</b> and set <b><i>whichEl</i></b> to that value. Next we tell the script to write (<b><i>whichEl.innerHTML</i></b>) the error message to that &lt;span&gt; ID.</p>
+<p class="one">You may be wondering why I included the Regular Expression part of the script at the top of the script and not when it is required such as when a field is left blank, which would have been more efficient, however I was more concerned with page weight and didn?t want to have to include the same statement over and over again for each type of form field. Based on that assumption maybe I could create a function and just pass the field name at that stage to the function, this would both cut down on space and make for a more efficient program. I?ll let you know. In the meantime I hope you find this useful.</p>

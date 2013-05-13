@@ -1,0 +1,22 @@
+---
+layout: post
+title: De-compressing files in Linux
+tags:
+- ! '*nix'
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+<p>One of the most frequent operations you'll carry out when running or configuring a Linux box is to install patches, loads of them. So you'll frequently be downloading files from the Internet and in almost all cases they will be in a compressed format. The files will usually end in <b>.tar.gz</b> and have been compressed using <em>Gzip</em> and <em>Tar</em>. This document will show you how to extract the content of those files.</p>
+
+<p>Files ending in <strong>.gz</strong> have been compressed using <em>Gzip</em> (for more information, please consult the man page [<em>man gzip</em>]. To start the de-compression process, you need to type, from the command prompt:</p>
+<p>gunzip &lt;filename&gt;.tar.gz</p>
+<p>Using the above example this will leave you with a <em>&lt;filename&gt;.tar</em>. Right now you still can't access the contents of the file and execute it. So you'll need to un-tar the file or un-pack, this is done by entering the following command from the command line:</p>
+<p>tar -xvf &lt;filename&gt;.tar</p>
+<p>This extracts the contents of the file, recreates the directory structure and displays the processing. For a full listing of the switches and their functions please refer to the man pages (<em>man tar</em>). You can now change to the directory and execute the patch or application.</p>
+
+<h4>Update</h4>
+<p>Just figured out a really good way to carry out the above operations in one step:</p>
+<p>cat &lt;filename&gt;.tar.gz | gunzip | tar xf -</p>

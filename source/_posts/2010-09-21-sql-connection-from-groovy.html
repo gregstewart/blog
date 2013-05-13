@@ -1,0 +1,29 @@
+---
+layout: post
+title: SQL connection from Groovy
+tags: []
+status: draft
+type: post
+published: false
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+In order to connect to your SQL server you will first need to download JTDS, which you can grab from <a href="http://jtds.sourceforge.net/faq.html">here</a>. Once downloaded just copy it /usr/share/groovy/lib or if you can always create a symbolic link:
+
+[code]
+sudo ln -s /download/destination/path/jtds-1.2.5-dist/jtds-1.2.5.jar /your/destination/jtds-1.2.5.jar
+[/code]
+
+To get started, just open up your groovyConsole and import and create the connection string:
+
+[code]
+import groovy.sql.Sql
+sql = Sql.newInstance("jdbc:jtds:sqlserver://ipaddress:port/database;instance=instanceName", "username", "password", "net.sourceforge.jtds.jdbc.Driver")
+[/code]
+
+If you don't uses SQL server instances, just leave off 
+
+[code]
+;instance=instanceName
+[/code]

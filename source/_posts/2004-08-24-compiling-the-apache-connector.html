@@ -1,0 +1,16 @@
+---
+layout: post
+title: Compiling the apache connector
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+A while back I blogged about my experiences in setting up BlueDragon on my Debian server and one of the outstanding issues was the following Apache error message:
+
+<em>[Thu Jul 1 20:23:39 2004] [warn] Loaded DSO /usr/lib/apache/1.3/mod_servletexec.so uses plain Apache 1.3 API, this module might crash under EAPI! (please recompile it with -DEAPI)</em>
+
+This wasn't a critical error and everything was running happily, so I was quite happy to ignore for a while. A few days back there was a small thread on CF-Talk about a connector problem with CFMX and it was exactly the same error message. Steven Erat pointed to an old tech note that directed the user to re-compile the Apache module. You can find <a href="http://www.talkingtree.com/blog/index.cfm?data=20031009#2334D010-45A6-2844-7%3Cbr%3E%3C/a%3E6B7406437B04BBF" title="Easy To Use Script To Build CFMX Apache Connector Module From Source">his instructions here</a> and he also pointed to <a href="http://www.cfdev.com/apache/apache2cfmx.cfm" title="Compiling and Installing the Apache module for CFMX from source code">this resource</a> which had some good instructions on re-compiling the module.
+
+I'll keep you posted on how I get on.

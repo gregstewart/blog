@@ -1,0 +1,52 @@
+---
+layout: post
+title: Testing suggestions
+tags: []
+status: draft
+type: post
+published: false
+meta: {}
+---
+<p>Best practive: testing one user at the beginning better than 50 at the end (Steve Krug)</p>
+
+<p>A suggestiong for regulating your day: half hour at least, but ideally an hour before the ened of the day, spend it testing and bug logging</p>
+
+<p>get the client involved in testing as early as possible</p>
+
+<p>Consider testing competitors sites to see what works and doesn't (both in a functional and usability sense)</p>
+
+<p>I like this article so much I decided to keep it close at heart where I can always review to remind me of how to apply optimisation techniques.</p>
+
+<p>Site Optimization Tutorial<br />
+Lesson 4<br />
+by Paul Boutin</p>
+
+<p>Page 1 ? Site Optimization ? Lesson 4 </p>
+--------------------------------------------------------------------------------
+<p>How to Time Sites</p>
+<p>Now test your own site and all your bench mark sites for download times, and make copious charts of the results. I've tried different methodologies for timing page downloads, and finally hit upon the best trade-off between time required and accuracy of results. To get meaningful comparisons with a minimum amount of effort, use this method:</p>
+
+<p>First, create a list of pages to compare. Then sit down at your test computer, clear the browser cache (unless the test calls for having certain images in cache), and load the first page. Record the time lapse. (I use my trusty dual-button, quad-mode Precise Synchrosport 910 stopwatch). Clear the cache, reset your stopwatch, and load the second page. Clear the cache and load the third, etc. After loading each page once, start over with the first one and go through the list again. After enough trials (I usually do five to seven), throw out the high and low times for each page to account for network hiccups or human error. The three to five remaining times are usually very close together. Compare the average for each site, like this: </p>
+
+<p>Site Trial 1 Trial 2 Trial 3 Trial 4 Trial 5 Trial 6 Average
+HotBot 4.68 7.25 9.91 1.18 6.50 0.92 4.90
+AltaVista 1.30 1.72 9.84 8.38 9.95 0.75 5.31
+Google 1.79 9.71 9.05 3.11 1.01 0.88 3.74 </p>
+
+<p>Why don't I time the first page five times, then the second five times, then the third? Because on the Internet, server peaks and network traffic jams come and go from second to second and minute to minute. By interleaving the contestants' trials, I evenly distribute the problems (whether at one of the sites, on my ISP, or somewhere in between) throughout all the data.</p>
+
+<p>Even then, any site can have a "bad hair day" (when its performance is unusually poor). So you need to perform comparative timings repeatedly, at different times of the day, different times of the week, and different weeks during your project. This also keeps you in-the-know about the competition's changes and improvements ? sometimes a site that was slow in April starts kicking butt in May.</p>
+
+<p>Some developers use automated timing programs to measure or estimate page download time. But these programs only measure file size, or at best they time HTML transfers from the server. This completely ignores browser-specific and OS-specific performance issues, which are a big part of the wait perceived by the people looking at your site.</p>
+
+<p>Those automated programs that tell you how long your page will take to download over a 14-KB modem, or measure the efficiency of your HTML, are nothing compared to a rigorous human tester. Use a real, live person to time what is actually seen on the screen, because that's what you're really trying to improve. My team keeps charts of both automated measurements and real-world tests. The automated results are almost always wrong about which page performs the best for a human reader. The money I spent on those Synchrosport 910 stopwatches for everyone has more than paid off.</p>
+
+<p>Test Early and Often </p>
+
+<p>I have my teams perform timing tests as soon as the first prototype of a site's pages is ready. There's never a better time to catch a problem in the making than right away. You also want to detect superior performance at the soonest possible moment so it can be leveraged or traded off as the project progresses. My teams also validate their HTML from day one through post-launch. That way, they don't end up reorganizing a mess of tags or nested tables right before launch, affecting performance or causing new bugs.</p>
+
+<p>Speed Up Your Server</p>
+
+<p>Of course, it's not just fast HTML that makes a site race. It's also fast servers and a fast network connection. Most webmonkeys aren't in a position to buy their own network connections and machine rooms, but that's not a problem. Let the experts do it instead: investigate co-location sites both in your area and in other geographic areas to find the one that's the best at serving your content to its intended audience. A good way to do this is by looking at the sites they already host and talking to the people who built and work with those sites.</p>
+
+<p>If you're hosting your own site, make sure your server software is tuned for speed. Dean Gaudet's column on tuning the Apache HTTPD server is an oldie, but still a must-read. Right now, we're still throwing wrenches in our own servers, but we figure we'll be the world experts in a few more years.</p>

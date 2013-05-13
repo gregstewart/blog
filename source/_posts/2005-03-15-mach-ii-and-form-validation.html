@@ -1,0 +1,111 @@
+---
+layout: post
+title: mach-ii and form validation
+tags: []
+status: draft
+type: post
+published: false
+meta: {}
+---
+I have just completed my 4th mach-ii application at work and once and for all I wanted to jot down, how I implemented the validation of submitted form data.
+
+For starters you need the validateFormObject filter which you can find <a href="http://cvs.sourceforge.net/viewcvs.py/*checkout*/openxcf/machii/filters/ValidateFormObject.cfc?rev=HEAD" title="Openxcf: ValidateFormObject">here</a> and extract it to your applications filter folder.
+
+You'll need to add/register this Filter with your mach-ii.xml file as follows (bearing in mind that the type is the full qualified path to validateFormObject.cfc):
+
+[code]<event-filter name="validateFormObject" type="filters.ValidateFormObject"></event-filter>[/code]
+
+OK so here is how it works a user submits the form, a new event is announced, in this example <strong>doAdd</strong>, and this event looks a little as follows in my mach-ii.xml.
+
+[code]<event-handler event="doAdd" access="public">
+  <event-bean name="udvBean" type="model.udv.udv" fields="udvalue,udfvlst,uddesc" />
+  <filter name="validateFormObject">
+    <parameter name="formObjectName" value="udvBean"/>
+    <parameter name="invalidEvent" value="formHasInvalidValues"/>
+    <parameter name="clearEventQueue" value="true"/>
+  </filter>
+</event-handler>
+
+<notify listener="UDVListener" method="addItem">
+</notify>[/code]
+
+So the even is announced and populates a bean using the &lt;event-bean&gt; declaration. This beans has getters and setters for all of the fields passed in, i.e. udvalue,udfvlst,uddesc. It also has a couple of getter and setter methods for a structure of errors and also a validate method. Below is a shortened snapshot of the bean in question.
+
+[code]<cfcomponent displayname="udv component" hint="I hold all the UDV content" output="false">
+<cffunction name="init" access="public" displayname="Initialise" hint="I initialise the UDV component" returntype="udv" output="false">
+<cfargument name="udvalue" required="false" displayname="UD Value" hint="I hold the value for UD value" type="string"/>
+<cfargument name="udfvlst" required="false" displayname="UDF Value List" hint="I hold the value for UDF value list" type="string"/>
+<cfargument name="uddesc" required="false" displayname="UD Description" hint="I hold the value for UD Description" type="string"/>
+  <cfscript>
+    variables.instance = structNew();
+    setUDValue(arguments.udvalue);
+    setUdfvlst(arguments.udfvlst);
+    setUddesc(arguments.uddesc);
+    variables.myErrors = structNew();
+  </cfscript>
+<cfreturn this/>
+
+</cffunction>
+<!--- GETTERS/SETTERS --->
+<cffunction name="getUDValue" access="public" returntype="string" output="false" hint="I return udvalue">
+<cfreturn variables.instance.UDValue/>
+</cffunction>
+
+<cffunction name="setUDValue" access="public" returntype="void" output="false" hint="I return udvalue">
+  <cfargument name="udvalue" type="string" required="true">
+  <cfset variables.instance.udvalue="arguments.udvalue">
+</cffunction>
+... more getter and setters ...
+
+<cffunction name="getErrors" access="public" returntype="struct" output="false">
+  <cfreturn variables.instance.myErrors/>
+</cffunction>
+<cffunction name="setErrors" access="package" returntype="void" output="false">
+  <cfargument name="myErrors" type="struct" required="true"/>
+  <cfset variables.instance.myerrors=arguments.myErrors/>
+</cffunction>
+
+<!--- VALIDATE --->
+<cffunction name="validate" access="public" output="false" returntype="boolean" hint="I validate this bean">
+  <cfset var formerrors="structNew()"/>
+  <cfset var isvalid="true"/>
+  <cfif>
+    <cfset formerrors.uddesc="UD value description can't be empty"/>
+    <cfset isvalid="false"/>
+  </cfif>
+  <cfif>
+    <cfset formerrors.udvalue="UD value can't be empty" />
+    <cfset isvalid="false"'/>
+  </cfif>
+<cfreturn isValid/>
+</cffunction>
+</cfcomponent>[/code]
+
+The validate method is the one that validateFormObject will call. Inside this method you can then do whatever type of validation you need. I know that the above could have been done by using another built-in filter (namely RequiredFieldsFilter), but this is just an example of using this filter. Here we carry out our validation and populate a structure with our errors (using <strong>setErrors()</strong>). The filter itself expects to receive a boolean value so if any errors were encountered we set the isValid flag to false (by default it is set to true) and return that, which causes the event queue to be cleared and a new event to be announced: formHasInvalidValues.
+
+[code]<event-handler event="formHasInvalidValues" access="private">
+  <view-page name="showFormErrors" contentkey="request.pageContent.mainBody"/>
+  <announce event="layoutPage" copyeventargs="true"/>
+</event-handler>[/code]
+
+That event simply spits out the errors that were generated to a page.
+
+<code> </code>
+
+Sorry the form you just submitted contained the following errors:
+
+<cfscript>
+tmpyStruct = request.event.getArg('udvBean').getErrors();
+WriteOutput("
+<ol>");
+for (idx in tmpyStruct) {
+WriteOutput("
+	<li>"&amp;tmpyStruct[idx]&amp;"</li>
+");
+}
+WriteOutput("</ol>
+");
+<a href="http://gregs.teacupinastorm.com/wp-admin/%3Ccfoutput%3E#cgi.HTTP_REFERER#%3C/cfoutput%3E">Click here</a> to return to previous page.
+</cfscript>[/code]
+
+If on the other hand no error were encountered, true is returned and processing continues by requesting the addItem method from our listener.

@@ -1,0 +1,95 @@
+---
+layout: post
+title: Setting up additional instances
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>This assumes that you already have Apache, JRun and one instance up and running. Basically it's a short (check)list:</p>
+<ol>
+<li>create the instance using the JRun Administrator</li>
+<li>edit the Apache httpd.conf file and add a new virtual host, restart the web server and test virtual host (see listing 1)
+	<ol>
+		<li>if developing locally you may need to edit your hosts file to reflect the server/host name</li>
+	</ol>
+</li>
+<li>copy the default CFusion-ear installation over into the {install path}\JRun4\servers\{instance name}\</li>
+<li>delete the default-ear (why they [cfusion and default] share the same root context, which causes conflicts)</li>
+<li>start the instance, which will now deploy the CFusion-ear (I prefer the command line over the JMC: {path to JRun}>jrun -start yourInstanceName)</li>
+<li>Back to the JMC and remove/un-deploy the Flash Remoting EAR (aka flashgateway.ear) from J2EE components>>Enterprise Applications</li>
+<li>Still in the JMC, make a note of the Proxy Port (e.g. 51002), check that Proxy Service is running (on Apache this has a tendency to be set to initialised the first time you fire up JRun, so just click start for the Proxy Service action)</li>
+<li>create a folder in {install path}\JRun4\lib\wsconfig (e.g. vh2, but it can be whatever you like)</li>
+<li>Add the lines from Listing 2 to your virtual host config, changing the Bootstrap port to reflect the Proxy Service port you just recorded (See Listing 3 for complete listing)</li>
+<li>restart apache</li>
+<li>restart JRun</li>
+<li>test cfml page with code in listing 4, which should reflect the newly created instance name</li>
+<li>Next create a separate jvm.config file, where we'll substitute all references to default cfusion instance with our instance name (listing 5)</li>
+<li>Stop and then re-start the JRun instance with the following command: {install path}\JRun4\bin>jrun -start -config {you jvm.config file name} {your instance name}</li>
+<li>test this by reviewing the System Information on the CF Administrator the Java Class Path should contain references to your instances server path.</li>
+</ol>
+<h5>Listing 1</h5>
+<p><em>&lt;VirtualHost *&gt;<br />
+    ServerAdmin yourName@yourDomain.com<br />
+    DocumentRoot {Path to webroot}/www/{your website folder}/<br />
+    ServerName www.yourDomain.com<br />
+    ErrorLog logs/yourDomain.com-error_log<br />
+    CustomLog logs/yourDomain.com-access_log common<br />
+&lt;/VirtualHost&gt;</em></p>
+
+<h5>Listing 2</h5>
+<p><em>JRunConfig Serverstore "{install path}/JRun4/lib/wsconfig/vh2/jrunserver.store"<br />
+JRunConfig Bootstrap 127.0.0.1:51002</em></p>
+
+<h5>Listing 3</h5>
+<p><em>&lt;VirtualHost *&gt;<br />
+    ServerAdmin yourName@yourDomain.com<br />
+    DocumentRoot {Path to webroot}/www/{your website folder}/<br />
+    ServerName www.yourDomain.com<br />
+    ErrorLog logs/yourDomain.com-error_log<br />
+    CustomLog logs/yourDomain.com-access_log common<br />
+    JRunConfig Serverstore "{install path}/JRun4/lib/wsconfig/vh2/jrunserver.store"<br />
+    JRunConfig Bootstrap 127.0.0.1:51002<br />
+&lt;/VirtualHost&gt;</em></p>
+
+<h5>Listing 4</h5>
+<p><em>&lt;cfscript&gt;<br />
+	jr = CreateObject("java","jrunx.kernel.JRun");<br />
+	servername = jr.getServerName();<br />
+	writeOutput("<p>JRun Server Name: " & servername & "</p>");<br />
+&lt;/cfscript&gt;</em></p>
+
+<h5>Listing 5</h5>
+<p>Replace the instance name highlighted in bold with your instance name</p>
+<p><em>#<br />
+# VM configuration<br />
+#<br />
+# Where to find JVM, if {java.home}/jre exists then that JVM is used<br />
+# if not then it must be the path to the JRE itself<br />
+java.home={Install path}/JRun4/runtime/jre<br />
+#<br />
+# If no java.home is specified a VM is located by looking in these places in this<br />
+# order:<br />
+#<br />
+#  1) bin directory for java.dll (windows) or lib/<arch>/libjava.so (unix)<br />
+#  2) ../jre<br />
+#  3) registry (windows only)<br />
+#  4) JAVA_HOME env var plus jre (ie $JAVA_HOME/jre)<br />
+#<br />
+<br />
+# Arguments to VM<br />
+java.args=-server -Xmx512m -Dsun.io.useCanonCaches=false -Xbootclasspath/a:"{application.home}/servers/<strong>{yourInstanceName}</strong>/cfusion-ear/cfusion-war/WEB-INF/cfusion/lib/webchartsJava2D.jar" -XX:MaxPermSize=128m -XX:+UseParallelGC -DJINTEGRA_NATIVE_MODE -DJINTEGRA_PREFETCH_ENUMS<br />
+<br />
+#<br />
+# commas will be converted to platform specific separator and the result will be passed<br />
+# as -Djava.ext.dirs= to the VM<br />
+java.ext.dirs={jre.home}/lib/ext<br />
+<br />
+#<br />
+# where to find shared libraries<br />
+java.library.path={application.home}/servers/<strong>{yourInstanceName}</strong>/cfusion-ear/cfusion-war/WEB-INF/cfusion/lib,{application.home}/servers/<strong>{yourInstanceName}</strong>/cfusion-ear/cfusion-war/WEB-INF/cfusion/jintegra/bin,{application.home}/servers/<strong>{yourInstanceName}</strong>/cfusion-ear/cfusion-war/WEB-INF/cfusion/jintegra/bin/international,{application.home}/servers/<strong>{yourInstanceName}</strong>/cfusion-ear/cfusion-war/WEB-INF/cfusion/lib/_nti40/bin<br />
+system.path.first=false<br />
+<br />
+# JVM classpath<br />
+java.class.path={application.home}/servers/lib,{application.home}/servers/<strong>{yourInstanceName}</strong>/cfusion-ear/cfusion-war/WEB-INF/cfusion/lib/cfusion.jar,{application.home}/servers/<strong>{yourInstanceName}</strong>/cfusion-ear/cfusion-war/WEB-INF/cfusion/lib,{application.home}/lib/jrun.jar,{application.home}/lib</em></p>

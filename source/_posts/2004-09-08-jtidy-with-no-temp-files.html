@@ -1,0 +1,88 @@
+---
+layout: post
+title: jTidy with no temp files
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Well I had been hoping that someone would come up with a neater way of using jTidy and <a href="http://gregs.teacupinastorm.com/wp-admin/" title="Mark Woods">Mark Woods</a> did(check out <a href="http://www.speckcms.com/" title="speck CMS">his CMS</a> is you have a moment). He dropped me a line today outlining how he built a custom tag that calls a class. Based on his tag I modified my function to dispense with creating the temporary files and rather use a ByteArrayInputStream and a ByteArrayOutputStream.
+
+All I needed to then do was find an example of using <a href="http://www.cfmentor.com/code/index.cfm?action=script&amp;id=137" title="xslTransformString">ByteArrayInputStream</a> and <a href="http://www.markme.com/cantrell/archives/004175.cfm" title="Byte Arrays and ColdFusion">ByteOutputStream</a> and the code was complete.
+<h5>UPDATE</h5>
+There was a slight problem with BlueDragon and the ByteArrayOutputBuffer. Andrew Wu from <a href="http://www.newatlanta.com/" title="New Atlanta Home">NewAtlanta</a> found the problem, apparently:
+
+<quote>...outx is a ByteArrayOutputStream which BlueDragon doesn't automatically treat as a String.</quote>
+
+So by simply adding <strong>outstr = outx.toString();</strong>, before stripping the output of it's HTML header, the problem was resolved. Thanks Andrew! The code has been update accordingly.
+
+<em>&lt;cffunction name="makexHTMLValid" displayname="Tidy parser" hint="Takes a string as an argument and returns parsed and valid xHTML" output="true"&gt;
+&lt;cfargument name="strToParse" required="true" type="string" default="" /&gt;
+&lt;cfscript&gt;
+/**
+* This function reads in a string, checks and corrects any invalid HTML.
+* By Greg Stewart
+*
+* @param strToParse 	 		The string to parse (will be written to file).
+
+*													accessible from the web browser
+* @return returnPart
+* @author Greg Stewart (gregs(at)tcias.co.uk)
+* @version 1, August 22, 2004 </em>
+
+<em>		* @version 1.1, September 09, 2004
+* with the help of Mark Woods this UDF no longer requires temp files and only accepts
+
+* the string to parse
+*/</em>
+
+<em>		var returnPart = ""; // return variable
+
+parseData = trim(arguments.strToParse);</em>
+
+<em>		// jTidy part
+// BD free version
+pathToTidy = "/usr/local/NewAtlanta/BlueDragon_Server_61/lib/ext/Tidy.jar";
+// Create an instance of java.net.URL for passing to the URLClassLoader
+URLObject = createObject('java','java.net.URL');
+// Initialize the object with the jar file
+URLObject.init("file:" &amp; pathToTidy);
+// Create an Array and add our URLObject to it
+arr[1] = urlobject;
+// Create and the URLClassLoader and pass it the array containing our path
+loader = createObject('java','java.net.URLClassLoader');
+loader.init(arr);
+// Use our new class loader to load the DOMConfigurator class
+jTidy = loader.loadClass("org.w3c.tidy.Tidy").newInstance();</em>
+
+<em>		// CFMX/J2EE
+// jTidy = createObject("java","org.w3c.tidy.Tidy");</em>
+
+<em>		jTidy.setQuiet(false);
+jTidy.setIndentContent(true);
+jTidy.setSmartIndent(true);
+jTidy.setIndentAttributes(true);
+jTidy.setWraplen(1024);
+jTidy.setXHTML(true);</em>
+
+<em>		// create the in and out streams for jTidy
+readBuffer = CreateObject("java","java.lang.String").init(parseData).getBytes();
+inP = createobject("java","java.io.ByteArrayInputStream").init(readBuffer);
+//ByteArrayOutputStream
+outx = createObject("java", "java.io.ByteArrayOutputStream").init();</em>
+
+<em>		// do the parsing
+
+jTidy.parse(inP,outx);
+// close the stream
+// outx.close();
+outstr = outx.toString();</em>
+
+<em>		// ok now strip all the header/body stuff
+startPos = REFind("&lt;body&gt;", outstr)+6;
+endPos = REFind("&lt;/body&gt;", outstr);
+returnPart = Mid(outstr, startPos, endPos-startPos);
+&lt;/cfscript&gt;
+&lt;cfreturn returnPart /&gt;
+&lt;/cffunction&gt;</em>

@@ -1,0 +1,18 @@
+---
+layout: post
+title: creating a new file using java
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+A while back I wrote about creating a <a href="http://gregs.teacupinastorm.com/cold_fusion/cfmx_wrapper_for_java_file_reader.php" title="check out: CFMX wrapper for java file reader">CFMX wrapper for java file reader</a>, which I used to read files in from within &lt;cfscript&gt;. However I wondered how you'd go about creating a new file and by creating and <strong>java.io.File</strong> object and dumping I spotted a method called <strong>createNewFile()</strong>. Here is the snippet that creates the object and the new file:
+[code]// create the file stream
+filename = "/absolutePath/toYourFile";
+jFile = createobject("java", "java.io.File");
+jFile.init(filename);
+// the file doesn't exist so use the file stream to create it
+jFile.createNewFile();[/code]
+
+This also works on BlueDragon.

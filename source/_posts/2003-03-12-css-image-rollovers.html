@@ -1,0 +1,111 @@
+---
+layout: post
+title: CSS image rollovers
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Usually when I build a page that uses image rollovers I use a small and simple Macromedia generated script, that include in my page as an external JavaScript file called "_roll_over.js". The contents of that file is as follows:</p>
+<p><em>&lt;!--<br />
+function MM_findObj(n, d) { //v3.0<br />
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))&gt;0&&parent.frames.length) {<br />
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}<br />
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i&lt;d.forms.length;i++) x=d.forms[i][n];<br />
+  for(i=0;!x&&d.layers&&i&lt;d.layers.length;i++) x=MM_findObj(n,d.layers[i].document); return x;<br />
+}<br />
+function MM_swapImage() { //v3.0<br />
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i&lt;(a.length-2);i+=3)<br />
+   //alert(MM_findObj(a[i]));<br />
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}<br />
+}<br />
+function MM_swapImgRestore() { //v3.0<br />
+  var i,x,a=document.MM_sr; for(i=0;a&&i&lt;a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;<br />
+}<br />
+<br />
+function MM_preloadImages() { //v3.0<br />
+ var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();<br />
+   var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i&lt;a.length; i++)<br />
+   if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}<br />
+}<br />
+<br />
+//--&gt;</em></p>
+<p>Next I'd proceed to include the file in the page, pre-load the images required and set the appropriate onMouseOver event for the element that requires a rollover action. As an example here is the sample source of the Sunbeam site:</p>
+<p><em>&lt;html&gt;<br />
+&lt;head&gt;<br />
+	&lt;title&gt;Site name &gt;&gt; Home&lt;/title&gt;<br />
+<br />
+  &lt;link rel="stylesheet" type="text/css" href="/css/default.css"&gt;<br />
+  &lt;script language="JavaScript1.2" type="text/javascript" src="/js/_roll_over.js"&gt;&lt;/script&gt;<br />
+&lt;/head&gt;<br />
+<br />
+&lt;body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0" class="ban_data" onLoad="return MM_preloadImages('/images/sb_home_nav_prod_o.gif', '/images/sb_home_nav_serv_o.gif', '/images/sb_home_nav_about_o.gif', '/images/sb_home_nav_media_o.gif');"&gt;<br />
+<br />
+&lt;a href="/products/index.cfm?home_id=3" onMouseOut="MM_swapImgRestore();" onMouseOver="MM_swapImage('SB_nav_1','','/images/sb_home_nav_prod_o.gif','SB_txt','','/images/sb_home_txt_prod.gif',1);"&gt;&lt;img name="SB_nav_1" src="/images/sb_home_nav_prod.gif" width="186" height="27" alt="Product centre" border="0" /&gt;&lt;/a&gt;<br />
+&lt;/body&gt;<br />
+&lt;/html&gt;</em></p>
+<p>And this set up worked rather well, as it,  as far as I am aware, works on all browsers. However times are a changing and just recently I noticed that sites were adopting a style sheet based roll over mechanism. Totally makes sense, and hence I wanted to know what made it happen. So off I went and pulled apart <a href="http://www.zeldman.com">Zeldman's homepage</a>. And below is a code sample page making use of the CSS rollover technique</p>
+<p><em>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;<br />
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"&gt;<br />
+&lt;head&gt;<br />
+  &lt;title&gt;Css rollover&lt;/title&gt;<br />
+  &lt;meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /&gt;<br />
+  &lt;meta name="DESCRIPTION" content="" /&gt;<br />
+  &lt;meta name="KEYWORDS" content="" /&gt;<br />
+<br />
+  &lt;!-- style sheet--&gt;<br />
+  &lt;style&gt;<br />
+  &lt;!--<br />
+   /* Totally ripped from http://www.zeldman.com/ <br />
+    even the comments :)<br />
+   */ <br />
+   .rb {<br />
+    /* Opera uses this background for the rollover effect. */<br />
+  	 background: url(i/categories_btn_o.gif) no-repeat 1px;<br />
+   }<br />
+   #ic {<br />
+   	display: block;<br />
+   	padding: 0;<br />
+   	border: 1px solid #fff;<br />
+   	background: url(i/categories_btn.gif) no-repeat 1px; /* start hiding from macie\*/<br />
+   	background-position: 0px; /* stop hiding */<br />
+   	width: 100px;<br />
+   	height: 14px;<br />
+   	voice-family: "\"}\"";   /* Need we explain? */<br />
+   	voice-family: inherit;<br />
+   	width: 100px;<br />
+   	height: 14px; /* Actual values to overlap borders */<br />
+   	}<br />
+    html&gt;body #ic {<br />
+   	width: 100px;<br />
+   	height: 14px; /* Be nice to Opera */<br />
+  	}<br />
+   #ic {<br />
+  	 background-image: url(i/categories_btn.gif);<br />
+  	}<br />
+   a#ic:hover {<br />
+    background-image: url(i/categories_btn_o.gif);<br />
+    border: 1px solid #333;<br />
+   }<br />
+   .alt {<br />
+   	display: none;<br />
+   }<br />
+   --&gt;<br />
+  &lt;/style&gt;<br />
+&lt;/head&gt;<br />
+<br />
+&lt;body&gt;<br />
+&lt;div id="rb"&gt;&lt;a id="ic" href="" title="Categories"&gt;&lt;span<br /> class="alt"&gt;Categories&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;<br />
+&lt;/body&gt;<br />
+&lt;/html&gt;</em></p>
+<p>As stated in the teaser I am not too sure what is going here, but here is what I do know:</p>
+<ul>
+ <li>the class <strong>rb</strong> defined in the style sheet for the div tag uses the background image set here for the roll over (good comments eh??)</li>
+ <li>Now the id <strong>ic</strong> is set twice. Hmm?? The first instance helps define borders, border colours and size as well as setting the default background for this <em>id</em> to the my image.</li>
+ <li>And then they make use of the box model hack for IE 5 and above, so that the border displays properly.</li>
+ <li>No idea what html&gt;body#ic does, possibly some kind of inheritance?</li>
+ <li>However I know that a#ic:hover, is where the roll over action takes place and is very similar to normal roll over behaviour. You just specify the image to display when the mouse hovers, and change the background colour</li>
+ <li>The <strong>alt</strong> class is there for browsers that cannot render Style Sheets properly. This would result in nothing being displayed at all, but since older browsers don't understand style sheets, at least the span element will appear, thus giving the user the ability to still surf the site.</li>
+</ul>
+<p>I guess there is still a lot to learn about style sheets, but it's cool and web standards compliant. Just in case you were wondering why bothering trying to figure it out in the first place.</p>

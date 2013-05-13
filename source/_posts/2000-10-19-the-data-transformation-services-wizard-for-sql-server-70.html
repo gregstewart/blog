@@ -1,0 +1,23 @@
+---
+layout: post
+title: The data transformation services wizard for SQL Server 7.0
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>The data transformation services wizard for SQL Server 7.0</h3>
+<p class="1">Here I'll talk you through using the data transformation services (DTS) wizard, that comes with SQL Server 7.0. First I'll introduce you the capabilities of the tool and then show you how to access it. Then the document will contain a list of different migration types. It concludes with the the actual migration process and some comments about the limitations of the tool.</p>
+<p class="1">The DTS utility allows you to migrate data between different servers, say from 6.5 to 7.0 or from 7.0 to other applications such as MS Access or MS Excel. This transformation service is not restricted to just MS products, but also to or from dBase, Oracle or plain comma delimited text files. You access the services by selecting the <b>Import and Export Data</b> program from the SQL Server 7.0 menu. Once the dialogue opens, click <i>Next</i>. This takes you the dialogue where you specify the source of your data, i.e. where you want to move data from. This where the document branches of.</p>
+<p class="1"><b>Migration types:</b></p>
+<li><a href="http://www.armagossa.com/index.cfm?contentID=51">Access to SQL 7.0</a>
+<li>SQL 7.0 to SQL 7.0
+<li>SQL 7.0 to MS Excel
+<li>SQL 7.0 to text file
+<li><a href="http://www.armagossa.com/index.cfm?content_ID=57">Text file to Access (fixed field and no row delimiter)</a>
+
+<a name="return"></a><p class="1"><b>Setting it all in motion</b><br />
+After you have configured your database transformation, you can now turn your attention to either starting the migration in process immediately, creating a package for replication or scheduling it. To schedule your migration simply tick the box <i>Schedule DTS package for later execution</i> and configure the schedule by clicking on the button with <i>...</i> (please note that unless you un-tick the <i>Run immediately</i> box, your migration will take place after you complete the wizard). By clicking on the aforementioned button the dialogue you see in SQL server when you schedule tasks appears, allowing you to set the occurrence, frequency and duration. Make your selection and click <i>OK</i>. Scheduling the process automatically prompts you to save the package to either the SQL server, a repository or a file. Again make your selection, choosing the default, i.e. SQL Server, is a good idea.
+</p>
+<p class="1">If on the other hand you wish to run the package immediately, just leave the box <i>Run immediately</i> ticked. You can still save the package you still created, just check the box labelled <i>Save DTS Package</i>. Once you have done this click <i>Next</i> and you are practically done. Click on the finish button top set the whole thing in motion! This fires up the final dialogue, where you can watch the data transfer take place. Once it is completed you will be presented with a summary screen, outlining the either the success of the transfer or the errors. Click <i>OK</i> and then <i>Done</i> to complete the procedure.</p>

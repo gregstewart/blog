@@ -1,0 +1,34 @@
+---
+layout: post
+title: Embedded image
+tags:
+- ColdFusion
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+A client recently decided to start storing all of their images in a database and usually we would point the image source to a cfm page, where we'd do something like this:
+
+[code]
+
+request.uploadedPic = application.staffManager.getStaffImage(session.user.getId());
+context = getPageContext();
+context.setFlushOutput(false);
+response = context.getResponse().getResponse();
+out = response.getOutputStream();
+response.setContentType("image/jpeg");
+response.setContentLength(arrayLen(request.uploadedPic['staffPhoto'][1]));
+out.write(request.uploadedPic['staffPhoto'][1]);
+out.flush();
+response.reset();
+out.close();
+
+[/code]
+
+Which worked nicely until I read about some <a title="CFDocument performance" href="http://www.webapper.net/index.cfm/2007/2/18/CFDocument-performance">performance issues</a> with http calls and the cfdocument tag. Zac (yes his name pops up a lot in this blog), put me onto directly embedding the image into the source, like such:
+
+[code]<img src="data:image/jpeg;base64,&lt;cfoutput&gt;#BinaryEncode(request.uploadedPic['staffPhoto'][1],'Base64')#&lt;/cfoutput&gt;" alt="Embedded Image" />[/code]
+
+No need to make a http call to display the image anymore.

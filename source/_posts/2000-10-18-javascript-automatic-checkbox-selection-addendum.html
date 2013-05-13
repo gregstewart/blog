@@ -1,0 +1,50 @@
+---
+layout: post
+title: ! 'JavaScript: Automatic checkbox selection (addendum)'
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Following from the article for the automatic clearing of checkboxes, I wanted to give youthis heads up on how to modify this script to allow ths use of different names for checkboxes. If you remember the previous script relied on all but one checkbox having the same name (for simplicity's sake I have kept the bulk of the text from the previous article here and just added the relevant changes). Now in some instances this is not useful as you may be passing criteria based on the name of the checkbox.</p>
+<p>Let's start off again with the actual form:</p>
+<p><em>&lt;form name="example" action="&lt;your destination page&gt;"&gt;<br />
+&lt;input type="Checkbox" name="all" onclick="javascript:SetOther()" checked&gt; Search All<br />
+&lt;input type="Checkbox" name="test1" onclick="javascript:SetAll()"&gt; News<br />
+&lt;input type="Checkbox" name="test2" onclick="javascript:SetAll()"&gt; Weather<br />
+&lt;input type="Checkbox" name="test3" onclick="javascript:SetAll()"&gt; Entertainment<br />
+&lt;input type="Checkbox" name="test4" onclick="javascript:SetAll()"&gt; Music<br />
+&lt;input type="Submit" value="Search"&gt;<br />
+&lt;/form&gt;</em></p>
+<p>Nothing much has changed since the last article apart from the fact that now all checkboxes have different names. Now in order to get around the problem of different checkboxes we will be using pattern matching (regular expressions) to determine which boxes to un-tick. The good news is that you will not have to modify the script greatly, so let's look at the script:</p>
+<p><em>&lt;SCRIPT LANGUAGE="JavaScript"&gt;<br />
+&lt;!-- hide script from older browsers<br />
+function SetAll() {<br />
+&nbsp;&nbsp;&nbsp;dml = document.example;<br />
+&nbsp;&nbsp;&nbsp;len = dml.elements.length;<br />
+&nbsp;&nbsp;&nbsp;val = 0;<br />
+&nbsp;&nbsp;&nbsp;pat_check = /[test]/g;<br />
+&nbsp;&nbsp;&nbsp;var i = 0;<br />
+&nbsp;&nbsp;&nbsp;for(i = 0; i&lt;len; i++) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ( pat_check.exec(dml.elements[i].name) != null ){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dml.all.checked = val;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;}<br />
+}<br />
+function SetOther() {<br />
+&nbsp;&nbsp;&nbsp;dml = document.example;<br />
+&nbsp;&nbsp;&nbsp;len = dml.elements.length;<br />
+&nbsp;&nbsp;&nbsp;val = 0;<br />
+&nbsp;&nbsp;&nbsp;pat_check = /[test]/g;<br />
+&nbsp;&nbsp;&nbsp;var i = 0;<br />
+&nbsp;&nbsp;&nbsp;for(i = 0; i&lt;len; i++) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ( pat_check.exec(dml.elements[i].name) != null ){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dml.elements[i].checked = val;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;}<br />
+}<br />
+--&gt;<br />
+&lt;/script&gt;</em></p>
+<p>Right let's take a look at the first function, called <em>SetAll</em>. This functions controls the behaviour of the <strong>Search All</strong> checkbox, i.e. if the any of the <strong>different categories</strong> checkboxes are ticked remove the check for <strong>Search All</strong> checkbox. On the first three lines of that function I set a bunch of variables to make the coding easier (i.e. shorter). The variable <em>dml</em> stores the form name, <em>len</em> stores the number of elements elements (checkboxes) of said form, <em>val</em> is set <em>0</em> and I also set <em>i</em> to <em>0</em>. The new addition here involves the definition of a pattern: <em>pat_check = /[test]/g;</em>. As before we now loop over the list of elements, but this time we are comparing the name of said elements with the pattern. So if any checkbox has a name that contains the work test and it is checked, the script will un-tick the <em>Search all</em> box. The statement between the if clause does exactly that, it sets element <em>all</em> to <em>val</em>, which is <em>0</em>.</p>
+<p>The second function displays a similar behaviour. The difference is that when the <strong>Search All</strong> checkbox is ticked, the tick in all the other categories is removed. Again I hope this made perfect sense and that it was useful.</p>

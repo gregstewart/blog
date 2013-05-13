@@ -1,0 +1,31 @@
+---
+layout: post
+title: Configuring MySQL on NT
+tags:
+- MySQL
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+In the following I will talk you through setting up MySQL on an NT box and running it as a service. We will also shore up the security a bit, create a database and connect to it. To start it all off you will need the install files you can grab these from the <a href="http://www.mysql.com/">MySQL</a> web site (<a href="http://www.mysql.com/">http://www.mysql.com/</a>. Go to the downloads section and find the relevant compiled files [The last time I looked all I could find where the beta compiled files @ <a href="http://www.mysql.com/downloads/mysql-3.23.html">http://www.mysql.com/downloads/mysql-3.23.html</a>]. The source files are usually stored in a Zip archive so you will need to extract them. Once that is done run <strong>setup.exe</strong> and follow the prompts.
+
+OK so far so good. Now you will need to setup MySQL to run as a service. This is easy just switch to <strong>c:\mysql\bin</strong>. There you will see a file called <strong>mysqld-nt.exe</strong>. This is the file that installs MySQL as a service on your NT box. You install the service with the following command:
+
+[code]mysqld-nt --install[/code]
+
+After a couple of seconds (or less depending on the speed of your machine) the service is installed and you can test the installation (it doesn't tell you  if the service has been successfully installed or not) by typing: <em>net start MySQL</em> (incidentally should you wish to stop the server just type <em>net stop MySQL</em>). NT should inform you that the service is starting and whether it has started successfully or not.
+
+On to the next stage. We will now secure the database server a little bit. As per the default installation the Administrator username is <strong>root</strong> and it has no password set. As you can imagine this is a serious security hazard. So in the following we are going to reset the password, by logging into MySQL (specifically the system database <strong>mysql</strong>) and removing the default user account, exiting the server reloading it and re-setting the password for root. Simply type the commands in listed below (you can read through the documentation on this subject at http://127.0.0.1/{your SQL documentation mapping}/manual.html#Win32, section 4.12.4):
+
+[code]C:\mysql\bin\mysql mysql
+mysql&gt;; DELETE FROM user WHERE Host='localhost' AND User='';
+mysql&gt;; QUIT
+C:\mysql\bin\mysqladmin reload
+C:\mysql\bin\mysqladmin -u root password{your password}
+[/code]
+
+Next we will test whether your changes were successful, try login back into the database server, from the command prompt type <em>mysql -u root -p mysql</em> this should prompt you for a password. Type in the password you have just specified and you be logged in. Don't log out because we are now going to create another database. The steps syntax is very simple for this. From the MySQL command prompt type: <em>create database &lt;your database name&gt; ;</em>. Now type <em>show databases;</em> and this should provide you with a list of databases available.
+
+Well there you go. You know should be able to install, configure, secure and create a database in <strong>MySQL</strong>. In the coming days I will try and write up something about installing MyODBC so that you can get other applications (such as Cold Fusion) to talk to MySQL. I hope you found this article useful!

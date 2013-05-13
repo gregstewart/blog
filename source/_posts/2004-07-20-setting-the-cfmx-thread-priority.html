@@ -1,0 +1,24 @@
+---
+layout: post
+title: Setting the CFMX thread priority
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Now this is pretty cool. Again from the CF-talk list, Joe Bernard has shown how to access the CFMS thread Priority information and how to increase/decrease it. As almost per usual now, you need to dig into the Java layer:</p>
+<p><em>&lt;cfscript&gt;<br />
+thread = createObject("java", "java.lang.Thread");<br />
+// get current thread priority<br />
+currp = thread.getPriority();<br />
+// what's the max<br />
+maxp = thread.getThreadGroup().getMaxPriority();<br />
+// set the priority<br />
+thread.setPriority(3);<br />
+newrrp = thread.getPriority();<br />
+<br />
+writeOutput("Current: " & currp & "&lt;br /&gt;");<br />
+writeOutput("Max: " & maxp & "&lt;br /&gt;");<br />
+writeOutput("New: " & newrrp & "&lt;br /&gt;");<br />
+&lt;/cfscript&gt;</em></p>

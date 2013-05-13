@@ -1,0 +1,16 @@
+---
+layout: post
+title: Patching instances
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+As most of you CFer's know now,the updater has been around for a few weeks now and I decided to patch my dev server before even thinking about patching our production servers.
+
+As the installer was running I was wondering how it would know about the multiple instances I am running on my machine? True enough after firing up the default cfusion instance and comparing the version info to my regular dev instance there was a discrepancy between between the version numbers (updated: Version: 6,1,0,83762 &amp; 6.1 regular: Version: 6,1,0,63958). What is the best approach to patch the instances?
+
+It's not elegant but after contemplating a few different things (bearing in mind that I don't want to hose my current settings) the only real solution that worked, came courtesy of Dave Watts, and that is to simply apply the patch using the installer to each instance individually. I.e. when you run the update, step 4 prompts you to specify the location of ColdFusion MX and it usually defaults to the cfusion instance. Simply point it to your other instance paths and you are done.
+
+Should there be another updater, maybe there could be an option to specify the path to multiple instances of CFMX?

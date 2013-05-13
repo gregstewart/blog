@@ -1,0 +1,23 @@
+---
+layout: post
+title: Flashvars
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+A while back posted some info on creating Dynamic gateway connection, by way of passing in a connection string to the Flash movie. This was achieved by way of passing in flashvars to the movie.
+
+[code]
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" id="someName" height="420" width="760">
+<param name="movie" value="flashMovie.swf"/>
+<param name="quality" value="high"/>
+<param name="flashvars" value="gatewayUrl=<cfoutput>#variables.gatewayUrl#</cfoutput>"/>
+<embed flashvars="gatewayUrl=<cfoutput>#variables.gatewayUrl#</cfoutput>" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="760" height="420" name="someName" swliveconnect="true"/>
+</object>[/code]
+
+I dug a <a href="http://www.macromedia.com/support/flash/ts/documents/flashvars.htm" title="Using FlashVars to pass variables to a SWF">little further</a> recently as I had to pass in more than one argument and it turns out that it's behaviour in that respect is very much like a URL query string. So to pass in multiple value pairs into your flash movie simply do this:
+
+[code]
+<param name="flashvars" value="gatewayUrl=<cfoutput>#variables.gatewayUrl#</cfoutput>&amp;someVar=someValue"/>[/code]

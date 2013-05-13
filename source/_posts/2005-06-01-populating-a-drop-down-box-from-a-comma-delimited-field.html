@@ -1,0 +1,36 @@
+---
+layout: post
+title: Populating a drop down box from a comma delimited field
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Occasionally you'll come across database fields that contains a list of keywords that are comma delimited. One instance would be for storing the style of a certain product. Take shoe as an example, you can have a trainer, walking, formal or work style for said shoe. These different styles in our case were stored in one field in database. However when it came to building the front end of the shopping cart we needed to allow the user to choose a specific style for said shoe. In the following I'll be explaining how populate a drop down box from a comma list of items stored in a database.Step 1, get the items of interest. Here we right a basic query that retrieves the contents of the field we wish to display, in our case the style of a shoe. The code below shows you how to do this:
+
+[code]<!--- Now select the style for an item (shoe) --->
+<cfquery name="qGetStyle" datasource="#application.dsname#">
+select table.style
+from table
+where item = 'shoe'
+</cfquery>[/code]
+
+Here we select the content of a field called <strong>style</strong> in a table called <strong>table</strong> where the item value is equal to '<em>shoe</em>'. Next we define a variable and store the results of aforementioned query in that variable.
+
+[code]<!--- define and set variable --->
+<cfparam name="keywords">
+<cfset keywords="qGetItems.style">[/code]</cfset></cfparam>
+
+As result of this the variable <em>keywords</em> contains the following information (based on the above example: <em>trainer, walking, formal, work</em>. Now we need to extract that information and put into a drop down menu. To this end we will have to loop over that variable and display each and every item in an  field. Thankfully <em><cfloop></cfloop></em> allows you to specify a delimiter and in our case it would be a ','. So the entire Cold Fusion code would look something like this:
+
+[code]
+<!--- loop over the variable and populate drop down box --->
+<select name="style">
+    <option>Select style</option>
+    <cfoutput query="qGetStyle">
+      <option value="#i#">#i#</option>
+    </cfouptut>
+</select>[/code]
+
+And there you go, you know have broken down a comma delimited field into a drop down menu based on the content of a field in your database.

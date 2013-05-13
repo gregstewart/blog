@@ -1,0 +1,18 @@
+---
+layout: post
+title: ! 'DTS: Access to SQL 7.0 migration'
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>DTS: Access to SQL 7.0 migration</h3>
+<p class="1"><i>This article is part of a larger article.</i></p>
+<p class="1">In the source drop down box, labelled <i>Source:</i> select <b>Microsoft Access</b>. As you make your selection the dialogue box changes to reflect your choice of datasource. Now you can specify the access database you wish to migrate. Click on the little button with the <i>...</i> to browse for your database. As an example why not choose the sample Northwind database that comes with MS Access. If you have password protected your database you can now also specify the username and password. If on the other hand you haven't set any security, then you can click <i>Next</i>.</p>
+<p class="1">The ensuing dialogue box allows you to specify the <i>destination</i>, i.e. where you are going to copy your database (it's tables and data) to. By default the <b>Microsoft OLE DB Provider for SQL Server</b> is selected. This is the service we will be using to connect to our SQL Server box.Alternatively you could select the <b>Microsoft ODBC Driver for SQL</b>. Below this drop down menu you can now specify the server name, in the <i>Server:</i> field. Now you have a choice of either using the Windows NT authentication method or the SQL Server authentication method. Choose SQL Server authentication and specify your login account. As you will be creating a new database in this tutorial, make sure that you have enough permissions to do this. Else contact your DBA and ask him to set up a database for you. [Please note that you have to click the <i>Refresh</i> button in order the database that was created for you] From the <i>Database:</i> drop down menu choose <b>&lt;New&gt;</b>. This opens another dialogue where you specify:</p>
+<li><i>Name</i> of the database, e.g. Northwind SQL in this case.
+<li>Next specify the <i>Data File Size</i>, so check your existing database size and give it a little more space. E.g. Northwind is 2.3 Meg in size so give it 3 Meg (you can only specify increments of one Meg).
+<li>Finally you can specify the <i>Log file size</i>. Set that to 1 Meg.
+<p class="1">By clicking OK you create the database on the SQL server. Now you can click <i>Next</i>. Here you can either specify to transfer one or more tables across or alternatively the results of a query. Choose the default option <i>Copy table(s) from the source table</i>. Click <i>Next</i>. From the next dialogue you can select which tables you wish to transfer. Just click <i>Select All</i>. Again you can either copy the tables and the data they contain as it is, or use ActiveX scripts to modify it. The use of ActiveX scripts goes beyond the realms of this document, so copy everything across as it is. Next!</p>
+<p class="1">Right this concludes this section of the Access to SQL migration, please go back to the previous document by <a href="http://www.armagossa.com/content.cfm?content_ID=71#return">clicking here</a>.</p>

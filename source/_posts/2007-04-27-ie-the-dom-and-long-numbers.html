@@ -1,0 +1,34 @@
+---
+layout: post
+title: IE , the dom and long numbers
+tags:
+- JavaScript
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+I just spent the best part of 45 minutes trying to figure out a weird issue with a value I was pulling out of a select box (using $F(element)).  The value in question was a long number: 1000002229651626, which IE converted at the time of writing the value to the page (this was an AJAX call) to: 1.00000222965163e+15.
+
+IE decided to convert my number when I was using the new Option() method to populate the drop down, making the debug process even harder. I personally can't wait until we get a firebug like extension for IE, right now I'd just settle for an option to view the rendered source.
+
+Rant over, the solution is to convert the number to a string:
+
+[js]
+selectBox[x] = new Option('Some text',new String(1000002229651626),false);
+[/js]
+
+On the plus side I came across a neat way to debug values in a form field using the address the browser address bar:
+
+[code]
+javascript:alert(document.all.myfield.value); void(0)
+[/code]
+
+And to see what IE had actually written to the page:
+
+[code]
+
+javascript:alert(document.all.myfield.innerHTML ); void(0)
+
+[/code]

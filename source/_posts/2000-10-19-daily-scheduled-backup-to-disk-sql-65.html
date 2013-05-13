@@ -1,0 +1,22 @@
+---
+layout: post
+title: Daily scheduled backup to disk (SQL 6.5)
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>This document is identical in purpose to <a href="http://www.armagossa.com/index.cfm?contentID=56"></a>Daily scheduled backup to disk (SQL 6.5), i.e. it talks you through setting up a scheduled backup of your databases to hard disk, only this time for SQL server 6.5. The process is pretty much the same, the differences are mainly down to the user interface. Whereas SQL Server 7.0 provides with you with MMC (<em>Microsoft Management Console</em>), where as SQL Server 6.5 gives you the <em>Enterprise Manager</em>. Let's proceed...</p>
+<p><strong>Setting up the backup</strong><br />
+First off start up the <em>Enterprise Manager</em>, select your server and make sure it is running. Expand the tree of your selected server and right-click on the <em>Backup devices</em> option. From the popup menu choose <em>New Backup Device</em>. This brings up a dialogue where you specify the settings for your backup device. You start of by giving your device a name. Next you can specify the location of your backup device, i.e. either a backup tape or a location on your hard disk. By default the location is <strong>&lt;drive letter&gt;:MSSQLBackup</strong>. You may have noticed that as you were filling in the name of your device, the final name is allocated dynamically and is the same as the device plus the file extension <em>.bat</em>. Once you are happy with selections, click OK to close the dialogue.</p>
+<p>As an aside should you decide to delete the device from the GUI (and for that matter any device, including databases) make sure to manually delete the <em>.bat</em> file from that directory. I guess this is what you call small bug. Onwards...</p>
+<p>Highlight your server again and from the menu bar select <em>Tools</em>. From the dropdown menu select the <em>Database backup / Restore</em> option. A dialogue box with the title <strong>Database backup / Restore &lt;server name&gt;</strong>. Make sure the tab labelled <em>Backup</em> is selected. From the dropdown menu entitled <em>Database Backup</em>, specify the database you wish to backup, for this example choose <strong>Pubs</strong>. Next you have to initialise the device. Once this is done you can configure a number of options, such as an expiry date for that device. For this exercise, simply accept the default settings. From the <em>Backup device:</em> choose the actual backup device you wish to backup to.</p>
+<p><strong>Scheduling the backup</strong><br />
+Click on the Schedule button to start configuring you backup schedule. Now you need to specify a six character ANSI-volume label for your backup device, choose the default. Next a new dialogue appears, where you can set your schedule:</p>
+<ul>
+<li>Give your schedule a <em>Task name</em>, e.g. backup-pubs.</li>
+<li>Next you can choose a schedule option, i.e. <em>immediate, one time or recurring</em>. Choose recurring.</li>
+<li>From the ensuing dialogue configure the schedule according to your needs. For example: Occurs daily, the frequency at which the backup occurs (once at 11pm) and duration, in our case set no end date. Click Ok to close that box.</li>
+</ul>
+<p>Click OK again and then click <strong>close</strong> and your scheduled backup is configured. Just as with SQL Server 7.0, make sure that the <em>Scheduler Service</em> or <em>Task Scheduler</em> is running. Also make sure that the SQLExecutive account is running. Right everything should be working fine. Hope this helped in some manner.</p>

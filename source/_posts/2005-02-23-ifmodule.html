@@ -1,0 +1,24 @@
+---
+layout: post
+title: ifModule
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Been meaning to post this for quite a while and a recent post on the BlueDragon mailing list reminded me to do so. Using the IfModule statement in your httpd.conf, you can check whether modules have been loaded and then carry out further configuration. Below is a sample of my httpd.conf for use with BlueDragon.
+
+[code]
+<ifmodule>
+ServletExecInstances default 127.0.0.1:9999
+ServletExecAliases default /servlet servlet .jsp .cfc .cfm .cfml
+<location>
+SetHandler servlet-exec
+</location>
+AddHandler servlet-exec jsp
+AddHandler servlet-exec cfc
+AddHandler servlet-exec cfm
+AddHandler servlet-exec cfml
+</ifmodule>
+[/code]

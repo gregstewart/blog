@@ -1,0 +1,19 @@
+---
+layout: post
+title: Where does JRun/CFMX store the compiled cfcs?
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>A while back I found out that <abbr title="ColdFusion MX">CFMX</abbr> compiles ColdFusion Components and I was curious as to where they were stored. I found two locations where they were kept:</p>
+
+<p><em>&lt;your drive&gt;:\CFusionMX\wwwroot\WEB-INF\cfclasses<br />
+&lt;your drive&gt;:\CFusionMX\wwwroot\WEB-INF\cfc-skeletons<br />
+<br />
+&lt;your drive&gt;:\JRun4\servers\&lt;instance name&gt;\cfusion-ear\cfusion-war\WEB-INF\cfclasses<br />
+&lt;your drive&gt;:\JRun4\servers\&lt;instance name&gt;\cfusion-ear\cfusion-war\WEB-INF\cfc-skeletons
+</em></p>
+
+<p>I am not sure what the differences are between the two folders and usually I find the compiled components in <strong>cfclasses</strong> folder [only once so far have I found one im <strong>cfc-skeleton</strong>]. Once compiled the <acronym title="ColdFusion Components">CFC</acronym> seems to be compiled into a one generic class file and then another one for each function in the CFC.</p>

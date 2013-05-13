@@ -1,0 +1,42 @@
+---
+layout: post
+title: Configuring Perl to run on Apache (win32)
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>This document will highlight the changes necessary to get Perl to work with your Apache web server running on Windows NT/2000. As with the configuration of any other aspect of Apache, you will need to modify the configuration files. These are located in <em>C:\Program Files\Apache Group\Apache\conf</em> if you choose the default installation options.</p>
+<p>The file you need to edit is <em>srm.conf</em>. When the server starts up it processes the <em>httpd.conf</em> first and then it will look for <em>srm.conf</em>. You will need to specify two things here. The first is the location of your CGI scripts. Next you will need to map the perl file extensions to your server. The <em>srm.conf</em> file looks initially like this:</p>
+<p><em>#<br />
+# This is the default file for the ResourceConfig directive in httpd.conf.<br />
+# It is processed after httpd.conf but before access.conf.<br />
+#<br />
+# To avoid confusion, it is recommended that you put all of your<br />
+# Apache server directives into the httpd.conf file and leave this<br />
+# one essentially empty.<br />
+#</em></p>
+<p>To implement the changes required make sure your config file looks like this:</p>
+<p><em>#<br />
+# This is the default file for the ResourceConfig directive in httpd.conf.<br />
+# It is processed after httpd.conf but before access.conf.<br />
+#<br />
+# To avoid confusion, it is recommended that you put all of your<br />
+# Apache server directives into the httpd.conf file and leave this<br />
+# one essentially empty.<br />
+#<br />
+ScriptAlias /cgi-bin/ "C:/Program Files/Apache Group/Apache/cgi-bin/"<br />
+AddHandler cgi-script .pl</em></p>
+<p>The first new line specifies the location of your cgi-bin directory (<strong>ScriptAlias</strong>) and the second line deals with the file extension mappings (<strong>AddHandler</strong>). For the changes to take effect stop and restart your server.</p>
+<p>In order for your scripts to work you will need to specify the path of your Perl interpreter in your perl scripts. If you are running ActivePerl 5.6.0.613 (<a href="http://www.activestate.com/">www.activestate.com</a>) the default path should be <em>C:\PERL\bin\perl.exe</em>. So the opening line of all your Perl scripts should look like this:</p>
+<p><em>#!C:\PERL\bin\perl.exe</em></p>
+<p>Should you know wish to allow cgi-scripts to be executed from any other directories other than the <em>cgi-bin/</em> directory you will have to specify an alias and the path to that alias. Again in the srm.conf file enter the following line if you wish to have an alias "<em>Scripts</em>" for the directory called <em>c:PerlScripts</em>:</p>
+<p><em>Alias /Scripts/ "C:/Perl/Scripts/"</em></p>
+<p>Please note the use of "/" for the path definition instead of "". You should be aware of the fact that you can also add these lines to the <em>httpd.conf</em> and the Apache documentation recommends this. However I find it easier to manage changes and information by keeping these modifications in a separate place. If you would like to test your installation try saving the following script in your script directory as <strong>hello.pl</strong> (please make sure that you make the appropriate changes to this script to reflect the location of your perl executable):</p>
+<p><em>#!C:\PERL\bin\perl.exe<br />
+<br />
+&nbsp;&nbsp;&nbsp;use CGI qw(:standard) ;<br />
+&nbsp;&nbsp;&nbsp;print header();<br />
+&nbsp;&nbsp;&nbsp;print "Hello, world";<br /></em></p>
+<p>You can now view this file by entering <strong>http://127.0.0.1/cgi-bin/hello.pl</strong> (or if you have been following the tutorials from this site the URL should be <strong>http://127.0.0.1:8081/cgi-bin/hello.pl</strong>). If all is working your browser should display the message <em>Hello, world</em>. Hope you found this quick introduction useful. All of it and much more can be found in the documentation provided with the Perl installation and these are located by default in the <em>c:perlhtml</em>.</p>

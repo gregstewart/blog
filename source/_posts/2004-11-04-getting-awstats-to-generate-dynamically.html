@@ -1,0 +1,14 @@
+---
+layout: post
+title: Getting awstats to generate dynamically
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+I have been using <a href="http://www.awstats.org/" title="Awstats - homepage">awstats</a> for a while now, but never got round to finish configuring awstats to generate charts on the fly. I always kept getting a:
+
+[code]You don't have permission to access /awstats/awstats.pl on this server.[/code]
+
+The problem lay with permissions. Most sources pointed to allowing read and execute for others and group on /usr/local/awstats/wwwroot, instead I discovered they needed to be set on /usr/local/awstats/ so that Apache could read and execute the file.

@@ -1,0 +1,36 @@
+---
+layout: post
+title: A revelation
+tags: []
+status: draft
+type: post
+published: false
+meta: {}
+---
+When using mach-ii it is important to know this: only your listeners should be aware of the framework itself (<a href="http://www.mossyblog.com/archives/340.cfm" title="Mach-II: Listeners vs Managers">this post</a> raised the topic a while back). All your other objects should not know anything about it! You should be able to lift your BO, DAOs and whatever other objects, sometimes also referred to as the "Business logic / Data Layer", you have out of the mach-ii application and drop them seemlessly into another framework and just create the hooks that the listeners represent in mach-ii in say circuits in fusebox.
+
+So what does this means in terms of code? Well let's look at the mach-ii.xml file and see how the controller (that's the technical term for the mach-ii.xml file) calls the listener, which in turn invokes the relevant part of the application.
+
+[code]<event-handler event="cms.content.doAction" access="public">
+  <event-bean name="contentBean" type="webapps.gregs.model.main.content" fields="contentID,title,articleContent,name,categoryID,teaser,publicationDate,expiryDate,dateAdded,metaData,isPublished"/>
+  <filter name="validateFormObject">
+    <parameter name="formObjectName" value="contentBean"/>
+    <parameter name="invalidEvent" value="formHasInvalidValues"/>
+    <parameter name="clearEventQueue" value="true"/>
+  </filter>
+</event-handler>
+
+<notify listener="contentListener" method="setContent">
+</notify>[/code]
+This segment of the controller is called when I submit an item to the CMS. The first part deals with storing the submitted content in a bean (called: contentBean) and this submission is validated before a setContent method in my contentListener is notified. If the validation fails (see my previous post on validating form submissions) then a new event is announced otherwise we continue with the setContent method in our contentListener.[code]<cffunction name="setContentByTitle" access="public" returntype="void" output="false" displayname="Set Content By ID" hint="I return a query containing a single Content identified by it's Title">
+<cfargument name="event" type="MachII.framework.Event" required="yes" displayname="Event" hint="I am the current event, containing a title field that identifies this content."></cfargument></cffunction>
+
+<cfset content="arguments.event.getArg("></cfset>
+
+[/code]
+
+As you can see I pull the contentBean that was created with the help of the event-bean declaration out of the event args and store it as a local variable (content) and pass that to my application layer (variables.contentDAO.update(content) [which was created when the contentListener was initialised]). It would have been easier to just call variables.contentDAO.udpate() and then inside that method used:
+
+[code]<cfargument name="event" type="MachII.framework.Event" required="yes" displayname="Event" hint="I am the current event, containing a title field that identifies this content.">[/code]</cfargument>
+
+But that would have tied my implementation to the framework, because the contenDAO object would have to been aware of the MachII.framework.Event object. Yet another penny drops.

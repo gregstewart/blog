@@ -1,0 +1,14 @@
+---
+layout: post
+title: Clearing the event queue
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+As I indicated in on of my previous posts, announcing an event does not behave like a re-direct, instead the event is simply added to the event queue and processed sequentially. In order to in effect abort the event you need to do the following call:
+
+[code]arguments.eventContext.clearEventQueue()[/code]
+
+If this needs to occur in a plugin remember to place this call in the pre-process section.

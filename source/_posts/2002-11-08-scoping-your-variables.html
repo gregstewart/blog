@@ -1,0 +1,22 @@
+---
+layout: post
+title: Scoping your variables
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>One small way to improve the performance of your Cold Fusion application is to prefix your variables with it's scope. What is scoping/prefixing? Essentially you name your variables as per usual and you append a prefix. Say you wanted to create a session variable called <em><strong>userid</strong></em>, you create it by the prefix <strong>session</strong>. This would result in you declaring your variable as such:</p>
+<p><strong><em>&lt;cfset session.userid = 1 /></em></strong></p>
+<p>Now session variables require you to scope them, but form variables (i.e. those submitted by a form) don't. So you can refer to a submitted form field by either using it's name: <strong><em>userid</em></strong> or : <strong><em>form.userid</em></strong>. Why would you do that? Well if you just declare a variable and then call it without defining it's prefix, then the application server has to traverse all the scopes until it finds the value you are calling and it also does this in a set order. Listed below are all the scopes and the order the application server evaluates them in</p>
+<ol>
+  <li>query results - <em>queryname.variable</em></li>
+  <li>local variables - <em>local.variable</em></li>
+  <li>cgi variables - <em>cgi.variable</em></li>
+  <li>file variables - <em>file.variable</em></li>
+  <li>url variables - <em>url.variable</em></li>
+  <li>form variables - <em>form.variable</em></li>
+  <li>cookie variables - <em>cookie.variable</em></li>
+</ol>
+<p>These prefixes are not necessarily required by your variables, but it certainly can improve performance and also avoid any confusion (and <em>errors</em>) should you have two identically named variables in different scopes as with the example above, where I declared a <strong><em>session.userid</em></strong> and a <strong><em>form.userid</em></strong> variable. Scoping allows <em>you</em> and the application server to easily identify them. There are 5 other scopes where a prefix is required, these are: <strong>server</strong>, <strong>application</strong>, <strong>session</strong>, <strong>request</strong> and <strong>attributes</strong> but more about these in later tidbits. In the meantime make your life easier and avoid possible trappings by scoping them!</p>

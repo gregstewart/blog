@@ -1,0 +1,22 @@
+---
+layout: post
+title: More *nix command line fun
+tags:
+- ! '*nix'
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+I don't know how often I have tried to start up a process and forgotten that it runs as root, forcing me to type the command in again prefixing it with sudo. That was until today, if you suffer from the same level of  forgetfulness then <strong>sudo!!</strong> is for you.
+
+[code]
+my-computer:~ user$ /usr/local/apache2/bin/apachectl start
+(13)Permission denied: make_sock: could not bind to address [::]:80
+no listening sockets available, shutting down
+Unable to open logs
+my-computer:~ user$ sudo !!
+sudo /usr/local/apache2/bin/apachectl start
+my-computer:~ user$
+[/code]

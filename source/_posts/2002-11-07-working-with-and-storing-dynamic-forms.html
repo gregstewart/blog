@@ -1,0 +1,153 @@
+---
+layout: post
+title: Working with and storing dynamic forms
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Working with and storing dynamic forms</p>
+Just recently I was working on a project where a user was able to specify the number of form fields he wished to submit for a specific job run. This of course meant that the form had to be generated on the fly, these dynamic form fields had to then also be stored in a database and later on all fields should be available for viewing. This posed a number of problems all centering around these dynamic fields. How to capture, store and retrieve these, without knowing how may there were?</p>
+<p>To show how I solved this problem we will be building a sample application that will allow the user to enter a collection of music albums associated to an artist. To this end you will need to create an MS Access database and code 2 Cold Fusion templates.</p>
+<p>So let's get started with the database. Create a database called record and add a table called artist to that database. For simplicities sake this table will only contain 2 fields, namely: <strong>artist_id</strong> (data type: auto-number) and <strong>artist_wddx</strong> (data type: memo). Next you will need to register a datasource called <strong>records</strong>. Right your database side of things is now done let's look at the Cold Fusion templates.</p>
+<p>First let's create an <strong>application.cfm</strong> template (a bit excessive in this case, but it's good practise none the less). This template will simply enable the session management and declare an application variable that will hold our datasource name (if you have set up your database with username and password access now is also a good time to include these here).</p>
+<p><em>&lt;cfapplication name="records" sessionmanagement="Yes" sessiontimeout="#CreateTimeSpan(0, 4, 0, 0)#"&gt;<br />
+<br />
+&lt;!--- -Set datasource- ---&gt;<br />
+&lt;cfparam name="application.dsn" default="records"&gt;<br />
+&lt;!--- -Set database username and password if you swpecified one- ---&gt;<br />
+&lt;cfparam name="application.dBuser" default="your username"&gt;<br />
+&lt;cfparam name="application.dBpassword" default="your password"&gt;</em></p>
+<p>Right time to move on to the main template document, the one that's going to do all the hard work. As you recall from the introduction we need to overcome several issues here. First being how to store in a database the content of a form that has a dynamic number of fields. In this case we will be looking to store an artist's name and all of his recordings. Now the problem here is evident, not every artist has released the same number of recordings.</p>
+<p>The data entry process begins with the user specifying, the number of recordings he wishes to associate with the artist of his choice (the code is pretty well commented so you shouldn't have any bother finding that segment). Submitting this form will result in the action parameter being set to <strong>show_form</strong>, which will once the browser has rendered the page result in a form appearing with a standard field, called <strong>artist name</strong> and then n number of rows to enter the recordings for that artist (where n is the number you specified on the previous form). The form also contains a hidden field that stores the number of rows entered. We will make use of that data when we come to outputting the content of the form again. Submitting this form will lead to inserting the data into the database.</p>
+<p>Storage proved to be least of the problems. I opted to store these submissions as a WDDX packet in a database field, that way I solved the problem of the number of possible fields available in a database table. Consider that if you don't know how many fields are going to be required by the user to complete the form, you can't really design your database to match that number of dynamic fields. What you can however do is create a table that will store some information pertinent to the form and the content of the form as a WDDX packet. So submitting this form will result in all form fields being stored as a WDDX packet.</p>
+<p>The next problem was actually creating the WDDX packet. All examples I found relied on a static set of variables that were to be put in a structure and then serialised. Scanning through the <a href="http://www.amazon.co.uk/exec/obidos/ASIN/0789718103/armagossacom/">Advanced Cold Fusion Application Development</a> book by Ben Forta and saw a segment on his custom tag CF_EmbedField. Rather than creating a new list of hidden input fields for a form I modified the code to dump all the form fields into a structure, which in turn could be serialised into a WDDX packet. Since the code loops over all form fields available after hitting the submit button, I can in turn capture, both the form name and the value of that field, store it in the structure before moving onto the next form element. You can see the code in action where the <strong>hdn_action</strong> parameter is set <strong>serialise</strong>.</p>
+<p>OK, so now we have our structure and all we need to do is serialise into a WDDX packet which is described at length in the <a href="http://www.amazon.co.uk/exec/obidos/ASIN/0789718103/armagossacom/">Advanced Cold Fusion Application Development</a> book, so I shan't say anymore on that topic. Now that we have our WDDX packet we can simply insert that into out database, et voila, you have circumvented determining the number of fields submitted and how to store these. In the following we shall now have a look at how you will extract information from that packet and display it.</p>
+<p>The first thing we need to do is retrieve the WDDX packet from the database and then de-serialise it. Once this is done all the information is once again stored in a structure (called <strong>strAlbums</strong>). Another handy thing about using CF_EmbedField, is that it stores the old form field names in the structure so that when it comes to outputting the content you have an idea of what the fields where called and hence can reference them accordingly. The first we thing we output is the artist name. This form field was labelled <strong>txt_artist_name</strong>, using the array annotation (<strong>#strAlbums['txt_artist_name']#</strong>) we can now access it's value with very little effort. What about the dynamic rows though?</p>
+<p>Remember I stored the number of rows required for thr form as a hidden input field? This field comes in handy now. This form field will help us determine the number of loops we are going to execute in order to display all the rows. The value was stored in the form field labelled: <strong>hdn_number_of_rows</strong> and hence using the aforementioned annotation : <strong>#strAlbums['hdn_number_of_rows']#</strong>< we can retrieve it's value. Right now we know how many times we have to loop, but this still does not give us access to those form fields and their values. Whithin the loop I set two variables that are made up of the base form field names:  <strong>'txt_record_name_'</strong> and <strong>'txt_release_date_'</strong> and appended the index value of the loop (i.e. 1,2 ,3...,n in turn depending on the number of rows stored). This gave the form field names as they appeared in the originally submitted form and exactly the same number of rows as before and these names are stored in: <strong>record_name</strong> and  <strong>record_release</strong> respectively. We have come one step closer. Now we have the form field names but how do we get their values?</p>
+<p>This is where we use the Cold Fusion function <strong>StructFind</strong>. Here we will be looking at the structure called <strong>strAlbums</strong> and in the first instance will be looking for the album name to be displayed. So as we loop through the list the first instance of <strong>record_name</strong> will be set to <strong>txt_record_name_1</strong>. StructFind will now search through the structure <strong>strAlbums</strong> for <strong>txt_record_name_1</strong> (also known as a key) and return it's value. It then does exactly the same thing for the release date, before continuing with the loop. Once the loop is completed you should now be presented with a table containing the artist name and all the submitted recordings and release dates.</p>
+<p>And there you go, now you can store dynamic form fields in a WDDX packet, which in turn is stored in a database and by the same token you can access that packet, convert it back to a structure and display the forms content again without having to concern yourself with the number of fields submitted. All the code for this application can be found below and <a href="http://www.teacupinastorm.com/gregs/downloads/records.zip">you can download the whole lot including database right here.</a></p>
+<p>Code:<br />
+<br /><em>
+&lt;!--- -Before you use this page be sure to create a datasource called records pointing to the included database records- ---&gt;<br />
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;<br />
+&lt;!--- -Declare some variables that will be frequently used- ---&gt;<br />
+&lt;cfparam name="hdn_action" default=""&gt;<br />
+&lt;cfparam name="message" default=""&gt;<br />
+&lt;cfif hdn_action eq "serialise"&gt;&lt;!--- -If the form with the album details has been submitted do this- ---&gt;<br />
+&nbsp;&nbsp;&lt;cfset strAlbums = StructNew()&gt;&lt;!--- -Declare new structure- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfif isDefined("form.fieldnames")&gt;&lt;!--- -Check that field names exists- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset fieldnames_processed = ""&gt;&lt;!--- -Create an empty list of processed variables- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfloop index="form_element" list="#form.fieldnames#"&gt;&lt;!--- -Loop through field names- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfif ListFind(fieldnames_processed, form_element) IS 0&gt;&lt;!--- -Try to find current element in list- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset form_element_qualified = "form."&form_element&gt;&lt;!--- -Make fully qualified copy of it (to prevent accessing the wrong field type)- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset strAlbums["#form_element#"] = '#trim(Evaluate(form_element_qualified))#'&gt;&lt;!--- -Store it in the structure- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset fieldnames_processed = ListAppend(fieldnames_processed, form_element)&gt;&lt;!--- -Add it to the processed list- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/cfif&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/cfloop&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/cfif&gt;<br />
+&nbsp;&nbsp;&lt;cfwddx input="#strAlbums#" output="MyWDDXPacket" action="CFML2WDDX"&gt;&lt;!--- -Turn the structure into a WDDX packet- ---&gt;<br />
+&nbsp;&nbsp;&lt;cftransaction&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfquery datasource="#application.dsn#" name="iDetails"&gt;&lt;!--- -Now store it in the database- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INSERT INTO artist<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(artist_wddx)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALUES<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;('#MyWDDXPacket#')<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/cfquery&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset message= "Artist details stored stored.&lt;br /&gt;&lt;a href='index.cfm'&gt;Back&lt;/a&gt;"&gt;&lt;!--- -Now set a result message- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfwddx input="#MyWDDXPacket#" output="strAlbums" action="WDDX2CFML"&gt;&lt;!--- -And de-seriliase it again (could be done easier now, but I wanted to show how it would be done if you pulled it out of the database - ---&gt;<br />
+&nbsp;&nbsp;&lt;/cftransaction&gt;<br />
+&lt;cfelseif hdn_action eq "listing"&gt;&lt;!--- -Querie(s) to display the listing of stored records- ---&gt;<br />
+&nbsp;&nbsp;&lt;cfquery datasource="#application.dsn#" name="qGetAll"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECT artist_id, artist_wddx<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FROM artist<br />
+&nbsp;&nbsp;&lt;/cfquery&gt;<br />
+&lt;/cfif&gt;<br />
+&lt;html&gt;<br />
+&lt;head&gt;<br />
+&nbsp;&nbsp;&lt;title&gt;Album name storage&lt;/title&gt;<br />
+&lt;/head&gt;<br />
+<br />
+&lt;body&gt;<br />
+&lt;cfif hdn_action eq "show_form"&gt;<br />
+&nbsp;&nbsp;&lt;form action="index.cfm" name="frm_number_of_rows" id="frm_number_of_rows" method="post" enctype="multipart/form-data"&gt;<br />
+&nbsp;&nbsp;&lt;table border="0" cellpadding="1" cellspacing="0"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr align="center"&gt;&lt;td colspan="3"&gt;Artist/albums&lt;/td&gt;&lt;/tr&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr align="center"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td colspan="2" align="right"&gt;Artist name:&lt;/td&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type="Text" name="txt_artist_name" id="txt_artist_name" value=""&gt;&lt;/td&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Record name:&lt;/td&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Release date:&lt;/td&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfloop from="1" to="#form.txt_number_of_rows#" index="counter"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfoutput&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;#counter#.&nbsp;&lt;/td&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type="Text" name="txt_record_name_#counter#" id="txt_record_name_#counter#" value=""&gt;&lt;/td&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type="Text" name="txt_release_date_#counter#" id="txt_release_date_#counter#" value=""&gt;&lt;/td&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/cfoutput&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/cfloop&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type="Hidden" name="hdn_number_of_rows" id="hdn_number_of_rows" value="&lt;cfoutput&gt;#form.txt_number_of_rows#&lt;/cfoutput&gt;"&gt;&lt;!--- -Need to store this value so that we know how many times to loop when displaying the content- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type="Hidden" name="hdn_action" id="hdn_action" value="serialise"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr align="center"&gt;&lt;td colspan="3"&gt;&lt;input type="Submit" name="btn_submit" id="btn_submit" value="Submit"&gt;&lt;/td&gt;&lt;/tr&gt;<br />
+&nbsp;&nbsp;&lt;/table&gt;<br />
+&nbsp;&nbsp;&lt;/form&gt;<br />
+&lt;cfelseif hdn_action eq "serialise"&gt;<br />
+&nbsp;&nbsp;&lt;table&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;&lt;td&gt;&lt;cfoutput&gt;#message#&lt;/cfoutput&gt;&lt;/td&gt;&lt;/tr&gt;<br />
+&nbsp;&nbsp;&lt;/table&gt;<br />
+&nbsp;&nbsp;&lt;!--- -Time to show the content of the packet and determine the number of albums stored- ---&gt;<br />
+&nbsp;&nbsp;&lt;table border="0" cellpadding="0" cellspacing="0" width="300"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr align="center"&gt;&lt;td<br /> colspan="3"&gt;&lt;b&gt;&lt;cfoutput&gt;#strAlbums['txt_artist_name']#&lt;/cfoutput&gt;&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfloop from="1" to="#strAlbums['hdn_number_of_rows']#" index="counter"&gt;&lt;!--- -Number of loops required stored in structure- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--- -Set the variables to be evaluated against the structure (we know their names because the WDDX packet stored the form field names submmitted)- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset record_name = 'txt_record_name_'&counter&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset record_release = 'txt_release_date_'&counter&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--- -In order to display the value we make use of these variables listed above, which return a value like txt_record_name_1 and we search through the structure (in this case strAlbum) for this name. If found it displays the value.- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr align="center"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;b&gt;&lt;cfoutput&gt;#counter#&lt;/cfoutput&gt;&lt;/b&gt;&lt;/td&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;cfoutput&gt;#StructFind(strAlbums,record_name)#&lt;/cfoutput&gt;&lt;/td&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;cfoutput&gt;#StructFind(strAlbums,record_release)#&lt;/cfoutput&gt;&lt;/td&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/cfloop&gt;<br />
+&nbsp;&nbsp;&lt;/table&gt;<br />
+&lt;cfelseif hdn_action eq "listing"&gt;<br />
+&nbsp;&nbsp;&lt;cfoutput query="qGetAll"&gt;&lt;!--- -Display all records stored in the database- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfwddx input="#artist_wddx#" output="strAlbums" action="WDDX2CFML"&gt;&lt;!--- -De-serialise the Wddx packet- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--- -Time to show the content of the packet and determine the number of albums stored- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;table border="0" cellpadding="0" cellspacing="0" width="300"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr align="center"&gt;&lt;td colspan="3"&gt;&lt;b&gt;#strAlbums['txt_artist_name']#&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfloop from="1" to="#strAlbums['hdn_number_of_rows']#" index="counter"&gt;&lt;!--- -Number of loops required stored in structure- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--- -Set the variables to be evaluated against the structure (we know their names because the WDDX packet stored the form field names submmitted)- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset record_name = 'txt_record_name_'&counter&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;cfset record_release = 'txt_release_date_'&counter&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--- -In order to display the value we make use of these variables listed above, which return a value like txt_record_name_1 and we search through the structure (in this case strAlbum) for this name. If found it displays the value.- ---&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr align="center"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;b&gt;#counter#&lt;/b&gt;&lt;/td&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;#StructFind(strAlbums,record_name)#&lt;/td&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;#StructFind(strAlbums,record_release)#&lt;/td&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/cfloop&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;/p&gt;<br />
+&nbsp;&nbsp;&lt;/cfoutput&gt;<br />
+&lt;cfelse&gt;&lt;!--- -The user specifies the number of recordings he wishes to associate with an artist.- ---&gt;<br />
+&nbsp;&nbsp;&lt;form action="index.cfm" name="frm_number_of_rows" id="frm_number_of_rows" method="post" enctype="multipart/form-data"&gt;<br />
+&nbsp;&nbsp;&lt;table border="0" cellpadding="0" cellspacing="0"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;&lt;td&gt;Enter number of CDs you want to add for an atrist&lt;/td&gt;&lt;/tr&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;&lt;td&gt;&lt;input type="Text" name="txt_number_of_rows" id="txt_number_of_rows" value=""&gt;&lt;/td&gt;&lt;/tr&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type="Hidden" name="hdn_action" id="hdn_action" value="show_form"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;&lt;td&gt;&lt;input type="Submit" name="btn_submit" id="btn_submit" value="Submit"&gt;&lt;/td&gt;&lt;/tr&gt;<br />
+&nbsp;&nbsp;&lt;/table&gt;<br />
+&nbsp;&nbsp;&lt;/form&gt;<br />
+&nbsp;&nbsp;&lt;a href="index.cfm?hdn_action=listing"&gt;View all stored albums&lt;/a&gt;.&lt;!--- -Or alternatively can skip ahead and view the stored listings- ---&gt;<br />
+&lt;/cfif&gt;<br />
+<br />
+&lt;/body&gt;<br />
+&lt;/html&gt;
+</em></p>

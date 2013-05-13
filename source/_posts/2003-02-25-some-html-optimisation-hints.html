@@ -1,0 +1,63 @@
+---
+layout: post
+title: Some html optimisation hints
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Apart from making use of CSS and xHTML here a few handy hints that I was able to glean from this excellent <a href="http://www.webreference.com/authoring/languages/html/optimize/">article</a>:</p>
+
+<p><strong>Meta tags</strong></p>
+<ol>
+<li>Make them conditional to save on space, for example:<br />
+&lt;!--#if expr="$HTTP_USER_AGENT = /^Mozilla/" --&gt;&lt;!--#else --&gt;
+&lt;meta Name="keywords" Content="your set of meta tags" /&gt;<br />
+<br />
+&lt;meta name="description" Content="Your web sites description goes here" /&gt;
+&lt;!--#endif --&gt;</li>
+<li>Keep their length down to 200 or less characters. ON thing point worth noting is that you don't need to use commas to delimit your keywords (search engines ignore them), simply use a space to delimit.</li>
+</ol>
+<p><strong>xHTML</strong><br />
+One handy tip here is to keep your lines down to less than 255 characters</p>
+
+<p><strong>Forms</strong><br />
+A really handy tip is to use the following style attribute for forms:</p>
+<p><em>&lt;style type="text/css"&gt;<br />
+&lt;!--<br />
+   form {display:inline;}<br />
+--&gt;<br />
+&lt;/style&gt;</em></p>
+
+<p>This removes the return carriage that causes ugly spacing at the end of forms and thus negates the need to hack form displays by improperly nesting the form tag in tables. The hack for that is: &lt;tr&gt;&lt;form&gt;&lt;td&gt;&lt;/td&gt;/form&gt;&lt;/tr&gt;, but thanks to that style sheet entry you no longer need to use this hack and your markup validates properly as well.</p>
+
+<p><strong>Tables</strong><br />
+I covered this previously, but I this is such a useful tip that I thought there is no harm in repeating it, especially when you consider how widespread the use of tables are in web design. To speed up the display of tables use this style sheet:</p>
+
+<p><em>&lt;style type="text/css"&gt;<br />
+&lt;--<br />
+   table {table-layout:fixed; width: 100%}<br />
+--&gt;<br />
+&lt;/style&gt;<br />
+
+&lt;table&gt;<br />
+   &lt;tr&gt;&lt;td&gt;Cell 1&lt;/td&gt;&lt;td&gt;Cell 2&lt;/td&gt;&lt;/tr&gt;<br />
+   &lt;tr&gt;&lt;td&gt;Cell 3&lt;/td&gt;&lt;td&gt;Cell 3&lt;/td&gt;&lt;/tr&gt;<br />
+&lt;/table&gt;</em></p>
+
+<p>You can furthermore optimise the speed and size of your tables, by assigning further styles to say your <strong>tds</strong> for font sizes and background colours. Reduce the table overhead even further by using a style to define the border, cellpadding and cellspacing attributes. Like such:</p>
+
+<p><em>&lt;style type="text/css"&gt;<br />
+&lt;--<br />
+   table {border-collapse: collapse;}<br />
+   td {padding: 0px;}<br />
+--&gt;<br />
+&lt;/style&gt;<br />
+
+&lt;table&gt;<br />
+   &lt;tr&gt;&lt;td&gt;Cell 1&lt;/td&gt;&lt;td&gt;Cell 2&lt;/td&gt;&lt;/tr&gt;<br />
+   &lt;tr&gt;&lt;td&gt;Cell 3&lt;/td&gt;&lt;td&gt;Cell 3&lt;/td&gt;&lt;/tr&gt;<br />
+&lt;/table&gt;</em></p>
+
+<p>There you go all the tips I have for this week.</p>

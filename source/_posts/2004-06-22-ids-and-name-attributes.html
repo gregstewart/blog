@@ -1,0 +1,18 @@
+---
+layout: post
+title: IDs and name attributes
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Yesterday I stumbled across this little discovery relating to <acronym title="eXtensible HyperText Markup Language">xHTML</acronym> attributes <strong>name</strong> and <strong>id</strong> that you use for example in form tags such as <strong>input</strong>, e.g.: &lt;input type="text" <strong>name="r_name"</strong> <strong>id="r_name"</strong> value="" size=20 /&gt;</p>
+<p>Now I'd always gotten into the habit of setting the name attribute to same value as the id one, because as I understood it the name attribute would eventually be phased out and was thus hoping to future proof my forms. But what about this scenario involving making forms accessible and using radio buttons for selections?</p>
+<p><em>&lt;input type="radio" name="clientType" id="clientType" value="1" title="radio button: for new client id" checked="true" />&lt;label for="clientType">By new&lt;/label>&lt;br />
+&lt;input type="radio" name="clientType" id="clientType" title="radio button: for old client id" value="0" />&lt;label for="clientType">By old&lt;/label>
+</em></p>
+<p>Using my previously adopted technique the &lt;label&gt; tag could not fathom which field I was referring to. Why? Because IDs <strong>*must*</strong> be unique!! This is part of the <a href="http://www.w3.org/" title="World Wide Web Consortium">W3C</a> spec and I have known about this, but somehow never put 2 and 2 together when it came to forms. So here now is the new and improved radio button solution.</p>
+<p><em>&lt;input type="radio" name="clientType" id="clientType_1" value="1" title="radio button: for new client id" checked="true" /&gt;&lt;label for="clientType_1"&gt;By new&lt;/label&gt;&lt;br /&gt;
+&lt;input type="radio" name="clientType" id="clientType_2" title="radio button: for old client id" value="0" /&gt;&lt;label for="clientType_2"&gt;By old&lt;/label&gt;</em></p>
+<p>Downside is that these radio buttons are now no longer grouped by ID, instead they use the name attribute.</p>

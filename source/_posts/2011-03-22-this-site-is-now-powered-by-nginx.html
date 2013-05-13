@@ -1,0 +1,64 @@
+---
+layout: post
+title: This site is now powered by Nginx
+tags:
+- ! '*nix'
+- apache
+- apache2
+- comps
+- debian
+- nginx
+- squeeze
+- web server
+status: publish
+type: post
+published: true
+meta:
+  aktt_notify_twitter: 'no'
+  _edit_last: '2'
+---
+I took the plunge this afternoon and switched from Apache 2 to NGinx. For the most part I followed the instructions <a href="http://library.linode.com/web-servers/nginx/php-fastcgi/debian-5-lenny">posted here</a>. Since I am now running Debian Squeeze there were a few things to note:
+
+<ol>
+	<li>spawn-fcgi: there's a package for it so I just used that : [code]sudo apt-get install spawn-fcgi[/code]</li>
+	<li>the stop/start script complained when adding it to the boot/shutdown cycle, but one posted in the comments worked:
+[code]
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides: php-fastcgi
+# Required-Start: $all
+# Required-Stop: $all
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: starts the php-fastcgi process
+# Description: starts php-fastcgi using start-stop-daemon
+### END INIT INFO
+PHP_SCRIPT=/usr/bin/php-fastcgi
+FASTCGI_USER=www-data
+RETVAL=0
+case "$1" in
+start)
+su - $FASTCGI_USER -c $PHP_SCRIPT
+RETVAL=$?
+;;
+stop)
+killall -9 php5-cgi
+RETVAL=$?
+;;
+restart)
+killall -9 php5-cgi
+su - $FASTCGI_USER -c $PHP_SCRIPT
+RETVAL=$?
+;;
+*)
+echo "Usage: php-fastcgi {start|stop|restart}"
+exit 1
+;;
+esac 
+exit $RETVAL
+[/code]</li>
+	<li>Next to stop Apache from starting up run: [code]sudo update-rc.d -f apache2 remove[/code]</li>
+	<li>On the rewrite front, I needed to <a href="http://michaelshadle.com/2009/03/19/finally-using-nginxs-try-files-directive">add the following</a> to my virtual host configuration to have those seo friendly urls up and running again: [code]try_files $uri $uri/ /index.php;[/code]
+</ol>
+
+

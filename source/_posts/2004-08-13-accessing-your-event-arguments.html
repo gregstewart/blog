@@ -1,0 +1,18 @@
+---
+layout: post
+title: accessing your event arguments.
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+The <a href="http://www.mach-ii.com/" title="Mach-ii">Mach-ii framework</a> conveniently passes your form and url variables into the event for you and you can access these values from within <acronym title="ColdFusion Components">CFC</acronym> by passing them into your method using:
+
+[code]<cfargument name="event" type="MachII.framework.Event" required="yes" displayname="Event" hint="I am the current event." />[/code]
+
+Now if you wanted to access the value for a submitted form field called "myOption", you could access it using the following syntax:
+
+[code]<cfset var mySetOption = arguments.event.getArg("myOption") />[/code]
+
+And now this value can easily be used and passed into your queries or whatever you want to do with it within that method.

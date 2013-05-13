@@ -1,0 +1,27 @@
+---
+layout: post
+title: Generating dynamic tables with varying row colours
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<h3>Generating dynamic tables with varying row colours</h3>
+<p class="1">I always wanted to know how in Coldfusion administrator the rows in a table were alternating in colour. Well I came across this article by Adam Maloney on Defusion (<a href="http://www.defusion.com/">http://www.defusion.com/</a>) [<a href="http://www.defusion.com/articles/index.cfm?ArticleID=54">Article 54</a>]</p>
+<p class="1">
+<i>This trick is relatively simple. Using the query.currentrow variable, and some simple math, you can have a nifty table:</p>
+<p class="1">
+<pre>
+&lt;CFOUTPUT QUERY="myquery"&gt;
+  &lt;CFIF currentrow mod 2&gt;
+    &lt;TR color="color1"...&gt;&lt;/TR&gt;
+  &lt;CFELSE&gt;
+    &lt;TR color="color2"...&gt;&lt;/TR&gt;
+  &lt;/CFIF&gt;
+&lt;/CFOUTPUT&gt;
+</pre>
+</p>
+<p class="1">The if statement is the key. The expression currentrow mod 2 returns the modulus (remainder division) of the current query and row 2. If the return value is 0, then currentrow is even. If it is non-zero, then currentrow is odd.
+</i>
+</p>

@@ -1,0 +1,45 @@
+---
+layout: post
+title: CFMX and filters
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I am back on the performance trail. For a while I have been meaning to use <abbr title="GNU Zip">gZip</abbr> to compress files sent by the server and for the most part I was focusing on letting the web server handle this, but I have just come across an article that let's <acronym title="ColdFusion MX">CFMX</acronym> do the job: enter servlet filters.</p>
+<p>The article in question was published in the <a href="http://www.sys-con.com/coldfusion/" title="Check out the ColdFusion Developer's Journal over at Sys-Con">CFDJ magazine</a> back in February 2003. Here's what you need to know about Filters:</p>
+<ul>
+	<li>A filter is a Java program</li>
+	<li>Can be executed before or after CFMX template (sounds like <em>Application.cfm</em> and <em>OnRequestEnd.cfm</em>?? The main difference being that you can control the execution of Filters [conditional processing, apply to all templates not just <em>.cfm</em> ones, etc...])</li>
+	<li>Can manipulate <acronym title="HyperText Transfer Protocol">HTTP</acronym> headers/requests, branch your code and modify the <acronym title="HyperText Transfer Protocol">HTTP</acronym> responses</li>
+	<li>YOu can write your own or use existing ones.</li>
+</ul>
+<p>And here are some of the advantages as highlighted in the article of the control you can exercise over the execution of Filters:</p>
+<ul>
+	<li>A single template (of any type, not just <em>.cfm</em>)</li>
+	<li>All templates in a given directory and subdirectories</li>
+	<li>All templates of a given file type</li>
+	<li>All templates on the entire server</li>
+</ul>
+<p>And here are a few resources where you can find some that have already been created:</p>
+<ul>
+	<li><a href="http://www.jsptags.com/" title="Go to JSPTags.com">http://www.jsptags.com/</a></li>
+	<li><a href="http://www.servletsuite.com/" title="Go to ColdBeans software">http://www.servletsuite.com/</a></li>
+</ul>
+<p>The latter is where we found the GZip filter (<a href="http://www.servletsuite.com/servlets/gzipflt.htm" title="Get the Compress Filter">Grab it here</a>)and in the following we'll discuss how to implement it. You'll need to copy the <em>JAR</em> file into your <em>cfusionmx\wwwroot\WEB-INF\lib</em> folder (where <em>cfusionmx</em> is your servers install directory). Or if you are running CFMX as an instance on JRun, then you'll need to copy it into: <em>JRun4\servers\cfusion\cfusion-ear\cfusion-war\WEB-INF\lib</em>.</p>
+<p>Next you'll need to configure your CFMX server to use that Filter, locate your <em>web.xml file</em> [usually found in: <em>\JRun4\servers\cfusion\cfusion-ear\cfusion-war\WEB-INF</em>] and open it for editing [just in case anything goes wrong, remember to make a back up before editing this file]. Scroll to the end of the file and before the closing &lt;/web-app&gt; tag copy the following lines in:</p>
+<p><em><code>&lt;filter&gt;<br />
+	&lt;filter-name&gt;GZIPFilter&lt;/filter-name&gt;<br />
+	&lt;filter-class&gt;com.cj.gzipflt.GzipFilter&lt;/filter-class&gt;<br />
+&lt;/filter&gt;<br />
+&lt;filter-mapping&gt;<br />
+	&lt;filter-name&gt;GZIPFilter&lt;/filter-name&gt;<br />
+	&lt;url-pattern&gt;*.cfm&lt;/url-pattern&gt;<br />
+&lt;/filter-mapping&gt;</code></em></p>
+<p>The final step requires you to restart the CFMX server so that the changes can take effect. Now if you are using the JRun web admin interface when carrying out the restart you may come across a few error messages, such as it took too long for the server to re-start. If you get this message and click on the home link in the top left hand corner of the interface, it will refresh the page and you should see that your server is running. If not remove the lines we added to web.xml, re-start your server and start again!</p>
+<p>Here are links to resources relating to this article:</p>
+<ul>
+	<li><a href="http://www.sys-con.com/coldfusion/article.cfm?id=573" title="Fun with Filters in CFMX">http://www.sys-con.com/coldfusion/article.cfm?id=573</a>, this is source of the article I gleaned this from.</li>
+	<li>The article referred to this resource for more information: <a href="http://www.systemanage.com/presentations/index.cfm#cf">http://www.systemanage.com/presentations/index.cfm#cf</a>, but when I tried to look at it nothing was coming up.</li>
+</ul>

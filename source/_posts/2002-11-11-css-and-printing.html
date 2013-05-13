@@ -1,0 +1,42 @@
+---
+layout: post
+title: CSS and printing
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>I am sure you have come across this a few times yourself. You have built a beautiful site, so beautiful that the client wants to be able to print out pages for one reason or another. Alas this is never so straight forward and required the generation of a separate template specially formatted for print. No more, thanks to Style sheets and they can really make your life easier, especially in the aforementioned scenario.</p>
+
+<p>The best place to test this idea was for my site, I thought it would be nifty to be able to print out the articles themselves minus, the header, navigation and footer without the use of a second page. Since this was another in hindsight kind of step, I added a set of div tags to my page to logically group/structure the page. Roughly speaking this is what the page is structured:</p>
+
+<p><em>&lt;div id="header"&gt;<br />
+ ...header and top level nav code goes here...<br />
+&lt;/div&gt;<br />
+&lt;div id="content"&gt;<br />
+ ...main article body appears here...<br />
+&lt;/div&gt;<br />
+&lt;div id="side_nav"&gt;<br />
+ ...nav code goes here...<br />
+&lt;/div&gt;<br />
+&lt;div id="footer"&gt;<br />
+ ...footer is included here...<br />
+&lt;/div&gt;<br />
+</em></p>
+
+<p>So far so good. Next I created a new style sheet specifically constructed for printing. The first thing was to hide the page elements that I didn't want to be printed out. This is achieved by specifying: <em>display: none;</em> and in my case assigning it to relevant <strong>&lt;div&gt; ids</strong>. Next I wanted to show the category nav, but in a print manner so I opted for display links as underlined. Finally I formatted the main content area to appear on a white background and use arial as the preferred font and black as the colour for that font. Listed below is my external print style sheet: <em>print.css</em></p>
+
+<p><em>/* print styles */<br />
+A:link, A:visited { background: white; color: black; font-family: Arial, Helvetica, sans-serif; text-decoration: underline; font-weight: bold; }<br />
+#header { display: none;  }<br />
+#content { background: white; color: black; font-family: Arial, Helvetica, sans-serif; text-decoration: none; font-weight: normal; }<br />
+#side_nav { display: none; }<br />
+#footer { display: none; }</em></p>
+
+<p>Next thing I needed to do was link the document to that new style sheet, and restrict it's use to printing. The <strong>&lt;link&gt;</strong> tag has attribute called media, which can several values the default being screen (i.e. when you look at the page via your web browser). The first thing I did was modify my existing <strong>&lt;link&gt;</strong> tag to include the media type set to <em>screen</em>. Next I added another <strong>&lt;link&gt;</strong> tag with a media type set to <em>print</em> and pointing to my <em>print.css</em> style sheet.</p>
+
+<p><em>&lt;link rel="stylesheet" href="../css/default.css" type="text/css" media="screen" /&gt;<br />
+&lt;link rel="stylesheet" href="../css/print.css" type="text/css" media="print" /&gt;</em></p>
+
+<p>And that's pretty much it. The best way to test this is use the print preview option in IE. Now it this all worked the only thing displayed in the print preview area of the display is the content of this article, minus the header, the nav and the footer. A quick aside: if you are using IE6 and nothing appears in your print preview area, you might think your print style sheet is not working. There appears to be a slight bug, because if I zoom in and zoom out again the print preview displays properly (I could have wasted a lot of time on this...). Mind you this is just the beginning, there would seem to be a lot more options available, such as setting margins and much, much more. As and when I figure this out I'll be sure to make a few more notes. In the meantime... enjoy...</p>

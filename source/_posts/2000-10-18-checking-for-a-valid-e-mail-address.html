@@ -1,0 +1,31 @@
+---
+layout: post
+title: Checking for a valid e-mail address
+tags:
+- JavaScript
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+<p>I made my first venture in regular expressions, when I had to create a JavaScript that checked the validity of an e-mail address. By checking it's validity, I mean that I wanted to make sure that users submitted an address that followed <em>your_name@domain.com</em> and not simply entered a whole bunch of garbage. The best way to do this is to match a pattern or as it is known use regular expressions. Before we set off here is the script that we are going to work through:</p>
+<p><em>&lt;script language="JavaScript" type="text/javascript"&gt;<br />
+&lt;!--<br />
+function validate() {<br />
+&nbsp;&nbsp;&nbsp;var pat_email = /^[-._&0-9a-zA-Z]+[@][-._&0-9a-zA-Z]+[.][._0-9a-zA-Z]+[a-zA-Z]$/;<br />
+&nbsp;&nbsp;&nbsp;with (document.form1) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//validate email<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ( pat_email.exec(txt_email.value) == null ) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert("You have not entered a valid email address.");<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;txt_email.focus();<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return false;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;}<br />
+}<br />
+//--&gt;<br />
+&lt;/script&gt;</em></p>
+<p>OK let's see what is going on here. First we define the pattern that we are trying to match. There we specify the characters that are accepted and the characters that need to appear in it to determine it's validity. JavaScript knows you are defining a regular expression when you use the statement <em>var &lt;pattern_name&gt; = /&lt;pattern_goes_here&gt;$/;</em>. If you take a look at the pattern you will notice <strong>[]</strong> (I will get to the caret in a second). These are used to group patterns together and in some cases create sub-patterns. Taking a step back you can see that we are trying to match pattern that follows these guidelines <strong>[]@[].[]</strong>, which is how most e-mail addresses are composed. In between the square brackets I have specified the characters that are permitted for each sub-pattern. So looking at the first set of square brackets, only values between <strong>0-9</strong>, <strong>a-z</strong>, <strong>A-Z</strong>, <strong>"-"</strong>, <strong>"_"</strong>, <strong>"&"</strong> and <strong>"."</strong> are accepted. How does the script know that these are to be accepted? This is where we get back to the caret (&#94;). This symbol inside the forward slashes indicates that it should accept only those characters specified. Move the caret outside of the slashes and you get achieve the opposite, accept any characters other than the one listed above. You may also wonder what the <strong>+[a-zA-Z]</strong> is about. We included this in order to accept domains names such as <em>.co.uk</em> or <em>.com.au</em>, hence the reason for only including letters and not numbers.</p>
+<p>As an aside should you wish to learn more about regular expressions or pattern matching I can recommend two books. The first is what I used and it gave me an introduction to regular expressions and is the JavaScript developers bible: <a href="http://www.amazon.co.uk/exec/obidos/ASIN/1565923928/teacupinastor-20">JavaScript</a> from <a href="http://www.oreilly.com">O'Reilly &amp; Associates, Inc</a>. The other is <a href=" http://www.amazon.co.uk/exec/obidos/ASIN/0596000278/teacupinastor-20">Perl Programming</a> also from <a href="http://www.oreilly.com">O'Reilly &amp; Associates, Inc</a>. You may be wondering why recommend a Perl book for JavaScript regular expressions. As it happens Perl forms the basis for the way in which JavaScript handles regular expressions.</p>
+<p>Right on with the script. Once we have defined our pattern we have to match it up with something. This happens in the following line, where we inform the script to match it to <strong>form1</strong> in our current page. Next we set the condition, where if <em>pat_email</em> is matched up against <em>text_email</em> (this is the form field we are validating) and if this returns <strong>null</strong>, then we have no match and hence the user has entered an e-mail address that does not satisfy our criteria. If this is the case an <strong>alert</strong> should be made, the focus set back to aforementioned form field and the form submission aborted.</p>
+<p>And there you go that's the script. You invoke the script by including <strong><em>onsubmit="return validate();"</em></strong> in your &lt;FORM&gt; tag. As ever I hope this proved to be useful and informative. Comments and feedback always welcome!!!</p>

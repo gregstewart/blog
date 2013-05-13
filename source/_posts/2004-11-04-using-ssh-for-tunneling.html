@@ -1,0 +1,17 @@
+---
+layout: post
+title: Using SSH for tunneling
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Another question that popped up a few days ago: was about remotely administering a BlueDragon server using the web based console. Now for those who don't know, by default access to the admin console is restricted by only allowing connections to localhost. Which is ideal for people who can gain access to the server itself. Another option is to provide a list or permitted IPs. However there are many people who:
+<ol>
+	<li>don't have the benefit of having access to server console (directly or by way of say VNC)</li>
+	<li>have IP addresses assigned dynamically so they can change from connection to connection and as a result adding them to the config is pointless.</li>
+</ol>
+A bit of a problem, if it weren't for SSH. If your server has an SSH daemon running (typically OSX/*nix have one by default) then this is the solution to many of your remote administration headaches and security concerns. The principle is simple create an SSH connection to your remote server and use that connection to piggy back on to reach local services securely. Surprisingly a few people have been missing this solution, which is presented in the BD install Guide (chapter 6.2). Do have a read and check out <a href="http://www.jfitz.com/tips/putty_config.html" title="Configuring PuTTY - A step-by-step guide">this resource</a>, which shows how to set up and <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/" title="PuTTY Documentation Page">Putty (a ssh client)</a> and configure ssh tunnels.
+
+The example provided is for accessing your e-mail but here are the connection details for using ssh tunnel to access your BD administrator. Open up Putty and set up your SSH connection as per the instruction mentioned above. Then click on Tunnels (Connection/SSH/Tunnels). Make sure the local radio button is selected. In the Source port form field enter 8080 and in the destination field add localhost:8080. Go back to your session option and save your settings. Fire up your connection and now all browser requests for http://localhost:8080/ will be directed through your SSH connection to your remote server.

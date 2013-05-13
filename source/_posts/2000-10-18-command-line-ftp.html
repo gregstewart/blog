@@ -1,0 +1,41 @@
+---
+layout: post
+title: Command line FTP
+tags:
+- ! '*nix'
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+<p>This little article will introduce you to the wonderful and archaic way of accessing FTP sites using the command line. Please note that you can use these commands both under Unix and DOS.</p>
+<p><strong>Establishing a connection</strong><br />
+When connecting to an FTP server from the command line, open a DOS prompt (select Start/Run and for Win9x type command or for NT type cmd) window. There you can now type:</p>
+<p>ftp ftp.mysite.com</p>
+<p>Should you need to	connect to an FTP server on a diffrent port other than the default port you need to connect using the following set of commands:</p>
+<p><em>ftp</em>. You should now see the following prompt:<em> ftp></em>. There type: <em>open ftp.mysite.com 1234</em>, where 1234 is the number of the port you are trying to connect to.</p>
+<p>In either case you will be asked to login, so supply your username and password at the relevant prompts, right now let's move on to the interesting bits.</p>
+<p><strong>Some useful commands</strong><br />
+Before we get into downloading and uploading files here are some useful commands:</p>
+<ul>
+<li> Type <em>?</em>, to obtain a list of all availbale commands.</li>
+<li> Type <em>bin</em>, to change to binary mode, this is usually used for anything other than text files upload and downloads.</li>
+<li> Type <em>ascii</em>, to change back to ASCII mode.</li>
+<li> Type <em>hash</em>, this while uploading and downloading gives you an incremental row of hashes marking the progress of either your upload or download.</li>
+</ul>
+<p><strong>Moving around remotely</strong><br />
+Right now that you have logged on you need to know where you in are in the directory and tree and how to navigate, and this is where a little bit of Unix comes in handy. In order tpo find out where you are type <em>pwd</em> this stands for print working directory. To find out what is located in the directory you are currently in, type <em>ls</em>. This gives you a list of files and sub-directories, but not in a very legible format. So try typing <em>ls -l</em>. This gives you a better idea of what is what and if memory serves me well also a list of permissions on each item listed. Should that list get to long, i.e. rattle past you on the screen at the speed of light, type <em>ls -l |more</em>. You can now peruse the directory listing at your leisure as it will stop when it fills the screen. To bring up the rest, just press the space bar. You can change directories by typing <em>cd</em>. If you need to step through several directories and know the path, you can type this <em>cd directpry1/subdirectory/etc</em>. To backtrack out of a directory type <em>cd ..</em> and to backtrack several directories type <em>cd ../..</em></p>
+<p><strong>Moving around localy</strong><br />
+Right know you kow how to move around on the FTP server, but how do you get around your local machine? First of all to find out where you are, you can type <em>lcd</em>. This is the same as the <i>pwd</i> command and it gives your current path. Unfortunately I am not aware of a method for listing the contents of your local directory (so fire up explorer or whatever and take a peak). To change local directories you type <i>lcd DirectoryName</i>, to move back you type <i>lcd ..</i>. And that's all I know.
+</p>
+<p><b>Uploading files</b><br />
+The command used to upload a file is <i>put</i>, so you would type something like this <i>put MyFile.FileExtension</i>. Pretty straightforward right? However there are a few more things you need to now. FTP distinguishes between Binary files and ASCII files, and if you happen to upload a file in ASCII format that should actually be in Binary the result might be less than successful. By default it is set to ASCII, so to change it to Binary, type <i>Bin</i>. You see a message informing you of the mode change. The next yo can do is use the <i>hash</i> command. THis displays a incremental row of hashes, symbolising the upload process. Why do you want to do this? Well you may well upload a huge file at one stage or another and by default the screen just sits there and gives you no indication of progress. For all you know it may well be hanging. So by using the <i>hash</i> command you can keep an eye on things and see how things are progressing.<br />
+Now you now how to upload single files, but how do you upload multiple files I hear you cry! To do this you use the <i>mput</i> command (multiple put?). The following example uploads all files with the extension "html". <br />
+<i>mput *.html</i><br />
+[Using this command <i>put *.html</i> will only grab the first html file in the directory]. Be careful when using <i>mput *.*</i> cause this tries to upload the entire contents of the directory, including subdirectories (only it creates files, rather than recreating the directory and it's content and structure.</p>
+<p><b>Downloading files</b><br />
+The concept is very similar than that of uploading files. You can again use the <i>hash</i> command to track progress. To download a file you use the <i>get</i>command, e.g. <i>get MyFile.FileExtension</i>. Similarly to download several files in one go type <i>mget *.html</i>, which in this case will download all the files with the extension html.</p>
+<p><b>Deleting files and directories</b><br />
+To a delete a file, type the following command <i>del FileName.FileExtension</i>. To delete multiple files, type <i>del *.FileExtension</i>. To delete a directory, you can use the <i>rm</i> command, but you have to make sure that the directory is empty. You type <i>rm DirectoryName</i>.</p>
+<p>Well that's about it. Hope you found this introduction useful</p>

@@ -1,0 +1,20 @@
+---
+layout: post
+title: AUTO INCREMENT
+tags:
+- MySQL
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+Since the MySQL Query Browser on my Mac refused to let me set a field as auto increment through the GUI, here's how you can using SQL change an existing column to use auto_increment:
+
+[sql]
+ALTER TABLE `aggregatedWeekly` CHANGE `Id` `Id` INT( 6 ) UNSIGNED NOT NULL AUTO_INCREMENT
+[/sql]
+<h4>UPDATE</h4>
+I have also recently found out that the following works just as well:
+
+<code>[sql]ALTER TABLE `aggregatedWeekly` AUTO_INCREMENT=1[/sql]</code>
