@@ -1,0 +1,30 @@
+---
+layout: post
+title: Macros
+tags:
+- wow
+status: draft
+type: post
+published: false
+meta:
+  aktt_notify_twitter: 'yes'
+  _aktt_hash_meta: ''
+  _edit_last: '1'
+---
+From: 
+http://www.mmo-champion.com/threads/676764-Common-Warrior-Macros
+
+
+#showtooltip Mark Target with skull
+/run if GetRaidTargetIndex("target")~=8 then SetRaidTarget("target",8)end
+"this macro will immediatly mark your target as skull, without having to right-click the portrait.
+this is awsome for heroics, it speeds things up and your dps (atleast the ones that arent braindead) will attack skull instead of randomly attacking something that you arent keeping much aggro on other then aoe."
+
+#showtooltip Charge 
+/cast bloodrage
+/cast [stance:2] Battle stance
+/stopcasting
+/cast Charge
+/cast [stance:1] Defensive Stance
+
+This macro casts bloodrage, switches you into battle from def and allows you to charge. Click again to switch back to def
