@@ -1,12 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0fe4809d-ba22-4387-bbe5-55fe85bedf85" name="Default" comment="" />
+    <list default="true" id="0fe4809d-ba22-4387-bbe5-55fe85bedf85" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.preview-mode" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.rakeTasks" afterPath="$PROJECT_DIR$/.idea/.rakeTasks" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2000-10-18-how-to-limit-mail-attachment-size-for-sendmail.html" afterPath="$PROJECT_DIR$/source/_posts/2000-10-18-how-to-limit-mail-attachment-size-for-sendmail.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2000-11-28-javascript-trapping-the-enter-key-event.html" afterPath="$PROJECT_DIR$/source/_posts/2000-11-28-javascript-trapping-the-enter-key-event.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2003-11-27-switchcase-statements-in-cfscript.html" afterPath="$PROJECT_DIR$/source/_posts/2003-11-27-switchcase-statements-in-cfscript.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2004-07-21-getpagecontext.html" afterPath="$PROJECT_DIR$/source/_posts/2004-07-21-getpagecontext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2004-09-23-maxpermsize-and-heapsize.html" afterPath="$PROJECT_DIR$/source/_posts/2004-09-23-maxpermsize-and-heapsize.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2004-10-13-flushing-db-connections.html" afterPath="$PROJECT_DIR$/source/_posts/2004-10-13-flushing-db-connections.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2004-10-13-jrun-configuration.html" afterPath="$PROJECT_DIR$/source/_posts/2004-10-13-jrun-configuration.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2004-11-11-trapping-the-enter-key.html" afterPath="$PROJECT_DIR$/source/_posts/2004-11-11-trapping-the-enter-key.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2004-11-15-alert-box.html" afterPath="$PROJECT_DIR$/source/_posts/2004-11-15-alert-box.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2005-03-30-tips-for-cleaning-a-compromised-server.html" afterPath="$PROJECT_DIR$/source/_posts/2005-03-30-tips-for-cleaning-a-compromised-server.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2005-06-30-tail-grep.html" afterPath="$PROJECT_DIR$/source/_posts/2005-06-30-tail-grep.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2005-08-23-soundex.html" afterPath="$PROJECT_DIR$/source/_posts/2005-08-23-soundex.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2006-09-22-refreshing-web-service-stubs.html" afterPath="$PROJECT_DIR$/source/_posts/2006-09-22-refreshing-web-service-stubs.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2007-03-06-back.html" afterPath="$PROJECT_DIR$/source/_posts/2007-03-06-back.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2007-03-13-embedded-image.html" afterPath="$PROJECT_DIR$/source/_posts/2007-03-13-embedded-image.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2007-04-27-ie-the-dom-and-long-numbers.html" afterPath="$PROJECT_DIR$/source/_posts/2007-04-27-ie-the-dom-and-long-numbers.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2007-04-27-kudos-linode.html" afterPath="$PROJECT_DIR$/source/_posts/2007-04-27-kudos-linode.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2007-06-26-google-map-links.html" afterPath="$PROJECT_DIR$/source/_posts/2007-06-26-google-map-links.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2008-01-04-happy-new-year.html" afterPath="$PROJECT_DIR$/source/_posts/2008-01-04-happy-new-year.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2008-01-10-restricting-ftp-passive-ports.html" afterPath="$PROJECT_DIR$/source/_posts/2008-01-10-restricting-ftp-passive-ports.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2008-07-09-vmware-and-keyboard-input.html" afterPath="$PROJECT_DIR$/source/_posts/2008-07-09-vmware-and-keyboard-input.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2009-03-07-joshua-national-park.html" afterPath="$PROJECT_DIR$/source/_posts/2009-03-07-joshua-national-park.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2009-04-06-gnumake-no-rule-to-make-target-all.html" afterPath="$PROJECT_DIR$/source/_posts/2009-04-06-gnumake-no-rule-to-make-target-all.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2011-03-22-this-site-is-now-powered-by-nginx.html" afterPath="$PROJECT_DIR$/source/_posts/2011-03-22-this-site-is-now-powered-by-nginx.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2011-04-05-node-js-chat-server.html" afterPath="$PROJECT_DIR$/source/_posts/2011-04-05-node-js-chat-server.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2011-04-21-iphone-tracking.html" afterPath="$PROJECT_DIR$/source/_posts/2011-04-21-iphone-tracking.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2011-05-20-oh-my-zsh.html" afterPath="$PROJECT_DIR$/source/_posts/2011-05-20-oh-my-zsh.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2011-06-20-i-do-intensely-dislike-print.html" afterPath="$PROJECT_DIR$/source/_posts/2011-06-20-i-do-intensely-dislike-print.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2011-06-23-7-days-of-father-and-son-time.html" afterPath="$PROJECT_DIR$/source/_posts/2011-06-23-7-days-of-father-and-son-time.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2011-06-26-tough-day-but-we-have-a-winne.html" afterPath="$PROJECT_DIR$/source/_posts/2011-06-26-tough-day-but-we-have-a-winne.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2011-07-03-holiday-over-new-job-starts.html" afterPath="$PROJECT_DIR$/source/_posts/2011-07-03-holiday-over-new-job-starts.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2011-07-12-first-steps-with-jasmine.html" afterPath="$PROJECT_DIR$/source/_posts/2011-07-12-first-steps-with-jasmine.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2011-07-15-dragonforce.html" afterPath="$PROJECT_DIR$/source/_posts/2011-07-15-dragonforce.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_config.yml" afterPath="$PROJECT_DIR$/_config.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/octopress.iml" afterPath="$PROJECT_DIR$/.idea/octopress.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="octopress.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="0fe4809d-ba22-4387-bbe5-55fe85bedf85" time="1368473454339" ignored="false" />
-    <file path="/_config.yml" changelist="0fe4809d-ba22-4387-bbe5-55fe85bedf85" time="1368474315933" ignored="false" />
+    <file path="/Dummy.txt" changelist="0fe4809d-ba22-4387-bbe5-55fe85bedf85" time="1377108228813" ignored="false" />
+    <file path="/_config.yml" changelist="0fe4809d-ba22-4387-bbe5-55fe85bedf85" time="1377108337230" ignored="false" />
     <file path="/Rakefile" changelist="0fe4809d-ba22-4387-bbe5-55fe85bedf85" time="1368475837046" ignored="false" />
+    <file path="/2011-07-12-first-steps-with-jasmine.html" changelist="0fe4809d-ba22-4387-bbe5-55fe85bedf85" time="1377109790613" ignored="false" />
+    <file path="/2007-03-13-embedded-image.html" changelist="0fe4809d-ba22-4387-bbe5-55fe85bedf85" time="1377109804971" ignored="false" />
+    <file path="/2005-06-30-tail-grep.html" changelist="0fe4809d-ba22-4387-bbe5-55fe85bedf85" time="1377109834489" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,55 +69,91 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="2012-08-14-test.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/source/_attachments/2012-08-14-test.html">
+      <file leaf-file-name="2005-03-30-tips-for-cleaning-a-compromised-server.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source/_posts/2005-03-30-tips-for-cleaning-a-compromised-server.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0">
+            <state line="8" column="0" selection-start="130" selection-end="130" vertical-scroll-proportion="-5.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="2013-04-22-server-admin-2.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/source/_posts/2013-04-22-server-admin-2.html">
+      <file leaf-file-name="2006-09-22-refreshing-web-service-stubs.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source/_posts/2006-09-22-refreshing-web-service-stubs.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0">
+            <state line="9" column="0" selection-start="130" selection-end="130" vertical-scroll-proportion="-5.625">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="2013-04-26-so-you-want-to-write-some-user-journey-tests.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/source/_posts/2013-04-26-so-you-want-to-write-some-user-journey-tests.html">
+      <file leaf-file-name="2004-07-21-getpagecontext.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source/_posts/2004-07-21-getpagecontext.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="17.5">
+            <state line="8" column="0" selection-start="106" selection-end="106" vertical-scroll-proportion="-5.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config.rb">
+      <file leaf-file-name="2004-11-15-alert-box.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source/_posts/2004-11-15-alert-box.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="8" column="0" selection-start="101" selection-end="101" vertical-scroll-proportion="-5.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_config.yml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/_config.yml">
+      <file leaf-file-name="2004-09-23-maxpermsize-and-heapsize.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source/_posts/2004-09-23-maxpermsize-and-heapsize.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="81" column="19" selection-start="2656" selection-end="2656" vertical-scroll-proportion="0.0">
+            <state line="8" column="0" selection-start="116" selection-end="116" vertical-scroll-proportion="-5.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Rakefile" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Rakefile">
+      <file leaf-file-name="2007-04-27-ie-the-dom-and-long-numbers.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source/_posts/2007-04-27-ie-the-dom-and-long-numbers.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="9" column="0" selection-start="131" selection-end="131" vertical-scroll-proportion="-5.625">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="2005-08-23-soundex.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source/_posts/2005-08-23-soundex.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="8" column="0" selection-start="99" selection-end="99" vertical-scroll-proportion="-5.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="2007-04-27-kudos-linode.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source/_posts/2007-04-27-kudos-linode.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="0" selection-start="110" selection-end="110" vertical-scroll-proportion="-5.625">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="2004-10-13-jrun-configuration.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source/_posts/2004-10-13-jrun-configuration.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="8" column="0" selection-start="110" selection-end="110" vertical-scroll-proportion="-5.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="2007-03-06-back.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/source/_posts/2007-03-06-back.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="0" selection-start="104" selection-end="104" vertical-scroll-proportion="0.4383117">
               <folding />
             </state>
           </provider>
@@ -98,14 +177,28 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/_config.yml" />
-        <option value="$PROJECT_DIR$/Rakefile" />
+        <option value="$PROJECT_DIR$/source/_posts/2007-06-26-google-map-links.html" />
+        <option value="$PROJECT_DIR$/source/_posts/2008-07-09-vmware-and-keyboard-input.html" />
+        <option value="$PROJECT_DIR$/source/_posts/2000-11-28-javascript-trapping-the-enter-key-event.html" />
+        <option value="$PROJECT_DIR$/source/_posts/2004-11-11-trapping-the-enter-key.html" />
+        <option value="$PROJECT_DIR$/source/_posts/2004-10-13-flushing-db-connections.html" />
+        <option value="$PROJECT_DIR$/source/_posts/2008-01-04-happy-new-year.html" />
+        <option value="$PROJECT_DIR$/source/_posts/2005-03-30-tips-for-cleaning-a-compromised-server.html" />
+        <option value="$PROJECT_DIR$/source/_posts/2006-09-22-refreshing-web-service-stubs.html" />
+        <option value="$PROJECT_DIR$/source/_posts/2004-07-21-getpagecontext.html" />
+        <option value="$PROJECT_DIR$/source/_posts/2004-11-15-alert-box.html" />
+        <option value="$PROJECT_DIR$/source/_posts/2004-09-23-maxpermsize-and-heapsize.html" />
+        <option value="$PROJECT_DIR$/source/_posts/2007-04-27-ie-the-dom-and-long-numbers.html" />
+        <option value="$PROJECT_DIR$/source/_posts/2005-08-23-soundex.html" />
+        <option value="$PROJECT_DIR$/source/_posts/2007-04-27-kudos-linode.html" />
+        <option value="$PROJECT_DIR$/source/_posts/2004-10-13-jrun-configuration.html" />
+        <option value="$PROJECT_DIR$/source/_posts/2007-03-06-back.html" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="10" />
-    <option name="y" value="22" />
+    <option name="x" value="8" />
+    <option name="y" value="34" />
     <option name="width" value="1420" />
     <option name="height" value="790" />
   </component>
@@ -135,7 +228,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -186,12 +278,50 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="octopress" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="octopress" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="source" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="_pages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="octopress" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="octopress" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="source" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="_layouts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="GoToClass.includeJavaFiles" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -273,27 +403,27 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="10" y="22" width="1420" height="790" extended-state="0" />
-    <editor active="false" />
+    <frame x="8" y="34" width="1420" height="790" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3294964" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34425035" sideWeight="0.6705036" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3551674" sideWeight="0.67099565" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32900432" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3294964" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -357,49 +487,114 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/source/_attachments/2012-08-14-test.html">
+    <entry file="file://$PROJECT_DIR$/source/_posts/2007-06-26-google-map-links.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="11" column="0" selection-start="131" selection-end="131" vertical-scroll-proportion="-6.875">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/source/_posts/2013-04-22-server-admin-2.html">
+    <entry file="file://$PROJECT_DIR$/source/_posts/2008-07-09-vmware-and-keyboard-input.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="12" column="0" selection-start="147" selection-end="147" vertical-scroll-proportion="-7.5">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/source/_posts/2013-04-26-so-you-want-to-write-some-user-journey-tests.html">
+    <entry file="file://$PROJECT_DIR$/source/_posts/2000-11-28-javascript-trapping-the-enter-key-event.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="17.5">
+        <state line="8" column="0" selection-start="136" selection-end="136" vertical-scroll-proportion="-5.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config.rb">
+    <entry file="file://$PROJECT_DIR$/source/_posts/2004-11-11-trapping-the-enter-key.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="8" column="0" selection-start="114" selection-end="114" vertical-scroll-proportion="-5.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_config.yml">
+    <entry file="file://$PROJECT_DIR$/source/_posts/2004-10-13-flushing-db-connections.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="81" column="19" selection-start="2656" selection-end="2656" vertical-scroll-proportion="0.0">
+        <state line="8" column="0" selection-start="115" selection-end="115" vertical-scroll-proportion="-5.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/source/favicon.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
+    <entry file="file://$PROJECT_DIR$/source/_posts/2008-01-04-happy-new-year.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="0" selection-start="124" selection-end="124" vertical-scroll-proportion="-6.25">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rakefile">
+    <entry file="file://$PROJECT_DIR$/source/_posts/2005-03-30-tips-for-cleaning-a-compromised-server.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="8" column="0" selection-start="130" selection-end="130" vertical-scroll-proportion="-5.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/2006-09-22-refreshing-web-service-stubs.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="0" selection-start="130" selection-end="130" vertical-scroll-proportion="-5.625">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/2004-07-21-getpagecontext.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="0" selection-start="106" selection-end="106" vertical-scroll-proportion="-5.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/2004-11-15-alert-box.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="0" selection-start="101" selection-end="101" vertical-scroll-proportion="-5.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/2004-09-23-maxpermsize-and-heapsize.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="0" selection-start="116" selection-end="116" vertical-scroll-proportion="-5.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/2007-04-27-ie-the-dom-and-long-numbers.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="0" selection-start="131" selection-end="131" vertical-scroll-proportion="-5.625">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/2005-08-23-soundex.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="0" selection-start="99" selection-end="99" vertical-scroll-proportion="-5.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/2007-04-27-kudos-linode.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="0" selection-start="110" selection-end="110" vertical-scroll-proportion="-5.625">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/2004-10-13-jrun-configuration.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="0" selection-start="110" selection-end="110" vertical-scroll-proportion="-5.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/2007-03-06-back.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="0" selection-start="104" selection-end="104" vertical-scroll-proportion="0.4383117">
           <folding />
         </state>
       </provider>
