@@ -28,7 +28,7 @@ link only provides download options. Why two? Well [Gitbook](https://www.gitbook
 You can also see the book over at my [Github repository](https://github.com/gregstewart/book).
 
 I have also created a simple [Facebook page](https://www.facebook.com/pages/Building-a-Web-App-Guided-By-Tests/1513275702220730)
-for the book.
+for the book. There's also a corresponding [Google+ page](https://plus.google.com/b/108779957018512450200/108779957018512450200/).
 
 If you have any suggestions or feedback feel free to leave a comment here, the [Facebook page](https://www.facebook.com/) or
 raise an issue on the [Github repository](https://github.com/gregstewart/book).
