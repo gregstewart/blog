@@ -632,3 +632,8 @@ Let's commit, merge and push to our remote repository:
     git checkout master
     git merge generate-assets
     git push
+
+* * *
+
+You can read the full book over at [GitBook](https://www.gitbook.io/book/gregstewart/modern-web-app-development) or
+[LeanPub](https://leanpub.com/building-a-web-app-guided-by-tests/). Updated content for this chapter can be found on [GitHub](https://github.com/gregstewart/book/blob/master/manuscript/building_our_assets.md).
