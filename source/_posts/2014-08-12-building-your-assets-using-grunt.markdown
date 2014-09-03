@@ -9,8 +9,16 @@ So last time I posted I gave a quick update on the book. This time is no differe
 drafting the chapter on building less and JavaScript assets as part of the deployment process. What follows is the
 chapter, hope you find it useful.
 
-By the way you can read the [http://gregstewart.gitbooks.io/modern-web-app-development/manuscript/building_our_assets.html](full
-book (well work in progress) here).
+By the way you can read [the chapter here](http://gregstewart.gitbooks.io/modern-web-app-development/manuscript/building_our_assets.html).
+
+Here's also a list of chapters you can find as blog posts on the site:
+
+ * [Book Introduction](/2014/09/03/book-introduction/)
+ * [Getting started](/2014/09/03/getting-started/)
+ * [Writing our first functional test](/2014/09/03/writing-our-first-functional-test/)
+ * [Continuous delivery](/2014/09/03/continuous-delivery/)
+ * [Building Your Assets Using Grunt](/2014/08/12/building-your-assets-using-grunt/)
+ * [Development guided by tests](/2014/09/03/development-guided-by-tests/)
 
 * * *
 
@@ -636,4 +644,5 @@ Let's commit, merge and push to our remote repository:
 * * *
 
 You can read the full book over at [GitBook](https://www.gitbook.io/book/gregstewart/modern-web-app-development) or
-[LeanPub](https://leanpub.com/building-a-web-app-guided-by-tests/). Updated content for this chapter can be found on [GitHub](https://github.com/gregstewart/book/blob/master/manuscript/building_our_assets.md).
+[LeanPub](https://leanpub.com/building-a-web-app-guided-by-tests/). Updated content for this chapter can be found on
+[GitHub](https://github.com/gregstewart/book/blob/master/manuscript/building_our_assets.md).
