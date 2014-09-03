@@ -6,8 +6,7 @@ comments: true
 categories: [book, ci, assets, generate, less, javascript, browserify, uglify, grunt, task]
 ---
 
-This is the chpater on setting our continuous delivery pipeline, as always you can read the [chapter of the book here]
-(http://gregstewart.gitbooks.io/modern-web-app-development/manuscript/chapter4.html), as well as the full book.
+This is the chpater on setting our continuous delivery pipeline, as always you can read the [chapter of the book here](http://gregstewart.gitbooks.io/modern-web-app-development/manuscript/chapter4.html), as well as the full book.
 
 Here's also a list of chapters you can find as blog posts on the site:
 
