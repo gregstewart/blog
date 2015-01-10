@@ -178,7 +178,7 @@ In your favourite editor open up the app/index.html file and add the following:
 
 If you open up the file in your browser you should see something like this hopefully:
 
-![Rendered HTML](http://gregstewart.gitbooks.io/modern-web-app-development/manuscript/images/Screenshot2014-06-18 23.19.42.png)
+![Rendered HTML](images/book-assets/Screenshot_2014-06-18_23.19.42.png)
 
 Not exactly something to write home about, but it's enough for us to get started setting up our little server, writing a functional test and deploying something to our Heroku instance.
 
@@ -191,7 +191,7 @@ The last thing we'll do is commit all of our changes to our local repos:
 
 At this stage it's a good idea to also push the changes to our remote repository. If you have followed the [What you will need section]("What you will need section"), you will hopefully have created a Github account. If not go ahead and to that now. Then create a repository called weatherly, here's what I entered:
 
-![Creating your weatherly repository](http://gregstewart.gitbooks.io/modern-web-app-development/manuscript/images/Screenshot2014-06-18 23.35.50.png)
+![Creating your weatherly repository](images/book-assets/Screenshot_2014-06-18_23.35.50.png)
 
 To push our changes to the remote repository, you will need to tell your local repo where it is:
 

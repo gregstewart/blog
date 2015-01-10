@@ -63,14 +63,14 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.
 # ----------------------- #
 
 # Github repositories
-github_user: greg_stewart
+github_user:
 github_repo_count: 23
 github_show_profile_link: true
 github_skip_forks: true
 
 # Twitter
-twitter_user: _greg_stewart_
-twitter_tweet_button: true
+twitter_user:
+twitter_tweet_button: false
 
 # Google +1
 google_plus_one: false
@@ -78,7 +78,7 @@ google_plus_one_size: medium
 
 # Google Plus Profile
 # Hidden: No visible button, just add author information to search results
-googleplus_user: 110643069434566075441
+googleplus_user:
 googleplus_hidden: false
 
 # Pinboard
@@ -86,7 +86,7 @@ pinboard_user:
 pinboard_count: 3
 
 # Delicious
-delicious_user: wildcard1999
+delicious_user:
 delicious_count: 5
 
 # Disqus Comments
@@ -97,4 +97,4 @@ disqus_show_comment_count: true
 google_analytics_tracking_id: UA-57314-1
 
 # Facebook Like
-facebook_like: true
+facebook_like: false
