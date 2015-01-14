@@ -10,13 +10,13 @@ James Whittaker is pissed off, really pissed off. We are held hostage by our bro
 
 That's how he opens his talk on his vision for the future. I stumbled across it again last week I came across thanks to [this post](http://news.microsoft.com/stories/people/james-whittaker.html), where he also goes over some tips for stage presence.
 
-There are 4.5 bullet points of about stage presence worth keeping in mind:
+There are 5 (well really 4.5) bullet points of about stage presence worth keeping in mind:
 
-1) Come out swinging
-1.5) Attention span interlude
-2) Know your shit
-3) Make it epic
-4) Be brief, be right, be gone
+1. Come out swinging
+2. Attention span interlude
+3. Know your shit
+4. Make it epic
+5. Be brief, be right, be gone
 
 He gives regular sessions on campus about Stage presence and I was able to watch one of the recordings and thoroughly enjoyed it and recommend watching it, if you get the chance.
 
