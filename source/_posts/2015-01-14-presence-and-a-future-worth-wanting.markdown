@@ -3,7 +3,7 @@ layout: post
 title: "presence and a future worth wanting"
 date: 2015-01-14 22:23:25 +0000
 comments: true
-categories: 
+categories: [views, browsers, super apps, vision, future, web]
 ---
 
 James Whittaker is pissed off, really pissed off. We are held hostage by our browwser and we should not stand for it.
