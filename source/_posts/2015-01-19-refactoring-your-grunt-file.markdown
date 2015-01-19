@@ -96,9 +96,9 @@ Things left unchecked over time just grow to be unwieldy. Take this Gruntfile fo
         grunt.registerTask('heroku:production', 'build');
     };
 
-It's the Gruntfile for the project in [my book](https://leanpub.com/building-a-web-app-guided-by-tests/). I'll be honest the principle reason I want to refactor this file is because it makes the book editing quite painful and making out changes for the reader is quite difficult. However the same thing can be said for people working with the file, it's getting to be difficult to see what is happening in this file, so let's make this better for all.
+It's the Gruntfile for the project in [my book](https://leanpub.com/building-a-web-app-guided-by-tests/). I'll be honest the principle reason I want to refactor this file is because it makes the book editing quite painful and for the reader being able to make changes is quite difficult. However the same thing can be said for people working with the file, it's getting to be difficult to see what is happening in this file, so let's make this better for all.
 
-Let's start with the karma tasks, these can be extracted to a file called `test.js` and let's save it under a folder called `build`:
+Let's start with the karma tasks, these can be extracted to a file called `test.js` (I am keeping this generic, just in case I decide to switch testing frameworks at a later stage) and let's save it under a folder called `build`:
 
     (function (module) {
         'use strict';
@@ -206,7 +206,7 @@ I have extracted the task configuration and the loading of the task from the `Gr
         grunt.registerTask('heroku:production', 'build');
     };
 
-Apart from removing the code for Karma, I also added the `grunt.loadTasks` directive pointing it to our build folder. To validate that everything is still ok, just run `grunt karma:dev`. Let's do the same for our `browserify` task, once again create a new file (called `browserify.js`) and save it under our build folder:
+Apart from removing the code for Karma, I also added the `grunt.loadTasks` directive pointing it to our new created `build` folder. To validate that everything is still ok, just run `grunt karma:dev`. Let's do the same for our `browserify` task, once again create a new file (called `browserify.js`) and save it under our build folder:
 
     (function(module) {
         'use strict';
@@ -223,10 +223,9 @@ Apart from removing the code for Karma, I also added the `grunt.loadTasks` direc
                 src: 'tests/unit/**/*.js'
             }
         };
-
+        
         module.exports = function(grunt) {
             grunt.loadNpmTasks('grunt-browserify');
-
             grunt.config('browserify', config);
         }
     })(module);
@@ -277,9 +276,9 @@ And remove the code from the `Gruntfile.js`:
                 }
             }
         });
-
+        
         grunt.loadTasks('build');
-
+        
         grunt.loadNpmTasks('grunt-express-server');
         grunt.loadNpmTasks('grunt-selenium-webdriver');
         grunt.loadNpmTasks('grunt-cucumber');
@@ -290,7 +289,7 @@ And remove the code from the `Gruntfile.js`:
 
         grunt.registerTask('generate', ['less:production', 'copy:fonts', 'browserify:code']);
         grunt.registerTask('build', ['bower:install', 'generate']);
-
+        
         grunt.registerTask('e2e', [
             'selenium_start',
             'express:test',
@@ -298,9 +297,8 @@ And remove the code from the `Gruntfile.js`:
             'selenium_stop',
             'express:test:stop'
         ]);
-
+        
         grunt.registerTask('test', ['build', 'karma:ci', 'e2e']);
-
         grunt.registerTask('heroku:production', 'build');
     };
 
@@ -318,10 +316,9 @@ Bower.js
                 }
             }
         };
-
+        
         module.exports = function(grunt) {
             grunt.loadNpmTasks('grunt-bower-task');
-
             grunt.config('bower', config);
         }
     })(module);
@@ -339,10 +336,10 @@ Copy.js
                 flatten: true
             }
         };
-
+        
         module.exports = function(grunt) {
             grunt.loadNpmTasks('grunt-contrib-copy');
-
+            
             grunt.config('copy', config);
         }
     })(module);
@@ -362,10 +359,10 @@ Less.js
                 }
             }
         };
-
+        
         module.exports = function(grunt) {
             grunt.loadNpmTasks('grunt-contrib-less');
-
+            
             grunt.config('less', config);
         }
     })(module);
@@ -380,11 +377,11 @@ Cucumber.js
                 steps: 'tests/e2e/steps/'
             }
         };
-
+        
         module.exports = function(grunt) {
             grunt.loadNpmTasks('grunt-selenium-webdriver');
             grunt.loadNpmTasks('grunt-cucumber');
-
+            
             grunt.config('cucumberjs', config);
         }
     })(module);
@@ -400,22 +397,22 @@ Express.js
                 }
             }
         };
-
+        
         module.exports = function(grunt) {
             grunt.loadNpmTasks('grunt-express-server');
-
+            
             grunt.config('express', config);
         }
     })(module);
 
-Leaving us now with a `Gruntfile` that is so much more lightweight and only considers itself with loading tasks and registering tasks:
+Leaving us now with a `Gruntfile` that is so much more lightweight and only concerns itself with loading and registering tasks:
 
     module.exports = function (grunt) {
         grunt.loadTasks('build');
-
+        
         grunt.registerTask('generate', ['less:production', 'copy:fonts', 'browserify:code']);
         grunt.registerTask('build', ['bower:install', 'generate']);
-
+        
         grunt.registerTask('e2e', [
             'selenium_start',
             'express:test',
@@ -423,7 +420,7 @@ Leaving us now with a `Gruntfile` that is so much more lightweight and only cons
             'selenium_stop',
             'express:test:stop'
         ]);
-
+        
         grunt.registerTask('test', ['build', 'karma:ci', 'e2e']);
         grunt.registerTask('heroku:production', 'build');
     };
