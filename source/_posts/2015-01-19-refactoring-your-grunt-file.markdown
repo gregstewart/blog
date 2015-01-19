@@ -3,7 +3,7 @@ layout: post
 title: "refactoring your grunt file"
 date: 2015-01-19 08:58:44 +0000
 comments: true
-categories: 
+categories: [book, javascript, grunt, refactoring]
 ---
 Things left unchecked over time just grow to be unwieldy. Take this Gruntfile for example:
 
