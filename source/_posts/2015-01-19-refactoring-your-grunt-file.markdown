@@ -8,6 +8,7 @@ categories: [book, javascript, grunt, refactoring]
 Things left unchecked over time just grow to be unwieldy. Take this Gruntfile for example:
 
     module.exports = function (grunt) {
+        'use strit';
         grunt.initConfig({
             express: {
                 test: {
@@ -123,6 +124,7 @@ Let's start with the karma tasks, these can be extracted to a file called `test.
 I have extracted the task configuration and the loading of the task from the `Gruntfile.js`, leaving us with:
 
      module.exports = function (grunt) {
+        'use strit';
         grunt.initConfig({
             express: {
                 test: {
@@ -233,6 +235,7 @@ Apart from removing the code for Karma, I also added the `grunt.loadTasks` direc
 And remove the code from the `Gruntfile.js`:
 
     module.exports = function (grunt) {
+        'use strit';
         grunt.initConfig({
             express: {
                 test: {
@@ -408,6 +411,7 @@ Express.js
 Leaving us now with a `Gruntfile` that is so much more lightweight and only concerns itself with loading and registering tasks:
 
     module.exports = function (grunt) {
+        'use strit';
         grunt.loadTasks('build');
         
         grunt.registerTask('generate', ['less:production', 'copy:fonts', 'browserify:code']);
