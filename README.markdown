@@ -1,3 +1,13 @@
+## What's different?
+This version of Octopress creates a gt branch when you run:
+
+    rake 'new_post[some post title]'
+
+or:
+
+    rake 'new_page[some page title]'
+
+
 ## What is Octopress?
 
 Octopress is [Jekyll](https://github.com/mojombo/jekyll) blogging at its finest.
