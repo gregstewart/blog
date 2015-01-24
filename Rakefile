@@ -402,10 +402,7 @@ end
 
 # create git branch
 def create_branch(branch_name)
-  system 'git checkout -b #{branch_name}'
-  system 'git add .'
-  system 'git commit -m "created new post entry: #{branch_name}"'
-  system 'git push -u #{branch_name} #{branch_name}'
+  exec "git checkout -b #{branch_name}; git add .; git commit -m 'created new post entry: #{branch_name}'; git push -u origin #{branch_name}"
 end
 
 desc "list tasks"
