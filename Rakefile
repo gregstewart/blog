@@ -117,6 +117,8 @@ task :new_post, :title do |t, args|
     post.puts "categories: "
     post.puts "---"
   end
+
+  create_branch title.to_url
 end
 
 # usage rake new_page[my-new-page] or rake new_page[my-new-page.html] or rake new_page (defaults to "new-page.markdown")
@@ -153,6 +155,7 @@ task :new_page, :filename do |t, args|
       page.puts "footer: true"
       page.puts "---"
     end
+    create_branch title.to_url
   else
     puts "Syntax error: #{args.filename} contains unsupported characters"
   end
@@ -395,6 +398,11 @@ def blog_url(user, project)
   end
   url += "/#{project}" unless project == ''
   url
+end
+
+# create git branch
+def create_branch(branch_name)
+  exec "git checkout -b #{branch_name}"
 end
 
 desc "list tasks"
