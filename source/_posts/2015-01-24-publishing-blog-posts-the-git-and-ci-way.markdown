@@ -38,3 +38,5 @@ The next thing I wanted to improve upon was the publishing step. Commit/Push/Gen
     bundle exec rake deploy
 
 Now whenever I merge a pull request, CI takes over and publishes my post to my server! One thing to note is that if like me you use rsync, you will need to add [CodeShips public key](https://codeship.com/documentation/continuous-integration/where-can-i-find-the-ssh-public-key-for-my-project/) to your `authorized_keys` in order for [Octopress' rsync](http://octopress.org/docs/deploying/rsync/) publishing to work. This post is the first to feature this new workflow!
+
+_Update: it turns out you can complete this workflow using Bitbucket as well!_
