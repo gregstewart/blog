@@ -5,7 +5,7 @@ date: 2015-01-24 16:50:53 +0000
 comments: true
 categories: blogging, automation, ci, github, pull requests, codeship
 ---
-I recently switched over the source control of my blog from [Bitbucket](https://bitbucket.org/) to [Github](https://github.com/). I wanted to try out a new workflow with regards to editing and publishing posts. As I tend to create a new git branch for each post I am working on, I wanted to use the pull request approach to publishing posts (like those wonderful folks over at [ThoughtBot](http://playbook.thoughtbot.com/) for example). Now granted I am not collaborating with others on posts, however I still find this `review` process handy. Reading the post in a different context has been beneficial, furthermore I now tend to give myself a few days between writing and actually posting as a result of this process. Using Github and [their editor](https://github.com/blog/1379-zen-writing-mode) I can review, re-read and edit posts at my convenience. So far it's worked really well for me.
+I recently switched over the source control of my blog from [Bitbucket](https://bitbucket.org/) to [Github](https://github.com/). I wanted to try out a new workflow with regards to editing and publishing posts. As I tend to create a new git branch for each post I am working on, I wanted to use the [pull request](https://help.github.com/articles/using-pull-requests/) approach to publishing posts (like those wonderful folks over at [ThoughtBot](http://playbook.thoughtbot.com/) for example). Now granted I am not collaborating with others on posts, however I still find this `review` process handy. Reading the post in a different context has been beneficial, furthermore I now tend to give myself a few days between writing and actually posting as a result of this process. Using Github and [their editor](https://github.com/blog/1379-zen-writing-mode) I can review, re-read and edit posts at my convenience. So far it's worked really well for me.
 
 This got me thinking though: are there any other improvements I could make to my workflow... Well yes there are actually. As I mentioned I tend to create a branch for each post, followed by running the new post rake task. I started by modifying the tasks for posts and pages to create a new branch for me using the title; however then I realised I could take it even further, create an initial commit and create a new tracked remote branch. Here's what the output looks like:
 
@@ -32,10 +32,9 @@ The code for this is pretty straight forward and certainly not foolproof, but a 
         exec "git checkout -b #{branch_name}; git add .; git commit -m 'created new post entry: #{branch_name}'; git push -u origin #{branch_name}"
     end
 
-The next thing I wanted to improve upon was the publishing step. Given I am now using Pull Requests and can use Github
-to sign off on these, then why not use CI to build and publish the Blog on merge to `master`? So I created a new project over at [CodeShip](https://codeship.com/), left the test settings empty, but under deployment added:
+The next thing I wanted to improve upon was the publishing step. Commit/Push/Generate and Deploy were the steps I used in the past, a bit long winded and quite frankly very repetitive. Also if I was not at home, then I had to wait to publish an update. Given how I am now using Pull Requests and can use Github to sign off on and merge these, then why not use CI to build and publish the Blog on merge to `master`? So I created a new project over at [CodeShip](https://codeship.com/), left the test settings empty, but under deployment added:
 
     bundle exec rake generate
     bundle exec rake deploy
 
-Now whenever I merge a pull request, CI takes over and publishes my post to my server! This post is the first to feature this workflow!
+Now whenever I merge a pull request, CI takes over and publishes my post to my server! One thing to note is that if like me you use rsync, you will need to add [CodeShips public key](https://codeship.com/documentation/continuous-integration/where-can-i-find-the-ssh-public-key-for-my-project/) to your `authorized_keys` in order for [Octopress' rsync](http://octopress.org/docs/deploying/rsync/) publishing to work. This post is the first to feature this new workflow!
