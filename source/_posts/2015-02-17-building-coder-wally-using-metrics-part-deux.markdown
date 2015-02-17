@@ -28,7 +28,7 @@ The outcome of refactoring the code was a few more classes. I extracted the exce
       Account.new(response[accounts]) if response[accounts]
     end
 
-This method actually has two problems for one it was making duplicate calls (`response[accounts]`). This could have been fixed by extracting the calls to a variable; however by fixing the underlying problem (the [utility function](http://www.rubydoc.info/github/troessner/reek/Reek/Smells/UtilityFunction) behaviour) would also fix that issue. The medthod knew too much about response object and what it contains in order to get it's work done, the change is quite simple extract the knowledge to the calling method: 
+This method actually has two problems for one it was making duplicate calls (`response[accounts]`). This could have been fixed by extracting the calls to a variable; however by fixing the underlying problem (the [utility function](http://www.rubydoc.info/github/troessner/reek/Reek/Smells/UtilityFunction) behaviour) would also fix that issue. The method knew too much about response object and what it contains in order to get it's work done, the change is quite simple extract the knowledge to the calling method: 
 
     # parse account information from data
     def parse_accounts(accounts)
