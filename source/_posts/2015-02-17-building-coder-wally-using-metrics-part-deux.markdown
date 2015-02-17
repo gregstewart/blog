@@ -3,7 +3,7 @@ layout: post
 title: "building coder_wally using metrics - part deux"
 date: 2015-02-17 16:31:18 +0000
 comments: true
-categories: 
+categories: ruby, gem, reek, rubocop
 ---
 Earlier last week I [posted a short piece](http://gregs.tcias.co.uk/2015/02/09/building-my-coder-wally-gem-using-metrics/) on building [Coder_Wally](https://rubygems.org/gems/coder_wally/) and some of the tools I used to improve the code. This post continues on from where I left on talking about [Reek](https://github.com/metricfu/reek) and [RuboCop](https://github.com/bbatsov/rubocop).
 
