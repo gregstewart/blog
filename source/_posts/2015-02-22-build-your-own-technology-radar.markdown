@@ -45,6 +45,6 @@ So here's my first go at putting such a list together:
 * CodeShip (Tools)
 * Git Pull Request Workflow (Techniques)
 
-The next step is to experiment with [this visual tool](https://github.com/bdargan/techradar) for displaying your own Technology Radar.
+The next step is to experiment with [this visual tool](https://github.com/bdargan/techradar) for displaying your own Technology Radar. Let's revisit this post in 6 months to see how effective this technique was and what has changed in my technology bubble. 
 
 Have you put your own Technology Radar together yet?
