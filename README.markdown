@@ -1,5 +1,5 @@
 ## What's different?
-This version of Octopress creates a gt branch when you run:
+This version of Octopress creates a `git branch` when you run:
 
     rake 'new_post[some post title]'
 
