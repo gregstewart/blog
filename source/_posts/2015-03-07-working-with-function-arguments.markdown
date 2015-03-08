@@ -6,7 +6,7 @@ comments: true
 categories: javascript, function, arguments
 ---
 
-This week I was working on build tasks to daemonise some of the services we intend to use for our project. I decided to use [forever](https://github.com/foreverjs/forever) and ended up with a call that looks something like this:
+LAst week I was working on build tasks to daemonise some of the services we intend to use for our project. I decided to use [forever](https://github.com/foreverjs/forever) and ended up with a call that looks something like this:
 
 	let task = execForeverCommand('start', 'path/to/service');
 
@@ -17,7 +17,7 @@ or
 
 The `execForeverCommand` would build up a command to execute by concatenating a variable length list of function arguments into one single string. What follows are three different approaches I took to build up that string based off of those arguments. 
 
-My initial intention was to just use `arguments.join(" ")`; however function arguments are not an array, instead they are [an Array like object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments). In the first instance I therefore opted to use a for-in loop:
+My initial intention was to just use `arguments.join(" ")`; however function arguments are not an array, instead they are [an Array like object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments), therefore opted to use a for-in loop:
 
 	function execForeverCommand() {
 		let commands = '';
@@ -30,7 +30,7 @@ My initial intention was to just use `arguments.join(" ")`; however function arg
 		return shell.task('./node_modules/forever/bin/forever ' + commands);
  	}
 
-That worked. Having a working solution, I spent some time reading through the [MDN post](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments) I referenced above in more detail. I straight away realised that I could change it to use `Array.prototype.slice.call` and combine that with my initial plan:
+That worked, but very verbose. Having a working solution, I spent some time reading through the [MDN post](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments) I referenced above in more detail. I straight away realised that I could change it to use `Array.prototype.slice.call` and combine that with my initial plan:
 
 	function execForeverCommand() {
 		let commands = Array.prototype.slice.call(arguments).join(" ");
