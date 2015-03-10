@@ -24,19 +24,82 @@ I decided to spike things a little using the CLI tool. Once the CLI has been ins
 	
 By default you should have a `api.raml` file created and stored under `src/assets/raml`. I then used that file to define my spike API using RAML:
 
-	insert api.raml
+```
+#%RAML 0.8
+---
+title: Hello World API
+baseUri: http://localhost:3000/api/{version}
+version: v1
+/users:
+    get:
+        description: Return all users
+        responses:
+            200:
+                body:
+                    application/json:
+                        example: |
+                            {
+                               "data": [
+                                   { "name": "foo" },
+                                   { "name": "fee"}
+                               ],
+                               "success": true,
+                               "status": 200
+                             }
+    /{usermame}:
+        get:
+            description: Say hello to the given username
+            responses:
+                200:
+                   body:
+                     application/json:
+                      example: |
+                         {
+                           "data": {
+                             "message": "Hello foo",
+                           },
+                           "success": true,
+                           "status": 200
+                         }
+```
 
 If you are familiar with [YAML](http://yaml.org/) and [JSON](http://json.org/) you will find the output very readable, even if you aren't I think you can agree that this is quite accessible.
 
 To validate the specification I had created, without having to start the server, I could run:
 
-	osprey list src/assets/raml/api.raml
-	..
-	insert output here
-	
-Before being able to run the service I had to make a couple changes to the server javascript file `server.js`. 
+```
+$ osprey list src/assets/raml/api.raml
+GET             /users                                                                                          
+GET             /users/{usermame}
+```
 
-	... insert code here ...
+Before being able to run the service I had to make a couple changes to the server javascript file `app.js`. 
+
+```
+var express = require('express');
+var path = require('path');
+var osprey = require('osprey');
+
+var app = module.exports = express();
+
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(express.compress());
+app.use(express.logger('dev'));
+
+app.set('port', process.env.PORT || 3000);
+
+api = osprey.create('/api/v1', app, {
+    ramlFile: path.join(__dirname, '/assets/raml/api.raml'),
+    logLevel: 'debug'  //  logLevel: off->No logs | info->Show Osprey modules initializations | debug->Show all
+});
+
+if (!module.parent) {
+    var port = app.get('port');
+    app.listen(port);
+    console.log('listening on port ' + port);
+}
+```
 
 To start the mock api service simply run:
 
