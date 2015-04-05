@@ -101,7 +101,7 @@ When you run `grunt generate`, you should see the following output:
 
 If you were to start up our server and browse to localhost:3000, our UI should have more of a Bootstrap feel to it!
 
-![Rendered HTML with generated css](images/book-assets/Screenshot_2014-07-20_23.00.00.png)
+![Rendered HTML with generated css](/images/book-assets/Screenshot_2014-07-20_23.00.00.png)
 Now bootstrap also needs some fonts, so let's move these across as part of the build.
 
 	npm install grunt-contrib-copy --save-dev
@@ -165,7 +165,7 @@ And add a simple task to copy our fonts across as well:
 
 Running `grunt generate` task should now also copy our fonts across.
 
-![Fonts now included](images/book-assets/Screenshot_2014-07-20_23.18.07.png)
+![Fonts now included](/images/book-assets/Screenshot_2014-07-20_23.18.07.png)
 
 This is great, but how do we get this to run as part of our successful build?
 
