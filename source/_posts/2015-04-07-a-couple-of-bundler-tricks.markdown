@@ -5,7 +5,7 @@ date: 2015-04-07 22:04:33 +0100
 comments: true
 categories: ruby, bundler
 ---
-Quite literally a 2 things, no more no less. 
+Quite literally two things, no more no less. 
 
 To install a specific version of bundler do:
 
@@ -15,5 +15,5 @@ Where `x.x.x` is the version to install. Probably well known, but I had to look 
 
 ```bundle _x.x.x_ install```
 
-Those `_` are not a typo... Hope this helps someone else!
+Those `_` surrounding the version number are not a typo and it does look odd, but it works... 
 
