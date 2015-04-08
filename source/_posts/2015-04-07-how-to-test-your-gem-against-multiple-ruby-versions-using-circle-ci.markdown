@@ -33,7 +33,7 @@ The other thing that I wanted to experiment with, was running a build against mu
 While this was easy to set up there were a cople of learnings:
 
 * Do not specify a bundler version in your gems dev dependencies. It's just more flexible to trust the system and ruby version that is running the `bundle install` command. If you do, then you need to install the corresponding version on the build server. Also if you want to go back to older versions of ruby that aren't supported by the bundler version you have specified, then there's more fuffing about.
-* The other thing had to do with [Minitest](https://github.com/seattlerb/minitest) and Ruby 2.2.0: the call to require it failed. To get the build to pass on [Circle Ci](https://circleci.com/), I had to [add a dev dependency to my Gemspec](https://github.com/gregstewart/coder_wally/blob/master/coder_wally.gemspec).
+* The other thing I learned had to do with [Minitest](https://github.com/seattlerb/minitest) and Ruby 2.2.0. The call to require it failed. To get the build to pass on [Circle Ci](https://circleci.com/), I had to [add a dev dependency to my Gemspec](https://github.com/gregstewart/coder_wally/blob/master/coder_wally.gemspec).
 
 I wanted to test running against older versions of Ruby and the latest JRuby, but when I had a [quick go](https://circleci.com/gh/gregstewart/coder_wally/35), [Webmock](https://github.com/bblimke/webmock) was telling me that I should stub my requests, which I am doing, but for some reason they aren't being recognised in this configuration. 
 
