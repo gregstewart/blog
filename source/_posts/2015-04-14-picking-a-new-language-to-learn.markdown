@@ -5,7 +5,7 @@ date: 2015-04-14 23:08:55 +0100
 comments: true
 categories: learning, languages, criteria, scala, clojure, go, elixir
 ---
-I started writing this post with the intent to layout what was important to me in choosing what language to pick up this year and go through the options. In doing this post and thinking about what I wanted out of language and it's community and doing the research, there was only one real winner by the end. It does help to put things into writing... The TL;DR is this year I will be looking at: [Clojure](http://clojure.org/)? Why it ticks all of the boxes I set out in this post.
+I started writing this post with the intent to layout what was important to me in choosing what language to pick up this year and go through the options. In doing this post and thinking about what I wanted out of language and it's community and doing the research, there was only one real winner by the end. It does help to put things into writing... The TL;DR is this year I will be looking at: [Clojure](http://clojure.org/)? Why it ticks all of the boxes I set out in this post.[^1]
 
 ---
 
@@ -31,3 +31,5 @@ What about Go?
 So there are quite a few things to take into consideration... And then there's the question does the language jell with me. To help me with that I have found an awesome resource that allows me to explore the languages: [Exercism](http://exercism.io/), the brain child of Katrina Owen. Also I have recently been thumbing through [Seven Languages in Seven Weeks](https://pragprog.com/book/btlang/seven-languages-in-seven-weeks) again, which has been really great at introducing some of the languages I am considering as well suggesting a few exercises for further exploration.
 
 Writing all this down seems like a lot of consideration for something that I used to do on a whim.
+
+[^1]: Music listened to while writing this post [Arida Vortex - The Illustrated Man](https://play.google.com/store/music/album/ARIDA_VORTEX_The_Illustrated_Man?id=Bpmq4tiyvnpgirbni5k3knmijzi)
