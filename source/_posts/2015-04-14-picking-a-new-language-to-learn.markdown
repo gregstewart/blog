@@ -17,16 +17,29 @@ At the top of the list are [Scala](http://www.scala-lang.org/), [Go](https://gol
 A few things that are important to me when making the choice are: the testing story, build tools, CI support, dependency management and the backing of a web framework.
 
 ### Scala
-Scala ships with [SBT](http://www.scala-sbt.org/) as the build tool. Both [Circle CI](http://www.circlci.com) and [SnapCI](https://www.snap-ci.com/) support Scala. You have a few choices on the web framework side of this with the [Play framework](https://www.playframework.com/), [Scalatra](http://scalatra.org/) and [Lift](http://liftweb.net/). What about testing? The first two things I came across were [ScalaTest](http://www.scalatest.org/) and [Specs2](http://etorreborre.github.io/specs2/). Being built on the JVM, you can also leverage Maven/Gradle for build automation and dependency management.
+Scala ships with [SBT](http://www.scala-sbt.org/) as the build tool. [Circle CI](http://www.circlci.com), [Codeship](https://codeship.com/) and [SnapCI](https://www.snap-ci.com/), all support Scala. 
+
+You have a few choices on the web framework side of this with the [Play framework](https://www.playframework.com/), [Scalatra](http://scalatra.org/) and [Lift](http://liftweb.net/). 
+
+What about testing? The first two things I came across were [ScalaTest](http://www.scalatest.org/) and [Specs2](http://etorreborre.github.io/specs2/). Being built on the JVM, you can also leverage Maven/Gradle for build automation and dependency management.
 
 ### Elixir
 The CI story for Elixir is a little murky, there are [custom scripts out there](https://gist.github.com/joakimk/48ed80f1a7adb5f5ea27) to run builds on [Circle CI](http://www.circlci.com). As a web framework there is the [Phoenix Framework](http://www.phoenixframework.org/). The testing story [doesn't look fabulous](http://elixir-lang.readthedocs.org/en/latest/exunit/) yet. Elixir comes with `Mix` for dealing with dependencies. It's still early days, but being on the front line could be a good thing and well there's the whole developer happiness thing that just can't be discounted.
 
 ### Clojure
-As for [Clojure](http://clojure.org/), well there are quite a few options for the web framework side of things with [Caribou](http://let-caribou.in/), [luminusweb](http://www.luminusweb.net/) and [Pedestal](https://github.com/pedestal/pedestal). ThoughtWorks CI service, [Snap CI](https://www.snap-ci.com/), has Clojure covered. In terms of build automation tools you have [Leiningen](http://leiningen.org/) and [Clojar](https://clojars.org/) looks like a good source of libraries. The testing story is also a good one, it comes with it's [own test framework](http://clojure.github.io/clojure/clojure.test-api.html), but also has many other options, such as [speclj](http://speclj.com/) and [Midje](https://github.com/marick/Midje). All in all it looks like Clojure ticks all of the boxes, thanks to it's wide adoption and maturity. The only downside, which is also one of it's advantages, is that it runs on the JVM and hence allows you to leverage the rich Java eco system.
+As for [Clojure](http://clojure.org/), well there are quite a few options for the web framework side of things with [Caribou](http://let-caribou.in/), [luminusweb](http://www.luminusweb.net/) and [Pedestal](https://github.com/pedestal/pedestal). 
+
+ThoughtWorks CI service, [Snap CI](https://www.snap-ci.com/), has Clojure covered. [Codeship](https://codeship.com/) also provide support. 
+
+In terms of build automation tools you have [Leiningen](http://leiningen.org/) and [Clojar](https://clojars.org/) looks like a good source of libraries. 
+
+The testing story is also a good one, it comes with it's [own test framework](http://clojure.github.io/clojure/clojure.test-api.html), but also has many other options, such as [speclj](http://speclj.com/) and [Midje](https://github.com/marick/Midje). All in all it looks like Clojure ticks all of the boxes, thanks to it's wide adoption and maturity. The only downside, which is also one of it's advantages, is that it runs on the JVM and hence allows you to leverage the rich Java eco system. And there are a lot braces to digest.
 
 ### Go
-What about Go?
+[Codeship](https://codeship.com/) provides outamated builds. As for automated testing Go ships with a test framework as well as benchmarking tools. There are other solutions as well such as [GoConvey](http://goconvey.co/) or [GinkGo](http://onsi.github.io/ginkgo/).
+
+As for web frameworks both [Revel](http://revel.github.io/) and [Martini](http://martini.codegangsta.io/) look good. As for build tools and dependency management, these are also built into the language with `go build` and `go get` respectively.
+
 
 So there are quite a few things to take into consideration... And then there's the question does the language jell with me. To help me with that I have found an awesome resource that allows me to explore the languages: [Exercism](http://exercism.io/), the brain child of Katrina Owen. Also I have recently been thumbing through [Seven Languages in Seven Weeks](https://pragprog.com/book/btlang/seven-languages-in-seven-weeks) again, which has been really great at introducing some of the languages I am considering as well suggesting a few exercises for further exploration.
 
