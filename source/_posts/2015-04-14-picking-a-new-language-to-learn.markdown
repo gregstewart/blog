@@ -37,7 +37,7 @@ ThoughtWorks' CI service, [Snap CI](https://www.snap-ci.com/), has Clojure cover
 
 In terms of build automation tools you have [Leiningen](http://leiningen.org/) and [Clojar](https://clojars.org/) looks like a good source of libraries. 
 
-The testing story is also a good one, it comes with it's [own test framework](http://clojure.github.io/clojure/clojure.test-api.html), but also has many other options, such as [speclj](http://speclj.com/) and [Midje](https://github.com/marick/Midje). All in all it looks like Clojure ticks all of the boxes, thanks to it's wide adoption and maturity. The only downside, which is also one of it's advantages, is that it runs on the JVM and hence allows you to leverage the rich Java eco system. And there are a lot braces to digest.
+The testing story is also a good one, it comes with it's [own test framework](http://clojure.github.io/clojure/clojure.test-api.html), but also has many other options, such as [speclj](http://speclj.com/) and [Midje](https://github.com/marick/Midje). All in all it looks like Clojure ticks all of the boxes, thanks to it's wide adoption and maturity. The only downside, which is also one of it's advantages, is that it runs on the JVM and hence allows you to leverage the rich Java eco system. Oh my there are a lot braces to digest as well `:)`.
 
 ### Go
 [Codeship](https://codeship.com/) provides outamated builds. Go ships with a test framework as well as benchmarking tools, so that covers the automated testing angle. There are other solutions as well such as [GoConvey](http://goconvey.co/) or [GinkGo](http://onsi.github.io/ginkgo/).
@@ -50,4 +50,4 @@ All of the languages address the things that are important to me, with varying d
 
 The other thing I remembered was this book : [Seven Languages in Seven Weeks](https://pragprog.com/book/btlang/seven-languages-in-seven-weeks). I have been recently thumbing through it again and it provides a great introduction to some of the languages I am considering as well suggesting a few exercises for further exploration.
 
-Writing all this down seems like a lot of consideration for something that I used to do on a whim. However now that I went through this exercise, I know why language I would like to get to know more of this year: [Clojure](http://clojure.org/)
+Writing all this down seems like a lot of consideration for something that I used to do on a whim. However now that I went through this exercise, I know which language I would like to get to know this year: [Clojure](http://clojure.org/)
