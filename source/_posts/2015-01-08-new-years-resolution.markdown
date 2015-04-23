@@ -3,7 +3,6 @@ layout: post
 title: "new year's resolution"
 date: 2015-01-08 23:01:30 +0000
 comments: true
-comments: true
 tags:
 - 2015
 - resolution
