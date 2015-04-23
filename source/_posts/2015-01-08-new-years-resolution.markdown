@@ -21,7 +21,7 @@ I feel even more sheepish... So I have pondered what I would like to get out of 
 For starters I would like to be a tad more analytical/critical. I have realised that I just really consume content, without reflecting
 on it too deeply or applying it in earnest to see if it works for me. Kind of like consuming an entire box set of some TV
 series in one or a couple of sittings, to the point where all episodes just blend into one. To help me with that I want to put up least
-one blog post a week, nd yes I realise it's the second week of January and I am already behind.. The idea of course is
+one blog post a week, and yes I realise it's the second week of January and I am already behind.. The idea of course is
 to write more and get better at it, but I don't just want to say share something I learned, but also demonstrate why it's useful.
 Or should I have read something that provoked some thoughts share and discuss these. Well that's the intention anyway...
 
