@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "exploring the open closed principle"
-date: 2015-04-27 15:29:33 +0000
+date: 2015-05-02 15:29:33 +0000
 comments: true
 categories: 
 ---
