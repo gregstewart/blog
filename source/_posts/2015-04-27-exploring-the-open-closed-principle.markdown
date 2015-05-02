@@ -80,7 +80,7 @@ end
 
 It does a lot and it also had some inefficiencies. It also had a high churn rate. All smells asking to be improved upon.
 
-ONe of the first things I did was the `parser_configuration` out of this object. It's a perfect canditate for some configuration object. So I moved that into it's own yaml file and let rails load that into application scope. Now when I add a new feed, I no longer need to touch this file, but just add it to the yaml file. 
+One of the first things I did was move the `parser_configuration` out of this object. It's a perfect canditate for some configuration object. So I moved that into it's own yaml file and let rails load that into application scope. Now when I add a new feed, I no longer need to touch this file, but just add it to the yaml file. 
 
 Next I looked at the `ParserFactory`. Basically it took a type and and returned an object that would fetch the data. Another candidate to refactor so that I would not need to edit this file when I added a new feed.
 
@@ -130,11 +130,11 @@ class WrapperFactory
 end
 ```
 
-They objects themselves were more warppers, so I re-named the factory object and the individual objects. I can't quite get rid the "Wrapper" part as some the gem names would clash with the class names. Need to work on that some more.
+They objects themselves were more wrappers, so I re-named the factory object and the individual objects. I can't quite get rid the "Wrapper" part as some the gem names would clash with the class names. Need to work on that some more.
 
-So the wrappers massaged the content of the response into the right format by looping over the result set and return the collection to the `Page` object. Then we would loop again in the `Page` object to set the page item. Redundant looping, let's address this.
+So the wrappers massaged the content of the response into the right format by looping over the result set and return the collection to the `Page` object. Then I would loop again in the `Page` object to set the page item. Redundant looping, let's address this.
 
-I looked at the `set_page_item` and `fix_date` methods. For starters they seemed related and did not belong in this object so I extracted them into a `PageItem` object. Furthermore `fix_date` checked the feed type to format the date. Then I moved the responsibility for creating this object into the individual wrappers and then just appending the result to the items collection.
+I looked at the `set_page_item` and `fix_date` methods. For starters they seemed related and did not belong in this object so I extracted them into a `PageItem` object. Furthermore `fix_date` checked the feed type to format the date. I decided to move the responsibility for creating this object into the individual wrappers and then just appending the result to the items collection.
 
 Now the `Page` object looks like this:
 
@@ -175,8 +175,8 @@ class Page
 end
 ```
 
-A little simpler, but more importantly when it comes to adding a new feed I no longer need to edit this file or indeed the Factory object. It's safe to say that both `WrapperFactory` and `Page` are now open for extension and closed for modification. The time I add a feed I do not need to touch these two objects. I simply update my configuration file and create a feed type wrapper. 
+A little simpler, but more importantly when it comes to adding a new feed I no longer need to edit this file or indeed the Factory object. It's safe to say that both `WrapperFactory` and `Page` are now open for extension and closed for modification. The next time I add a feed, I do not need to touch these two objects. I simply update my configuration file and create a feed type wrapper. 
 
-However `PageItem` isn't. What if I add a new feed and I need fix the date? Now I would need to adjust the `fix_date` method in that object. So I decided to extract that method from the `PageItem` into it's own module. I adjusted the code to be more generic and put the responsibility on parsing the date back on the individual feed wrappers. Ultimately they have more knowledge about the data they are handling and it's certainly not the `PageItem`'s responsibility to that job.
+However now `PageItem` is not. What if I add a new feed and I need fix the date? Now I would need to adjust the `fix_date` method in that object. So I decided to extract that method from the `PageItem` into it's own module. I adjusted the code to be more generic and put the responsibility on parsing the date back on the individual feed wrappers. Ultimately they have more knowledge about the data they are handling and it's certainly not the `PageItem`'s responsibility to that job.
 
 The code overall is better to reason about and each object has a more concrete responsibility now and more importantly when I add a new feed I no longer have to touch `Page`, `PageItem` or `WrapperFactory`. 
