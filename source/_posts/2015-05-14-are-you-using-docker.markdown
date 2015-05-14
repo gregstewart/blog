@@ -11,7 +11,7 @@ Are you using [Docker](https://www.docker.com/) for development? For continous i
 
 Let's start at the top of the chain deploying your application. [Immutable Infrastructure](https://highops.com/insights/immutable-infrastructure-6-questions-6-experts/) is the key here. A quick search for Immutable Infrastructure throws up tons of results, maybe just the sign of a fad, but I believe there is so much more to it. The focus is on dev ops in a lot of these posts and rightfully so. However being able to confidently, reliably and repeatedly build and deploy your application and environment is no longer a pipe dream. 
 
-![](http://s.quickmeme.com/img/e3/e3cff629826455f00a5f94e29d00aa0725e1a1266e83db81b0aebcef03a61eff.jpg)
+![](http://www.quickmeme.com/img/91/91937cf37ba5d6727302ec24851b9a1ff46ae5cdaf1578b7bc7dc2c31a7746b5.jpg)
 
 All configuration is held in one place.
 
