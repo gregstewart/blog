@@ -8,6 +8,23 @@ categories: clojure, data, structures
 
 Always easier to remember things when you write them down `:)`.
 
+**Syntax**
+
+Operations follow this pattern:
+
+```
+(operator operand1 operand2 operandn)
+```
+
+No commas between operands, just whitespace.
+
+Clojure uses prefix notation as opposed to infix notation which is more familiar in other languages
+
+```
+(+ 1 1)
+=> 2
+```
+
 **Equality**
 
 ```
@@ -101,11 +118,11 @@ Lists can be created using the `list` function. Use `conj` to add items to a lis
 Collection of unique values. Created either using `#{}` or `set`.
 
 ```
-(def my_set set [3 3 3 4 4])
+(set [3 3 3 4 4])
 #{4 3}
 ```
 
-Use `get` to retrieve values. You can create using `hash-set` or `sorted-set` as well:
+Use `get` to retrieve values. You can create sets using `hash-set` or `sorted-set` as well:
 
 ```
 (hash-set 3 1 3 3 2 4 4)
@@ -116,8 +133,8 @@ Use `get` to retrieve values. You can create using `hash-set` or `sorted-set` as
 
 **Symbols**
 
-Another assignment method, however apparently we can manipulate them as if they were data. Not sure that means yet.
+Another assignment method, however apparently we can manipulate them as if they were data. Not sure what that means yet.
 
 **Quoting**
 
-`'` is referred to as quoting. 
+`'` is referred to as quoting. Used this to define a list. Used in `macros`.
