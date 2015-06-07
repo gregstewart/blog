@@ -25,13 +25,15 @@ So your devevelopment machine setup and environment differences are basically el
 
 At time of writing, it takes us from merging a Pull Request 8 minutes to build, test and deploy to AWS. Granted your mileage may vary but to give you some idea we run some 200 unit tests, 30 integration tests and 10 feature tests (and yes we need to improve our coverage...) and it's all written in Node.js. 
 
-![](http://cdn.meme.am/instances/500x/59833717.jpg)
+![Continuous delivery](http://cdn.meme.am/instances/500x/59833717.jpg)
 
 Another thing to consider is: does your CI environment not support your language of choice to build your product(s)? Containers can help here as well.
 
 ##Application deployment
 
 Your dev envinronment is consistent, your build is consistent and now we come to the top of the chain: deploying your application. 
+
+![Dev ops problem now](http://www.quickmeme.com/img/91/91937cf37ba5d6727302ec24851b9a1ff46ae5cdaf1578b7bc7dc2c31a7746b5.jpg)
 
 So far I have avoided using [Immutable Infrastructure](https://highops.com/insights/immutable-infrastructure-6-questions-6-experts/) to describe containerisation, but it is another key aspect here. A quick search for Immutable Infrastructure throws up tons of results, maybe just the sign of a fad, but I believe there is so much more to it. The focus is on dev ops in a lot of these posts and rightfully so; however I think the chaps over at [CodeShip some up the points best](https://blog.codeship.com/immutable-infrastructure/). 
 
@@ -42,8 +44,6 @@ So far I have avoided using [Immutable Infrastructure](https://highops.com/insig
 * atomic deployments
 
 So being able to develop against what will be in production, then confidently, reliably and repeatedly build and deploy your application and environment is no longer a pipe dream. 
-
-![](http://www.quickmeme.com/img/91/91937cf37ba5d6727302ec24851b9a1ff46ae5cdaf1578b7bc7dc2c31a7746b5.jpg)
 
 All configuration is held in one place, so spinning up new instances to support increased demand is now so much easier, than any other provisioning mechanism I have seen. Just check out this video:
 
