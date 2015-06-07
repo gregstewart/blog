@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Are you using docker?"
-date: 2015-05-14 21:54:43 +0100
+date: 2015-06-07 22:51:43 +0100
 comments: true
 categories: ci, development, docker, immutable, infastructure
 ---
