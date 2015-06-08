@@ -6,7 +6,7 @@ comments: true
 categories: development, approach, strategy
 ---
 
-Open Source has changed the way we plan, build software and consume software. And I am not just referring the `free as in beer` aspect. When you add tools and services like Github and Travis into the mix Open Source reached a new level. And you and your organistion should embrace the same model.
+I remember a time when Open Source was just regarded as the `free as in beer` mode for software; however Open Source has come a long way in the last 5 years, maybe even longer. It has changed the way we plan, build software and consume software. When you add tools and services like Github and Travis into the mix Open Source software has reached a new level. It has changed the way we talk about code and software, the way we as developers and consumers of software interact and collaborate. And you and your organistion should embrace the same model.
 
 Put aside the obvious benefits of using OS in your products and look at what the OS model can bring to your development practices.
 
