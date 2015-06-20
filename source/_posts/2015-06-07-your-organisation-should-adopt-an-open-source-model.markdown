@@ -10,13 +10,15 @@ If I reflect on how things have changed over the last 15 years, and I look at wh
 
 Fast forward 15 years and Open Source has changed the way we plan, build, collaborate and consume software. The two things that have propelled this are [Git] and [Github](https://github.com/). With it's wide spread adoption Open Source reached a new level, where we developers, product owners, companies can benefit, indeed have benefitted so much from. 
 
-Not because it is easier to find packages/tools/software and use them. No, because it made collaborating on projects so easy. While I have been using Github for a number of years, I don't think I quite grasped it's true power. The flow was nicer than TFS and Bitbucket that's what I would have told you. At [Red Badger](http://wwww.red-badger.com/) we love Github, not just because it is a great Git interface, it allows us to collaborate easily and effectively. In the last 4 months, I have worked with it everyday, committing, opening Pull Requests, discussing/reviewing and ultimately improving the code and my capability as a developer. 
-
-The other thing it has brough us is transparency. I used to read through documentation and then try and get things working, if I got stuck, well I would search a little bit, if unsuccessful I would give up and move on. Now though? I look at the repo, look at the code, usually starting with tests, the hidden documentation, the first client for your code. The answer usually lies at the intersection of the two. How needs demos/examples... Well actually demos are still a good thing `:)` Open Source and Github has made this so accessible.
-
-While I wanted to focus on Open Source and the model in this post, I realise I have spoken more about Github, but to be truly effective in adopting such a model, you can't really do it without using Github. Just switching to Git will not have the same impact. Yes, __you and your organisation should embrace the same model__. 
+Not because it is easier to find packages/tools/software and use them. No, because it has changed the way we talk about code and software, the way we as developers and consumers of software interact and collaborate. Yes, __you and your organisation should embrace the same model__. 
 
 Put aside the obvious benefits of using Open Source in your products and look at what the Open Source model combined with GitHub can bring to your development practices, team(s) and product(s).
+
+While I have been using Github for a number of years, I don't think I quite grasped it's true power. The flow was nicer than TFS and Bitbucket that's what I would have told you. At [Red Badger](http://wwww.red-badger.com/) we love Github, not just because it is a great Git interface, it allows us to collaborate easily and effectively. In the last 4 months, I have worked with it everyday, committing, opening Pull Requests, discussing/reviewing and ultimately improving the code and my capability as a developer. 
+
+The other thing it has brought us is transparency. I used to read through documentation and then try and get things working, if I got stuck, well I would search a little bit, if unsuccessful I would give up and move on. Now though? I look at the repo, look at the code, usually starting with tests, the hidden documentation, the first client for your code. The answer usually lies at the intersection of the two. How needs demos/examples... Well actually demos are still a good thing `:)` Open Source and Github has made this so accessible.
+
+While I wanted to focus on Open Source and the model in this post, I realise I have spoken more about Github, but to be truly effective in adopting such a model, you can't really do it without using Github. Just switching to Git will not have the same impact. 
 
 ### Individuals
 
