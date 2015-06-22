@@ -6,7 +6,7 @@ comments: true
 categories: javascript, function, arguments
 ---
 
-LAst week I was working on build tasks to daemonise some of the services we intend to use for our project. I decided to use [forever](https://github.com/foreverjs/forever) and ended up with a call that looks something like this:
+Last week I was working on build tasks to daemonise some of the services we intend to use for our project. I decided to use [forever](https://github.com/foreverjs/forever) and ended up with a call that looks something like this:
 
 	let task = execForeverCommand('start', 'path/to/service');
 
@@ -15,7 +15,7 @@ or
 	let task = execForeverCommand('start', 'path/to/service', 'some', 'other', 'option');
 
 
-The `execForeverCommand` would build up a command to execute by concatenating a variable length list of function arguments into one single string. What follows are three different approaches I took to build up that string based off of those arguments. 
+The `execForeverCommand` would build up a command to execute by concatenating a variable length list of function arguments into one single string. What follows are three different approaches I took to build up that string based off of those arguments. By the way a function that accepts a variable number of arguments is also known as a [_variadic function_](https://hacks.mozilla.org/2015/05/es6-in-depth-rest-parameters-and-defaults/).
 
 My initial intention was to just use `arguments.join(" ")`; however function arguments are not an array, instead they are [an Array like object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments), therefore I opted to use a for-in loop:
 
