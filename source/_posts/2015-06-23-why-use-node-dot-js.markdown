@@ -42,7 +42,7 @@ While [this quote](http://blog.parse.com/learn/how-we-moved-our-api-from-ruby-to
 
 >An asynchronous model had many other benefits. We were also able to instrument everything the API was doing with counters and metrics, because these were no longer blocking operations that interfered with communicating to other services. We could downsize our provisioned API server pool by about 90%. And we were also able to remove silos of isolated Rails API servers from our stack, drastically simplifying our architecture.
 
-This is one of those facts that backs the productivity increase and TCO reduction by choosing the right tool for the job. As said granted this is for Go, however there are many quotes to be found that back these claims in the JavaScript space.
+This is one of those facts that backs the productivity increase and total cost of ownership reduction by choosing the right tool for the job. As said this is for Go, however there are many quotes to be found that back these claims in the JavaScript and Node.Js space, given it's event based non-blocking architecture. Of course performance gains from this architecture are not a guaranteed outcome, bad coding practice can undo these advantages easily.
 
 [Modularisation + NPM = win](https://www.talentbuddy.co/blog/building-with-node-js-at-the-new-york-times/?utm_source=nodeweekly&utm_medium=email)
 
