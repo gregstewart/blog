@@ -6,13 +6,13 @@ comments: true
 categories: 
 ---
 
-Recently we were asked why we recommend the use of Node.js on our project. While Stuart and I are putting together a presentation and working on a blog post, it got me wondering what it is about Node.js that I like so much and why we should use it.
+Recently we were asked why we recommend the use of [Node.js](https://nodejs.org/) on our project. While [Stuart](https://twitter.com/stuartharris) and I are putting together a presentation and working on a blog post, it got me wondering what it is about Node.js that I like so much and why we should use it.
 
-To be honest, I do have a love/intense dislike relationship with JavaScript; however having adopted a functional programming paradigm and buying into immutable data, JavaScript development has been given a fresh impetus. Combine that with React and our Arch framework, and I am having fun building a front end application. I even enjoy working with Hapi.js at our API layer, but I think that maybe we should opt for another language there. Don't get me wrong this combination has allowed us to get out of the blocks quickly.
+To be honest, I do have a love/intense dislike relationship with JavaScript; however having adopted a functional programming paradigm and buying into immutable data, JavaScript development has been given a fresh impetus. Combine that with [React](http://facebook.github.io/react/) and our [Arch framework](http://archjs.org), and I am having fun building a front end application. I even enjoy working with [Hapi.js](http://hapijs.com/) at our API layer, but I think that maybe we should opt for another language there. Don't get me wrong this combination has allowed us to get out of the blocks quickly.
 
 When looking for arguments into why we should use Node.js in the enterprise, the following benefits get attributed to using it, in brackets are the companies that have attested these benefits: 
 
-* Massive performance gains (LinkedIn, Groupon, PayPal, Walmart and Ebay)
+* Massive performance gains ([LinkedIn](https://engineering.linkedin.com/nodejs/blazing-fast-nodejs-10-performance-tips-linkedin-mobile), [Groupon](https://engineering.groupon.com/2013/misc/i-tier-dismantling-the-monoliths/), [PayPal](https://www.paypal-engineering.com/2013/11/22/node-js-at-paypal/), Walmart and Ebay)
 * Great for Mobile development (Walmart and Yahoo)
 * Vibrant community
 * Built from day one around Async model and event driven
