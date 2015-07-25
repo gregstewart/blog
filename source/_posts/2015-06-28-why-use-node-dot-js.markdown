@@ -19,13 +19,15 @@ When looking for arguments into why we should use Node.js in the enterprise, the
 * Easier to find people that can work on Node than say Erlang
 * Contributors are maturing
  
-When it comes to the performance claims, we need to put together a pretty consistent story that backs a lot of these statements and disavows the others. When looking into this for our presentation, the information is spread across tweets and blog posts. TO convince Enterprise decision makers, I think we would need something more cohesive.
+When it comes to the performance claims, we need to put together a pretty consistent story that backs a lot of these statements and disavows the others. When looking into this for our presentation, the information is spread across tweets and blog posts. To convince Enterprise decision makers, I think we would need something more cohesive. 
 
 While [this quote](http://blog.parse.com/learn/how-we-moved-our-api-from-ruby-to-go-and-saved-our-sanity/?utm_source=rubyweekly&utm_medium=email) relates to Go it's still relevant as it relates to async programming:
 
 >An asynchronous model had many other benefits. We were also able to instrument everything the API was doing with counters and metrics, because these were no longer blocking operations that interfered with communicating to other services. We could downsize our provisioned API server pool by about 90%. And we were also able to remove silos of isolated Rails API servers from our stack, drastically simplifying our architecture.
 
 This is one of those facts that backs the productivity increase and total cost of ownership reduction by choosing the right tool for the job. As said this is for Go, however there are many quotes to be found that back these claims in the JavaScript and Node.Js space, given it's event based non-blocking architecture. Of course performance gains from this architecture are not a guaranteed outcome, bad coding practice can undo these advantages easily.
+
+There still are some big challenges to be overcome to make an even stronger argument for enterprise users: logging and monitoring. If you can use tools like [New Relic](http://newrelic.com/), then then conversation has become a lot easier. If you can't, then there's some work ahead for you.
 
 The vibrant community claim are both a benefit and a detriment. I find the rate of change and churn dizzying at times. I think [Neal Ford](http://devchat.tv/ruby-rogues/195-rr-building-your-technology-radar-with-neal-ford) put it well when discussing the ThoughtWorks' Technology Radar:
 
@@ -50,8 +52,10 @@ To expand a little on the NPM point. If you consider [Modularisation and NPM](ht
 
 > Modularization via Node Modules was a big win as well, as we were able to share components across teams and easily manage them through a NPM
 
-Smaller/modular code is easier to maintain and debug. More modular code, is more composable and indeed more re-usable. 
+Smaller/modular code is easier to maintain and debug. More modular code, is more composable and more re-usable. 
 
-I touched on this briefly at the top, but when you consider the ability to write code that runs on both the server and client (as you do with with Isomorphic apps), you add great value for your clients. Time to first render using JavaScript that was rendered on the server is good for the user experience. People all to often focus on the value this approach offers to SEO (it does add value by the way), however I think if you consider Single Page Applications that can seemlessly fall back to a Request/Response model you have a real winner on your hands. While turning off JavaScript on the client is an argument as well, the reality is very few people do this. _BUT_ a lot of devices have poor JavaScript support, to the point where they might as well be categorised as having  JavaScript turned off (I am looking at you BlackBerry in the enterprise). Having an isomorphic solution up your sleeve in these situations is worth it's weight in gold. 
+I touched on this briefly at the top, but when you consider the ability to write code that runs on both the server and client (as you do with with Isomorphic apps), you add great value for your clients. Time to first render using JavaScript that was rendered on the server is good for the user experience. People all to often focus on the value this approach offers to SEO (it does add value by the way), however I think if you consider Single Page Applications that can seemlessly fall back to a Request/Response model you have a real winner on your hands. While turning off JavaScript on the client is an argument as well, the reality is very few people do this. _BUT_ a lot of devices have poor JavaScript support, to the point where they might as well be categorised as having JavaScript turned off (I am looking at you BlackBerry in the enterprise). Having an isomorphic solution up your sleeve in these situations is worth it's weight in gold. 
+
+Looking for quick feedback during development is an important factor. Anyone how has worked on the fornt end side of things on either a C# or Java project can attest to how slow it can be to view your changes in the browser (build/compile steps are notoriously slow). While there's still some overhead in doing so on a Node.js project, the tooling around re-building/[hot loading](https://www.youtube.com/watch?v=ulKrG1me-Ss) changes is fantastic by comparison. 
 
 There are many things that speak to Node.js being a great choice for developing and delivering applications across the spectrum of businesses. I hope I have also made a few points that back up why this is a great platform to work and have fun delivering solutions with.
