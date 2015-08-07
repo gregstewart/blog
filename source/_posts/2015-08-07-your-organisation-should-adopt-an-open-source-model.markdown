@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your organisation should adopt an open source model"
-date: 2015-06-07 16:57:04 +0100
+date: 2015-08-07 11:25:04 +0100
 comments: true
 categories: development, approach, strategy, open source, github
 ---
