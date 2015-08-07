@@ -14,11 +14,11 @@ Not because it is easier to find packages/tools/software and use them. No, becau
 
 All too often we focus on the [cost savings of using Open Source](http://www.bbc.co.uk/news/business-18466270). Put aside this obvious and quite frankly hollow benefit of using Open Source in your products and look at what the Open Source model combined with GitHub can bring to your development practices, team(s) and product(s).
 
-While I have been using Github for a number of years, I don't think I quite grasped it's true power. The flow was nicer than TFS and Bitbucket. That is what I would have told you. At [Red Badger](http://wwww.red-badger.com/) we love Github, not just because it is a great Git interface, because it allows us to collaborate easily and effectively. In the last 5 months, I have worked with it everyday: committing, opening Pull Requests, discussing/reviewing and ultimately improving the code of pur project and my capabilities as a developer. 
+While I have been using Github for a number of years, I didn't grasp it's true power. I would have told you the flow was nicer than TFS and Bitbucket. At [Red Badger](http://wwww.red-badger.com/) we love Github, not just because it is a great Git interface. It allows us to collaborate easily and effectively. In the last 5 months, I have worked with it everyday: committing code, opening Pull Requests, discussing/reviewing mine and those of my colleagues and ultimately improving the code of our project and my capabilities as a developer. 
 
-The other thing it has brought us is transparency. I used to read through documentation and then try and get things working. When I got stuck, well I would search a little bit, if unsuccessful I would give up and move on. Now though? I look at the repo, look at the code, usually starting with tests, the hidden documentation, the first client for your code. The answer usually lies at the intersection of the two. No need demos/examples... Well actually demos are still a good thing `:)` Open Source and Github has made this so accessible.
+The other thing it has brought us is transparency. I used to read through documentation and then try and get things working. When I got stuck, well I would search a little bit, if unsuccessful I would give up and move on. Now though? I look at the repo, the issues, look at the code, usually starting with tests (the hidden gem of documentation and the first client for your code). The answer to any question usually lies at the intersection of the code and tests. No need demos/examples... Well actually demos are still a good thing `:)` Open Source and Github has made this so accessible.
 
-While I wanted to focus on Open Source and the model in this post, I realise I have spoken more about Github, but to be truly effective in adopting such a model, you can't really do it without using Github. Just switching to Git will not have the same impact. When we engage with clients, we usually recommend using Github, and the response usually is:
+While I wanted to focus on Open Source and the model in this post, I realise I have spoken more about Github. To be truly effective in adopting such a model, you can't really do it without using Github. Just switching to Git will not have the same impact. When we engage with clients, we usually recommend using Github, and the response usually is:
 
 > Oh yes we already use Git. 
 
@@ -26,26 +26,26 @@ If this is how you view GitHub you are missing a trick (or a dozen tricks).
 
 ### Individuals
 
-Consider the individual in this model. Just think of how many people use and contribute to your favourite OS project. The collective power of this community that is using, reviewing and providing feedback makes the project successful and resilient.
+Consider the individual in this model. Just think of how many people use and contribute to your favourite Open Source project. The collective power of this community that is using, reviewing and providing feedback makes the project successful and resilient.
 
 Now think of your code and project, imagine having folks providing you with that feedback, suggestions and feature ideas? Would you not grow as a developer? Would your code not be better? Would your project not benefit?
 
 ### Teams
 
-Many of the things, that are true for the individual are true for teams as well. The added benefit is the greater level of collaboration and communication within the team and potentially other teams in your organisation as well, since they now have visibility of your work too. And again code quality goes up. 
+Many of the things, that are true for the individual are true for teams as well. The added benefit is the greater level of collaboration and communication within the team and potentially other teams in your organisation as well, since they now have visibility of your work too. Again code quality goes up. 
 
 At [eBay](https://www.talentbuddy.co/blog/building-with-node-js-at-ebay), they found that people on different teams became more involved in other projects, more willing to lend a helping hand. 
 
-The other statement around modules developed in a vacum and left to die when there was a re-org. The team or individual was moved to another part of the organisation with no way to hand it on. I can attest to this on more than one occasion during my time at Microsoft, which made us reluctant to make use of it. That usually led us to re-inventing the wheel, instead of contributing and making it better.
+The other statement in the eBay post around modules developed in a vacum and left to die when there was a re-org is also true. The team or individual was moved to another part of the organisation with no way to hand it over. I can attest to this on more than one occasion during my time at Microsoft, which made us reluctant to make use of internally developed modules. That usually led us to re-inventing the wheel, instead of contributing and making it better. I don't mean to imply that there was no platform for sharing, it was simply inadequate.
 
-With an OS model and a solution like NPM, that should lead to less re-inventing of the wheel, instead folks across the organisation can contribute to the solution. When they contribute and collaborate on the solution, the knowledge is no longer silo'ed. These are obvious benefits, furthermore there's a shared understanding of the code. For the organisation there's now less risk, as the knowledge no longer resides with just one or a few individuals. As with knowledge, skills are also sharpened, by being able to see how others tackle problems and find solutions, by discussing these outcomes.
+An Open Source model coupled with a dependency management solution like NPM, should lead to less re-inventing of the wheel. Instead folks across the organisation can contribute to the solution. When they contribute and collaborate on the solution, the knowledge is no longer silo'ed, this leads to a shared understanding of the code. For the organisation there's now less risk, as the knowledge no longer resides with just one or a few individuals. As with knowledge, skills are also sharpened, by being able to see how others tackle problems and find solutions, by discussing these outcomes. These are all obvious benefits.
 
 ### Products
 
-Building on the individual and the teams and their growth, products are almost naturally better designed, more secure.
+Building on the individual and the teams and their growth, products are almost naturally better designed, more resilient and more secure.
 
 
 ### Companies
-If your products are successful and built on an open source model and your developers can share their experiences, you profile is raised. Better yet share your code, your modules with the community and get the benefit of yet more people collaborating and contributing to modules that you have published. With your profile now raised and individuals having visibility of your contributions, it is much easier to hire new developers: like minded individuals that want to grow, contribute and collaborate. 
+If your products are successful, built on an open source model and your developers can share their experiences, then your profile is raised. Better yet share your code, your modules, your libraries with the community and get the benefit of yet more people collaborating and contributing to these. With your profile now raised and individuals having visibility of your contributions, it is much easier to hire new developers: like minded individuals that want to grow, contribute and collaborate. 
 
-It's a self pepertuating cycle - the benefits to you, your team, your product and your company are in itself self perpetuating when you adopt the Open Source model.
+__The benefits to you, your team, your product and your company are in itself self perpetuating when you adopt the Open Source model.__
