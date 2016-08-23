@@ -3,11 +3,11 @@ layout: post
 title: "exploring the open closed principle"
 date: 2015-05-02 15:29:33 +0000
 comments: true
-categories: 
+categories:
 ---
-At the start of the year I watched sandy Metz's talk: [All the Little Things](https://www.youtube.com/watch?v=8bZh5LMaSmE). It's an absolutely brilliant and once again inspiring talk.
+At the start of the year I watched sandy Metz's talk: [All the Little Things](//www.youtube.com/watch?v=8bZh5LMaSmE). It's an absolutely brilliant and once again inspiring talk.
 
-[![RailsConf 2014 - All the Little Things by Sandi Metz](http://img.youtube.com/vi/8bZh5LMaSmE/0.jpg)](https://www.youtube.com/watch?v=8bZh5LMaSmE)
+[![RailsConf 2014 - All the Little Things by Sandi Metz](//img.youtube.com/vi/8bZh5LMaSmE/0.jpg)](//www.youtube.com/watch?v=8bZh5LMaSmE)
 
 She touches on many interesting and thought provoking topcis. The one I would like to focus on with this post is the [open closed principle](http://en.wikipedia.org/wiki/Open/closed_principle):
 
@@ -15,11 +15,11 @@ She touches on many interesting and thought provoking topcis. The one I would li
 
 In essence you should be able to add a feature to a certain part of your application without having to modify the existing code. When I first came across this idea, at first this seems unachievable. How can you add a feature without touching existing code? The talk got me thinking about some of my code and I was keen to explore applying this to my code.
 
-So toward the backend of February I embarked on a refactoring exercise of the core feature of my site [Teacupinastorm](http://www.tcias.co.uk/). For some time I had been meaning to add a few new feeds to the page, but adding them was a bit of a slog, as I needed to touch way to many files in order to add one feed. Sounded like a prime candidate to explore the Open Close principle in practical manner.
+So toward the backend of February I embarked on a refactoring exercise of the core feature of my site [Teacupinastorm](//www.tcias.co.uk/). For some time I had been meaning to add a few new feeds to the page, but adding them was a bit of a slog, as I needed to touch way to many files in order to add one feed. Sounded like a prime candidate to explore the Open Close principle in practical manner.
 
 As I mentioned, in order to add a feed I needed to edit at least two files and then create a new object to fetch and format the feed data it into a standard structure that my view could use. What really helped me with this exercise was that the functionality had decent test coverage.
 
-At the heart we have the `Page` Object, which basically co-ordinates the calls to the various APIs and quite a bit more. This is a another smell, it goes against the Single responsibility principle. This is what it used to look like: 
+At the heart we have the `Page` Object, which basically co-ordinates the calls to the various APIs and quite a bit more. This is a another smell, it goes against the Single responsibility principle. This is what it used to look like:
 
 ```
 class Page
@@ -80,7 +80,7 @@ end
 
 It does a lot and it also had some inefficiencies. It also had a high churn rate. All smells asking to be improved upon.
 
-One of the first things I did was move the `parser_configuration` out of this object. It's a perfect canditate for a configuration object. So I moved that into it's own yaml file and let rails load that into application scope. Now when I add a new feed, I no longer need to touch this file, but just add it to the yaml file. 
+One of the first things I did was move the `parser_configuration` out of this object. It's a perfect canditate for a configuration object. So I moved that into it's own yaml file and let rails load that into application scope. Now when I add a new feed, I no longer need to touch this file, but just add it to the yaml file.
 
 Next I looked at the `ParserFactory`. Basically it took a type and and returned an object that would fetch the data. Another candidate to refactor so that I would not need to edit this file when I added a new feed.
 
@@ -175,8 +175,8 @@ class Page
 end
 ```
 
-A little simpler, but more importantly when it comes to adding a new feed I no longer need to edit this file or indeed the Factory object. It's safe to say that both `WrapperFactory` and `Page` are now open for extension and closed for modification. The next time I add a feed, I do not need to touch these two objects. I simply update my configuration file and create a feed type wrapper. 
+A little simpler, but more importantly when it comes to adding a new feed I no longer need to edit this file or indeed the Factory object. It's safe to say that both `WrapperFactory` and `Page` are now open for extension and closed for modification. The next time I add a feed, I do not need to touch these two objects. I simply update my configuration file and create a feed type wrapper.
 
 However now `PageItem` is not open closed. What if I add a new feed and I need fix the date? Now I would need to adjust the `fix_date` method in that object. So I decided to extract that method from the `PageItem` into it's own module. I adjusted the code to be more generic and put the responsibility on parsing the date back on the individual feed wrappers. Ultimately they have more knowledge about the data they are handling and it's certainly not the `PageItem`'s responsibility to that job.
 
-The code overall is better to reason about and each object has a more concrete responsibility now and more importantly when I add a new feed I no longer have to touch `Page`, `PageItem` or `WrapperFactory`. 
+The code overall is better to reason about and each object has a more concrete responsibility now and more importantly when I add a new feed I no longer have to touch `Page`, `PageItem` or `WrapperFactory`.

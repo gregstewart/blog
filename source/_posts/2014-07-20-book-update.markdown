@@ -18,7 +18,7 @@ and the [LeanPub one here](https://leanpub.com/building-a-web-app-guided-by-test
 about the two versions and which one you prefer. I really like the web version that [Gitbook](https://www.gitbook.io/) offer,
 however I much prefer [LeanPub](https://leanpub.com/)'s e-reader generated format.
 
-I have also created a [basic page](http://gregs.tcias.co.uk/building-a-web-app-guided-by-tests/) with links to the publishers,
+I have also created a [basic page](//www.tcias.co.uk/blog/building-a-web-app-guided-by-tests/) with links to the publishers,
 a [Facebook page](https://www.facebook.com/pages/Building-a-Web-App-Guided-By-Tests/1513275702220730) and other bits and bobs.
 
 That's it, time to get back to some more writing!
