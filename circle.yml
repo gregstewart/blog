@@ -1,3 +1,7 @@
+general:
+  branches:
+    only:
+      - master # list of branches to build
 test:
   override:
     - bundle exec rake generate
